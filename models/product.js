@@ -13,10 +13,3 @@ var ProductSchema = new Schema({
 
 var Product = mongoose.model('Products', ProductSchema);
 module.exports = Product
-
-
-
-
-
-
-// module.exports = mongoose.model('Product', ProductSchema);
