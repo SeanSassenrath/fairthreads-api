@@ -12,22 +12,9 @@ var ProductSchema = new Schema({
 })
 
 var Product = mongoose.model('Products', ProductSchema);
+module.exports = Product
 
 
-
-var fancyTop = new Product({
-  name: 'Alice Sweater',
-  brand: 'Reformation',
-  price: 49.99,
-  vendUrl: 'http://www.shopreformation.com'
-})
-
-module.exports = {
-  saveTop: function() {
-    fancyTop.save(function (err) {if (err) console.log (err)})
-  }
-
-}
 
 
 
