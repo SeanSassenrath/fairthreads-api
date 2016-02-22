@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
 var config = require('./config');
-var shopStyleApi = require('./shopstyle/shopstyle-api').selectBrands
+var shopStyleApi = require('./shopstyle/shopstyle-api').addProducts
 var products = require('./models/product');
 
 mongoose.connect('mongodb://localhost:27017/fairthreads');
