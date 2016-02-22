@@ -4,11 +4,11 @@ var mongoose = require('mongoose');
 var Schema =  mongoose.Schema;
 
 var ProductSchema = new Schema({
-  name: {type:String,required: true},
+  name: {type:String,required: true, unique:true},
   brand: {type:String,required: true},
   price: {type:Number,min:0, required:true},
-  vendUrl: {type:String, required:true   }
-
+  vendUrl: {type:String, required:true},
+  image: {type:String, required: true}
 })
 
 var Product = mongoose.model('Products', ProductSchema);
