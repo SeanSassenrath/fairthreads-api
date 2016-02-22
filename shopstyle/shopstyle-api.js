@@ -32,6 +32,7 @@ function requestProduct(url) {
   })
 }
 
+
 function saveProduct(item, gender) {
   var product = new Product ();
 
@@ -46,6 +47,8 @@ function saveProduct(item, gender) {
   product.description = item.description;
   product.color = item.colors[0].name;
   product.gender = gender.toLowerCase();
+
+
 
   product.save(function(err) {
     if (err) {
