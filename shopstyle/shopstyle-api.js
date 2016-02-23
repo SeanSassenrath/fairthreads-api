@@ -10,23 +10,28 @@ module.exports = {
 }
 
 function addProducts() {
-  var url = "http://api.shopstyle.com/api/v2/products?pid=" + apiKey + "&limit=50&fl=";
+  var gender = ['mens', 'womens'];
+  var url = "http://api.shopstyle.com/api/v2/products?pid=" + apiKey + "&limit=50&fts=&fl=";
+  var counter = 0;
   console.log("Querying based on brand")
-  brands.forEach(function(brand) {
-    requestProduct(url + brand)
-  })
+    brands.forEach(function(brand) {
+      _.times(2, function() {
+        requestProduct(url + brand + "fts=" + gender[counter], gender[counter])
+        counter >= 1 ? counter = 0 : counter++;
+      })
+    })
 }
 
-function requestProduct(url) {
+function requestProduct(url, gender) {
   request(url, function(err, res, body) {
     if(err) {
       console.log("error", err);
     } else {
       var products = JSON.parse(body).products;
-      var gender = JSON.parse(body).metadata.category.shortName;
-      console.log(gender)
-      products.forEach(function(product) {
-        saveProduct(product, gender);
+        products.forEach(function(product) {
+        if(product.brand && product.colors[0]) {
+          saveProduct(product, gender);
+        }
       })
     }
   })
