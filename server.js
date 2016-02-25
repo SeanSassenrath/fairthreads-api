@@ -6,13 +6,18 @@ var mongoose = require('mongoose');
 var config = require('./config');
 var shopStyleApi = require('./shopstyle/shopstyle-api').addProducts
 var products = require('./models/product');
+var path = require('path');
 
-mongoose.connect('mongodb://heroku_52k3gzwv:5env2kro1te4ilkucu3cca484v@ds015478.mongolab.com:15478/heroku_52k3gzwv/fairthreads');
-// mongoose.connect('mongodb://localhost:27017/fairthreads');
+// mongoose.connect(config.mongoLabURI);
+mongoose.connect(config.mongoLocal);
 
 // logs all requests to the console
 app.use(morgan('dev'));
 shopStyleApi();
+
+// routers
+var productsRouter = require('./routes/products')(app, express);
+app.use('/products', productsRouter);
 
 var apiRouter = express.Router();
 apiRouter.use(function(req,res,next) {
