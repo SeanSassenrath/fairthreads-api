@@ -7,7 +7,8 @@ var config = require('./config');
 var shopStyleApi = require('./shopstyle/shopstyle-api').addProducts
 var products = require('./models/product');
 
-mongoose.connect('mongodb://localhost:27017/fairthreads');
+mongoose.connect('mongodb://heroku_52k3gzwv:5env2kro1te4ilkucu3cca484v@ds015478.mongolab.com:15478/heroku_52k3gzwv/fairthreads');
+// mongoose.connect('mongodb://localhost:27017/fairthreads');
 
 // logs all requests to the console
 app.use(morgan('dev'));
