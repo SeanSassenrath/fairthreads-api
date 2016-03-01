@@ -10,7 +10,7 @@ module.exports = function(app, express) {
 
   productsRouter.get('/less-than-fifty', function(req, res) {
     Product.find({price: {$lt: 50}}, function(err, products) {
-      err ? res.send(err) : res.json(products)
+      err ? res.send(err) : res.send(JSON.stringify(products));
     })
   })
 
