@@ -17,9 +17,10 @@ app.use(morgan('dev'));
 
 // CORS
 app.use(function(req, res, next) {
-  res.setheader('Access-Control-Allow-Origin', '*');
-  res.setheader('Access-Control-Allow-Methods', 'GET');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  // res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  next();
 })
 // routers
 var productsRouter = require('./routes/products')(app, express);
