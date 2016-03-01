@@ -15,6 +15,12 @@ mongoose.connect(config.mongoLabURI);
 app.use(morgan('dev'));
 // shopStyleApi();
 
+// CORS
+app.use(function(req, res, next) {
+  res.setheader('Access-Control-Allow-Origin', '*');
+  res.setheader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+})
 // routers
 var productsRouter = require('./routes/products')(app, express);
 app.use('/products', productsRouter);
@@ -34,6 +40,7 @@ apiRouter.get('/', function(req,res) {
     }
   })
 })
+
 app.use('/api', apiRouter);
 app.listen(config.port);
 console.log("FairThread API is live on " + config.port);
