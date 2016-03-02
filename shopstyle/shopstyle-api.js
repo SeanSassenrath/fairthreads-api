@@ -11,7 +11,8 @@ module.exports = {
 
 function addProducts() {
   var gender = ['mens', 'womens'];
-  var url = "http://api.shopstyle.com/api/v2/products?pid=" + apiKey + "&limit=50&fts=&fl=";
+  
+  var url = "http://api.shopstyle.com/api/v2/products?pid=" + apiKey + "&limit=50&fl=";
   var counter = 0;
   console.log("Querying based on brand")
     brands.forEach(function(brand) {

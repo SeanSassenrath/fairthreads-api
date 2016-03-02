@@ -13,7 +13,7 @@ mongoose.connect(config.mongoLabURI);
 
 // logs all requests to the console
 app.use(morgan('dev'));
-// shopStyleApi();
+shopStyleApi();
 
 // CORS
 app.use(function(req, res, next) {
