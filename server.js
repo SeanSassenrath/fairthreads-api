@@ -8,12 +8,12 @@ var shopStyleApi = require('./shopstyle/shopstyle-api').addProducts
 var products = require('./models/product');
 var path = require('path');
 
-mongoose.connect(config.mongoLabURI);
-// mongoose.connect(config.mongoLocal);
+// mongoose.connect(config.mongoLabURI);
+mongoose.connect(config.mongoLocal);
 
 // logs all requests to the console
 app.use(morgan('dev'));
-// shopStyleApi();
+shopStyleApi();
 
 // CORS
 app.use(function(req, res, next) {
