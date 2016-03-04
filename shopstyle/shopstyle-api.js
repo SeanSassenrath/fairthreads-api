@@ -10,28 +10,28 @@ module.exports = {
 }
 
 function addProducts() {
-  var gender = ['mens', 'womens'];
-  
+  var cat = ['men', 'womens-clothes'];
   var url = "http://api.shopstyle.com/api/v2/products?pid=" + apiKey + "&limit=50&fl=";
   var counter = 0;
   console.log("Querying based on brand")
     brands.forEach(function(brand) {
       _.times(2, function() {
-        requestProduct(url + brand + "fts=" + gender[counter], gender[counter])
+        requestProduct(url + brand + "&cat=" + cat[counter])
         counter >= 1 ? counter = 0 : counter++;
       })
     })
 }
 
-function requestProduct(url, gender) {
+function requestProduct(url) {
   request(url, function(err, res, body) {
     if(err) {
       console.log("error", err);
     } else {
       var products = JSON.parse(body).products;
-        products.forEach(function(product) {
+      var cat = JSON.parse(body).metadata.category.id;
+      products.forEach(function(product) {
         if(product.brand && product.colors[0]) {
-          saveProduct(product, gender);
+          saveProduct(product, cat);
         }
       })
     }
@@ -39,9 +39,10 @@ function requestProduct(url, gender) {
 }
 
 
-function saveProduct(item, gender) {
+function saveProduct(item, cat) {
   var product = new Product ();
 
+  product.category = cat;
   product.name = item.brandedName;
   product.brand = item.brand.name;
   product.price = item.price;
@@ -49,12 +50,8 @@ function saveProduct(item, gender) {
   product.imageLarge = item.image.sizes.Large.url;
   product.imageSmall = item.image.sizes.Small.url;
   product.imageOriginal = item.image.sizes.Original.url;
-  product.category = item.categories[0].id;
   product.description = item.description;
   product.color = item.colors[0].name;
-  product.gender = gender.toLowerCase();
-
-
 
   product.save(function(err) {
     if (err) {
