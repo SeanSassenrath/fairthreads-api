@@ -8,6 +8,12 @@ module.exports = function(app, express) {
     next()
   })
 
+  productsRouter.get('/gender/:gender', function(req, res) {
+    Product.find({gender: req.params.gender}, function(err, products){
+      err ? res.send(err) : res.json(products)
+    })
+  })
+
   productsRouter.get('/less-than-fifty', function(req, res) {
     Product.find({price: {$lt: 50}}, function(err, products) {
       err ? res.send(err) : res.json(products)
