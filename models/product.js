@@ -4,9 +4,11 @@ var mongoose = require('mongoose');
 var Schema =  mongoose.Schema;
 
 var ProductSchema = new Schema({
-  name: {type:String,required: true, unique:true},
+  shopstyleId: {type:Number, required: true, unique: true},
+  name: {type:String,required: true},
   brand: {type:String,required: true},
   price: {type:Number,min:0, required:true},
+  salePrice: {type:Number},
   vendUrl: {type:String, required:true},
   imageLarge: {type:String, required: true},
   imageSmall: {type:String, required: true},

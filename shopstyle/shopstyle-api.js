@@ -42,10 +42,15 @@ function requestProduct(url) {
 function saveProduct(item, gender) {
   var product = new Product ();
 
+  if(item.salePrice) {
+    product.salePrice = item.salePrice;
+  }
+  product.shopstyleId = item.id;
   product.gender = gender;
   product.name = item.brandedName;
   product.brand = item.brand.name;
   product.price = item.price;
+  // product.salePrice = item.salePrice;
   product.category = item.categories[0].id;
   product.vendUrl = item.clickUrl;
   product.imageLarge = item.image.sizes.Large.url;
