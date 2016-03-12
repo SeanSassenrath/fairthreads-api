@@ -24,6 +24,7 @@
     "prettyjson": "^1.1.3"
   },
   "dependencies": {
+    "ejs": "^2.4.1",
     "lodash": "^4.5.0",
     "request": "^2.69.0"
   }
