@@ -16,7 +16,8 @@ var ProductSchema = new Schema({
   category: {type:String, required: true},
   description: {type:String},
   color: {type:String},
-  gender: {type:String}
+  gender: {type:String},
+  softDelete: {type: Boolean, required:true, default: false}
 })
 
 var Product = mongoose.model('Products', ProductSchema);

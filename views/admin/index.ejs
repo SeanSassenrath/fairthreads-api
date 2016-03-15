@@ -10,6 +10,48 @@
 		}
 		td {border:1px solid black;}
 	</style>
+	     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$('input').attr('checked', false);
+
+	var deletedItemsArray = [];
+
+	$( "input" ).on( "click", function() {
+	  var id = $(this).val()
+	  var index = deletedItemsArray.indexOf(id)
+	  if(index <= -1 ) {
+	  	deletedItemsArray.push(id)
+	  }
+	  else {
+	  	deletedItemsArray.splice(index, 1)
+	  }
+	  
+	});
+	$('#deleteItem').on('click', function(e) {
+		e.preventDefault()
+		var deltedItems = JSON.stringify(deletedItemsArray)
+		$.ajax({
+			type:"PUT",
+			url: "/admin",
+			dataType: 'json',
+			data: {arrayIds: deltedItems}
+		})
+		.done(function() {
+			  setTimeout(function(){// wait for 5 secs(2)
+           			location.reload(); // then reload the page.(3)
+      }, 1000);
+		})
+		.fail(function(data) {
+			console.log('err',data)
+		})
+
+	})
+})
+
+</script>
+
 </head>
 <body>
 	<h1>This is your admin portal:</h1>
@@ -18,32 +60,44 @@
 
 	<table>
 		<tr class="sectionTitle">
-			<td><b><u>Id<u></b></td>
+				
+			<td>
+				<form>
 
+					<button id="deleteItem">Delete</button>
+				</form>
+			</td>
+			<td><b><u>Id<u></b></td>
 			<td><b><u>Name<u></b></td>
 			<td><b><u>Brand<u></b></td>
 			<td><b><u>Price<u></b></td>
 			<td><b><u>Image<u></b></td>
 			<td><b><u>Url<u></b></td>
 			<td><b><u>Category<u></b></td>
-			<td><b><u>Description<u></b></td>
+			<!-- <td><b><u>Description<u></b></td> -->
 			<td><b><u>Gender<u></b></td>
 
 
 		</tr>
 		
 		<% for (var i = 0; i< products.length; i ++) { %>
-		<tr>
-			<td><span>
-      <a href="/admin/product/<%= products[i]._id %>"> click me to edit</a>
-    </span><%= products[i]._id%> </td>
+		<tr class="productRow">	
+			  
+			<td>
+					<input type="hidden" name="_method" value="put" />
+					<input type="checkbox" name="_id" value="<%= products[i]._id %>"> 		
+			</td>
+			<td>
+				<span>
+      				<a href="/admin/product/<%= products[i]._id %>"> click me to edit</a>
+    			</span><%= products[i]._id%> </td>
     		<td><%= products[i].name %></td>
 			<td><%= products[i].brand %></td>
 			<td>$<%= products[i].price %></td>
-			<td><img src="<%= products[i].imageOriginal %>" width="150" height="225"/></td>
+			<td style="width:150px; height:225px;"><img style="object-fit:contain;" src="<%= products[i].imageOriginal %>" width="150" height="225"/></td>
 			<td><%= products[i].vendUrl %></td>
 			<td><%= products[i].category %></td>
-			<td><%= products[i].description %></td>
+			<!-- <td><%= products[i].description %></td> -->
 			<td><%= products[i].gender %></td>
 		</tr>
 		<% } %>

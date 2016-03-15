@@ -4,6 +4,8 @@
 </head>
 <body>
 <h1>prodcut here</h1>
+	<form method="post"  action="/admin/product/<%= product._id%>" >
+			  <input type="hidden" name="_method" value="put" />
 
 			<table>
 		<tr class="sectionTitle">
@@ -22,22 +24,23 @@
 		</tr>
 		
 		<tr>		
-			<td><%= product._id%> </td>
-    		<td><input type="text" name ="name" value="<%= product.name %>"</td>
-			<td><%= product.brand %></td>
-			<td>$<%= product.price %></td>
-			<td><img src="<%= product.imageOriginal %>" width="150" height="225"/></td>
-			<td><input type="text" name ="url" value="<%= product.vendUrl %>"</td>
-			<td><input type="text" name ="category" value="<%= product.category %>"</td>
-			<td><input type="text" name ="description" value="<%= product.description %>"</td>
-			<td><%= product.gender %></td>
+				<td><%= product._id%> </td>
+    			<td><input type="text" name ="name" value="<%= product.name %>"</td>
+				<td><%= product.brand %></td>
+				<td>$<%= product.price %></td>
+				<td style="width:150px; height:225px;"><img style="object-fit:contain;" src="<%= product.imageOriginal %>" width="150" height="225"/></td>
+				<td><input type="text" name ="url" value="<%= product.vendUrl %>"</td>
+				<td><input type="text" name ="category" value="<%= product.category %>"</td>
+				<td><input type="text" name ="description" value="<%= product.description %>"</td>
+				<td><%= product.gender %></td>
+			
 		</tr>
 		
 		
 	</table>
-	<form method="post" action="/admin/product/<%= product._id%> " >
-			<input type="submit" name="Submit" />
-			<input type="hidden" name="_method" value="put" />
+
+			<input type="submit" name="Submit"  value="Update Info" />
+			<!-- <input type="hidden" name="_method" value="put" /> -->
 	</form>
 
 
