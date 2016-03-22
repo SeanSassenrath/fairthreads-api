@@ -8,15 +8,48 @@
   </head>
   <body>
     <h1>Product Categories</h1>
-    <ul>
-      <% for (var category in shopStyleCategories){ %>
-        <li><%= category %> | <%= category.length %></li>
-      <% }; %>
-    </ul>
+    <div class="categories-container" style="display: flex;">
+      <div class="unassigned" style="padding: 0 20px;">
+        <h3>Unassigned Products</h3>
+        <ul>
+          <% for (var category in shopStyleCategories){ %>
+            <li class="unassigned-category" id="<%= category %>"><%= category %> | <%= category.length %></li>
+          <% }; %>
+        </ul>
+      </div>
+      <div class="womens-categories" style="padding: 0 20px;">
+        <h3>Women's Categories</h3>
+        <ul>
+          <li class="assigned-category" id="womens-tops">Tops</li>
+          <li class="assigned-category" id="womens-bottoms">Bottoms</li>
+        </ul>
+      </div>
+      <div class="mens-categories" style="padding: 0 20px;">
+        <h3>Men's Categories</h3>
+        <ul>
+          <li class="assigned-category" id="mens-tops">Tops</li>
+          <li class="assigned-category" id="mens-bottoms">Bottoms</li>
+        </ul>
+      </div>
+    </div>
 
     <script>
       $(document).ready(function() {
-        // console.log(category)
+        assignments = {
+          selections: []
+        };
+        $(".unassigned-category").on('click', function(e) {
+          $(this).css("color", "green");
+          console.log($(this).attr('id'))
+          assignments.selections.push($(this).attr('id'));
+          console.log(assignments)
+        })
+
+        $(".assigned-category").on('click', function(e) {
+          $(this).css("color", "green");
+          assignments.ftCategory = $(this).attr('id');
+          console.log(assignments)
+        })
       })
     </script>
   </body>
