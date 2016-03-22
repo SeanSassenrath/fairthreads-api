@@ -75,12 +75,12 @@ adminRouter.route('/')
       else {
         res.render('admin/index', {
           products: products
-        })  
+        })
       }
     })
   })
   .put(function(req,res) {
-    
+
     // console.log(req.body.arrayIds)
 
     var data = JSON.parse(req.body.arrayIds)
@@ -91,11 +91,11 @@ adminRouter.route('/')
             if(err) res.send(err)
               console.log(product)
           })
-          
-      }) 
+
+      })
     }
     res.json({message : 'success'})
-  
+
   })
 
 
@@ -126,7 +126,7 @@ adminRouter.route('/product/:product_id')
       if (req.body.name) {product.name = req.body.name }
       if (req.body.description) product.description = req.body.description;
       if (req.body.vendUrl) product.vendUrl = req.body.vendUrl;
-      if (req.body.category) product.category = req.body.category;  
+      if (req.body.category) product.category = req.body.category;
       product.save(function(err) {
         if(err) res.send(err)
           res.redirect('/admin')
@@ -137,6 +137,36 @@ adminRouter.route('/product/:product_id')
 
   })
 
+  adminRouter.route('/categories')
+    .get(function(req, res) {
+      products.find({softDelete:false}, function(err, product) {
+        if(err) {
+          res.send(err);
+        }
+        var categories = {}
+        product.map(function(item) {
+          if(categories.hasOwnProperty(item.category)) {
+            // console.log("match", item.category)
+            return categories[item.category].push(item)
+          } else {
+            // console.log("categories", categories[item.category])
+            return categories[item.category] = [item]
+          }
+          // if(item.category === categories[item.category]) {
+          //   console.log("Match", item.category)
+          //   return categories[item.category].push(item)
+          // } else {
+          //   return categories[item.category] = [item]
+          // }
+        })
+        res.json(categories)
+        // res.render('admin/categories.ejs', {
+          // products: product
+        // })
+
+      })
+    })
+
 
 
 
@@ -146,5 +176,3 @@ app.use('/api', apiRouter);
 app.use('/admin', adminRouter)
 app.listen(config.port);
 console.log("FairThread API is live on " + config.port);
-
-

@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Product Categories</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Product Categories</h1>
+    <ul>
+      <% products.forEach(function(product) { %>
+        <li><%= product.category %></li>
+      <% }); %>
+    </ul>
+
+    <script>
+      $(document).ready(function() {
+        // console.log(category)
+      })
+    </script>
+  </body>
+</html>

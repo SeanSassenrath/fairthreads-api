@@ -14,6 +14,7 @@ var ProductSchema = new Schema({
   imageSmall: {type:String, required: true},
   imageOriginal: {type:String, required: true},
   category: {type:String, required: true},
+  fairThreadsCategory: {type: String},
   description: {type:String},
   color: {type:String},
   gender: {type:String},
