@@ -146,23 +146,14 @@ adminRouter.route('/product/:product_id')
         var categories = {}
         product.map(function(item) {
           if(categories.hasOwnProperty(item.category)) {
-            // console.log("match", item.category)
             return categories[item.category].push(item)
           } else {
-            // console.log("categories", categories[item.category])
             return categories[item.category] = [item]
           }
-          // if(item.category === categories[item.category]) {
-          //   console.log("Match", item.category)
-          //   return categories[item.category].push(item)
-          // } else {
-          //   return categories[item.category] = [item]
-          // }
         })
-        res.json(categories)
-        // res.render('admin/categories.ejs', {
-          // products: product
-        // })
+        res.render('admin/categories.ejs', {
+          shopStyleCategories: categories
+        })
 
       })
     })

@@ -9,9 +9,9 @@
   <body>
     <h1>Product Categories</h1>
     <ul>
-      <% products.forEach(function(product) { %>
-        <li><%= product.category %></li>
-      <% }); %>
+      <% for (var category in shopStyleCategories){ %>
+        <li><%= category %> | <%= category.length %></li>
+      <% }; %>
     </ul>
 
     <script>
