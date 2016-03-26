@@ -8,6 +8,7 @@
   </head>
   <body>
     <h1>Product Categories</h1>
+    <button id="save">Save</button>
     <div class="categories-container" style="display: flex;">
       <div class="unassigned" style="padding: 0 20px;">
         <h3>Unassigned Products</h3>
@@ -35,20 +36,40 @@
 
     <script>
       $(document).ready(function() {
-        assignments = {
-          selections: []
+        var assignments = {
+          shopStyleCategories: [],
+          // fairThreadsCategory: 'kurt'
         };
         $(".unassigned-category").on('click', function(e) {
           $(this).css("color", "green");
-          console.log($(this).attr('id'))
-          assignments.selections.push($(this).attr('id'));
-          console.log(assignments)
+          var shopStyleCategory = $(this).attr('id');
+          // console.log(shopStyleCategory)
+          // console.log(assignments.shopStyleCategories.indexOf(shopStyleCategory))
+
+          if(assignments.shopStyleCategories.indexOf(shopStyleCategory) === -1) {
+            assignments.shopStyleCategories.push(shopStyleCategory);
+          }
         })
 
         $(".assigned-category").on('click', function(e) {
           $(this).css("color", "green");
-          assignments.ftCategory = $(this).attr('id');
+          assignments.fairThreadsCategory = $(this).attr('id');
           console.log(assignments)
+        })
+
+        $("#save").on('click', function(e) {
+          e.preventDefault();
+          assignments = JSON.stringify(assignments);
+          $.ajax({
+            type:"PUT",
+            url: "/admin/categories",
+            dataType: 'json',
+            data: {data: assignments}
+          }).done(function(data) {
+            console.log("Success", data)
+          }).fail(function(err) {
+            console.log("Fail", err)
+          })
         })
       })
     </script>

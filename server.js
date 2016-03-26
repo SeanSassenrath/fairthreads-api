@@ -157,6 +157,25 @@ adminRouter.route('/product/:product_id')
 
       })
     })
+    .put(function(req, res) {
+      var data = JSON.parse(req.body.data)
+      // console.log("keys", Object.keys(data))
+      var shopStyleCategories = data.shopStyleCategories;
+      // console.log('selections', shopStyleCategories)
+      var fairThreadsCategory = data.fairThreadsCategory;
+      products.find({softDelete: false}, function(err, product) {
+        product.forEach(function(item) {
+          shopStyleCategories.forEach(function(category) {
+            if(item.category === category) {
+              console.log("Match", category)
+            } else {
+              console.log("No Match")
+            }
+          })
+        })
+      })
+      res.json("test: test")
+    })
 
 
 
