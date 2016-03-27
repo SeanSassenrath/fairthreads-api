@@ -28,6 +28,8 @@ mongoose.connect(config.mongoLabURI);
 app.use(morgan('dev'));
 // shopStyleApi();
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 // CORS
 app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -151,6 +153,7 @@ adminRouter.route('/product/:product_id')
             return categories[item.category] = [item]
           }
         })
+        // console.log('Categories', categories)
         res.render('admin/categories.ejs', {
           shopStyleCategories: categories
         })
@@ -167,14 +170,15 @@ adminRouter.route('/product/:product_id')
         product.forEach(function(item) {
           shopStyleCategories.forEach(function(category) {
             if(item.category === category) {
-              console.log("Match", category)
-            } else {
-              console.log("No Match")
+              item.fairThreadsCategory = fairThreadsCategory;
+              item.save(function(err) {
+                if(err) res.send(err)
+              })
             }
           })
         })
       })
-      res.json("test: test")
+      res.send("fairThreadsCategory assigned")
     })
 
 
