@@ -4,25 +4,32 @@
   <head>
     <meta charset="utf-8">
     <title>Product Categories</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
   </head>
-  <body>
+  <body style="font-family: 'Roboto', sans-serif;">
     <h1>Product Categories</h1>
     <button id="save">Save</button>
     <div class="categories-container" style="display: flex;">
       <div class="unassigned" style="padding: 0 20px;">
         <h3 style="display:inline-block;">Unassigned</h3>
         <h3 style="display:inline-block;">Assigned</h3>
-        <ul>
+        <ul style="list-style: none; padding: 0;">
           <% for (var category in shopStyleCategories){ %>
-            <li class="unassigned-category" id="<%= category %>"><%= category %>
-              <p class="toggle-items">Show items</p>
-              <div class="items-contain" style="display: none;">
-                <% shopStyleCategories[category].forEach(function(item) { %>
-                  <img src="<%= item.imageOriginal %>" style="max-width: 200px;"/>
-                  <p><%= item.name %></p>
-                  <p><%= item.fairThreadsCategory %></p>
-                <% }); %>
+            <li class="unassigned-category" id="<%= category %>">
+              <div style="padding: 20px 10px; border-top: 1.5px solid #3C3B3B; cursor: pointer;">
+                <h3><%= category %></h3>
+                <p><%= shopStyleCategories[category][0].fairThreadsCategory %></p>
+                <div class="toggle-container">
+                  <p class="toggle-items">Show items</p>
+                  <div class="items-container" style="display: none;">
+                    <% shopStyleCategories[category].forEach(function(item) { %>
+                      <img src="<%= item.imageOriginal %>" style="max-width: 200px;"/>
+                      <p><%= item.name %></p>
+                      <p><%= item.fairThreadsCategory %></p>
+                    <% }); %>
+                  </div>
+                </div>
               </div>
             </li>
           <% }; %>
@@ -30,19 +37,19 @@
       </div>
       <div class="currently-selected" style="padding: 0 20px;">
         <h3>Currently Selected</h3>
-        <ul>
+        <ul style="list-style: none;">
         </ul>
       </div>
       <div class="womens-categories" style="padding: 0 20px;">
         <h3>Women's Categories</h3>
-        <ul>
+        <ul style="list-style: none;">
           <li class="assigned-category" id="womens-tops">Tops</li>
           <li class="assigned-category" id="womens-bottoms">Bottoms</li>
         </ul>
       </div>
       <div class="mens-categories" style="padding: 0 20px;">
         <h3>Men's Categories</h3>
-        <ul>
+        <ul style="list-style: none;">
           <li class="assigned-category" id="mens-tops">Tops</li>
           <li class="assigned-category" id="mens-bottoms">Bottoms</li>
         </ul>
@@ -55,7 +62,8 @@
           shopStyleCategories: [],
         };
         $(".unassigned-category").on('click', function(e) {
-          $(this).css("color", "green");
+          $(this).css("color", "white");
+          $(this).css("background-color", "#4F4E4E");
           var shopStyleCategory = $(this).attr('id');
           if(assignments.shopStyleCategories.indexOf(shopStyleCategory) === -1) {
             assignments.shopStyleCategories.push(shopStyleCategory);
@@ -64,7 +72,8 @@
         })
 
         $(".assigned-category").on('click', function(e) {
-          $(this).css("color", "green");
+          $(this).css("color", "white");
+          $(this).css("background-color", "#4F4E4E");
           assignments.fairThreadsCategory = $(this).attr('id');
           console.log(assignments)
         })
