@@ -5,20 +5,43 @@
     <meta charset="utf-8">
     <title>Product Categories</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <style>
+      #header-container {
+        padding: 0 40px;
+      }
+      .ft-category, .selected-category {
+        padding: 10px;
+        margin: 10px 0;
+        cursor: pointer;
+      }
+      ul {
+        padding: 0;
+      }
+      button {
+        background: white;
+        border-radius: 3px;
+        border: 1px solid black;
+        padding: 4px 20px;
+        font-weight: 700;
+      }
+    </style>
   </head>
   <body style="font-family: 'Roboto', sans-serif;">
-    <h1>Product Categories</h1>
-    <button id="save">Save</button>
+    <div id="header-container">
+      <h1>Product Categories</h1>
+      <button id="save">Save</button>
+    </div>
     <div class="categories-container" style="display: flex;">
-      <div class="unassigned" style="padding: 0 20px;">
+      <div class="unassigned" style="margin: 0 40px;">
         <h3 style="display:inline-block;">Unassigned</h3>
         <h3 style="display:inline-block;">Assigned</h3>
         <ul style="list-style: none; padding: 0;">
           <% for (var category in shopStyleCategories){ %>
             <li class="unassigned-category" id="<%= category %>">
               <div style="padding: 20px 10px; border-top: 1.5px solid #3C3B3B; cursor: pointer;">
-                <h3><%= category %></h3>
+                <h3 style="display: inline-block;"><%= category %></h3> <i class="fa fa-check-circle" style="display: none;"></i>
                 <p><%= shopStyleCategories[category][0].fairThreadsCategory %></p>
                 <div class="toggle-container">
                   <p class="toggle-items">Show items</p>
@@ -42,16 +65,22 @@
       </div>
       <div class="womens-categories" style="padding: 0 20px;">
         <h3>Women's Categories</h3>
-        <ul style="list-style: none;">
-          <li class="assigned-category" id="womens-tops">Tops</li>
-          <li class="assigned-category" id="womens-bottoms">Bottoms</li>
+        <ul style="list-style: none; display: 0px">
+          <li class="ft-category" id="womens-tops" style="">Womens Tops</li>
+          <li class="ft-category" id="womens-bottoms">Womens Bottoms</li>
+          <li class="ft-category" id="womens-jeans">Womens Jeans</li>
+          <li class="ft-category" id="womens-dresses">Womens Dresses</li>
+          <li class="ft-category" id="womens-skirts">Womens Skirts</li>
+          <li class="ft-category" id="womens-bags">Womens Bags</li>
         </ul>
       </div>
       <div class="mens-categories" style="padding: 0 20px;">
         <h3>Men's Categories</h3>
         <ul style="list-style: none;">
-          <li class="assigned-category" id="mens-tops">Tops</li>
-          <li class="assigned-category" id="mens-bottoms">Bottoms</li>
+          <li class="ft-category" id="mens-tops">Mens Tops</li>
+          <li class="ft-category" id="mens-bottoms">Mens Bottoms</li>
+          <li class="ft-category" id="mens-jeans">Mens Jeans</li>
+          <li class="ft-category" id="mens-accessories">Mens Accessories</li>
         </ul>
       </div>
     </div>
@@ -62,8 +91,8 @@
           shopStyleCategories: [],
         };
         $(".unassigned-category").on('click', function(e) {
-          $(this).css("color", "white");
-          $(this).css("background-color", "#4F4E4E");
+          $(this).css("color", "#4F4E4E");
+          $(this).find('i').css("display", "inline-block");
           var shopStyleCategory = $(this).attr('id');
           if(assignments.shopStyleCategories.indexOf(shopStyleCategory) === -1) {
             assignments.shopStyleCategories.push(shopStyleCategory);
@@ -71,9 +100,9 @@
           }
         })
 
-        $(".assigned-category").on('click', function(e) {
-          $(this).css("color", "white");
-          $(this).css("background-color", "#4F4E4E");
+        $(".ft-category").on('click', function(e) {
+          $(this).css("color", "#4F4E4E");
+          $(this).css("text-decoration", "underline")
           assignments.fairThreadsCategory = $(this).attr('id');
           console.log(assignments)
         })
@@ -83,6 +112,8 @@
           var removeCategory = assignments.shopStyleCategories.indexOf(selectedCategory)
           if(removeCategory > -1) {
             $(this).remove();
+            $('#' + selectedCategory).css('color', 'black');
+            $('#' + selectedCategory).find('i').hide();
             assignments.shopStyleCategories.splice(removeCategory, 1);
           }
         })
@@ -100,9 +131,14 @@
             dataType: 'json',
             data: {data: assignments}
           }).done(function(data) {
-            console.log("Success", data)
+            setTimeout(function(){// wait for 5 secs(2)
+              location.reload(); // then reload the page.(3)
+            }, 1000);
           }).fail(function(err) {
             console.log("Fail", err)
+            setTimeout(function(){// wait for 5 secs(2)
+              location.reload(); // then reload the page.(3)
+            }, 1000);
           })
         })
       })
