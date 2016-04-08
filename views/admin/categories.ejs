@@ -66,21 +66,21 @@
       <div class="womens-categories" style="padding: 0 20px;">
         <h3>Women's Categories</h3>
         <ul style="list-style: none; display: 0px">
-          <li class="ft-category" id="womens-tops" style="">Womens Tops</li>
-          <li class="ft-category" id="womens-bottoms">Womens Bottoms</li>
-          <li class="ft-category" id="womens-jeans">Womens Jeans</li>
-          <li class="ft-category" id="womens-dresses">Womens Dresses</li>
-          <li class="ft-category" id="womens-skirts">Womens Skirts</li>
-          <li class="ft-category" id="womens-bags">Womens Bags</li>
+          <li class="ft-category" id="womens-tops" style="">Tops</li>
+          <li class="ft-category" id="womens-bottoms">Bottoms</li>
+          <li class="ft-category" id="womens-jeans">Jeans</li>
+          <li class="ft-category" id="womens-dresses">Dresses</li>
+          <li class="ft-category" id="womens-skirts">Skirts</li>
+          <li class="ft-category" id="womens-bags">Bags</li>
         </ul>
       </div>
       <div class="mens-categories" style="padding: 0 20px;">
         <h3>Men's Categories</h3>
         <ul style="list-style: none;">
-          <li class="ft-category" id="mens-tops">Mens Tops</li>
-          <li class="ft-category" id="mens-bottoms">Mens Bottoms</li>
-          <li class="ft-category" id="mens-jeans">Mens Jeans</li>
-          <li class="ft-category" id="mens-accessories">Mens Accessories</li>
+          <li class="ft-category" id="mens-tops">Tops</li>
+          <li class="ft-category" id="mens-bottoms">Bottoms</li>
+          <li class="ft-category" id="mens-jeans">Jeans</li>
+          <li class="ft-category" id="mens-accessories">Accessories</li>
         </ul>
       </div>
     </div>
@@ -103,7 +103,7 @@
         $(".ft-category").on('click', function(e) {
           $(this).css("color", "#4F4E4E");
           $(this).css("text-decoration", "underline")
-          assignments.fairThreadsCategory = $(this).attr('id');
+          assignments.fairThreadsCategory = $(this).html();
           console.log(assignments)
         })
 
