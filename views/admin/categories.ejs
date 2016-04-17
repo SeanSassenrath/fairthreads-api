@@ -29,11 +29,13 @@
     </style>
   </head>
   <body style="font-family: 'Roboto', sans-serif;">
-    <div id="header-container">
+    <div id="header-container" style="display: flex;">
       <h1>Product Categories</h1>
-      <button id="save">Save</button>
+      <div class="">
+        <button id="save">Save</button>
+      </div>
     </div>
-    <div class="categories-container" style="display: flex;">
+    <div class="categories-container" style='display: flex;'>
       <div class="unassigned" style="margin: 0 40px;">
         <h3 style="display:inline-block;">Unassigned</h3>
         <h3 style="display:inline-block;">Assigned</h3>
@@ -58,30 +60,32 @@
           <% }; %>
         </ul>
       </div>
-      <div class="currently-selected" style="padding: 0 20px;">
-        <h3>Currently Selected</h3>
-        <ul style="list-style: none;">
-        </ul>
-      </div>
-      <div class="womens-categories" style="padding: 0 20px;">
-        <h3>Women's Categories</h3>
-        <ul style="list-style: none; display: 0px">
-          <li class="ft-category" id="womens-tops" style="">Tops</li>
-          <li class="ft-category" id="womens-bottoms">Bottoms</li>
-          <li class="ft-category" id="womens-jeans">Jeans</li>
-          <li class="ft-category" id="womens-dresses">Dresses</li>
-          <li class="ft-category" id="womens-skirts">Skirts</li>
-          <li class="ft-category" id="womens-bags">Bags</li>
-        </ul>
-      </div>
-      <div class="mens-categories" style="padding: 0 20px;">
-        <h3>Men's Categories</h3>
-        <ul style="list-style: none;">
-          <li class="ft-category" id="mens-tops">Tops</li>
-          <li class="ft-category" id="mens-bottoms">Bottoms</li>
-          <li class="ft-category" id="mens-jeans">Jeans</li>
-          <li class="ft-category" id="mens-accessories">Accessories</li>
-        </ul>
+      <div class="" style="position: fixed; display: flex;">
+        <div class="currently-selected" style="padding: 0 20px;">
+          <h3>Currently Selected</h3>
+          <ul style="list-style: none;">
+          </ul>
+        </div>
+        <div class="womens-categories" style="padding: 0 20px;">
+          <h3>Women's Categories</h3>
+          <ul style="list-style: none; display: 0px">
+            <li class="ft-category" id="womens-tops" style="">Tops</li>
+            <li class="ft-category" id="womens-bottoms">Bottoms</li>
+            <li class="ft-category" id="womens-jeans">Jeans</li>
+            <li class="ft-category" id="womens-dresses">Dresses</li>
+            <li class="ft-category" id="womens-skirts">Skirts</li>
+            <li class="ft-category" id="womens-bags">Bags</li>
+          </ul>
+        </div>
+        <div class="mens-categories" style="padding: 0 20px;">
+          <h3>Men's Categories</h3>
+          <ul style="list-style: none;">
+            <li class="ft-category" id="mens-tops">Tops</li>
+            <li class="ft-category" id="mens-bottoms">Bottoms</li>
+            <li class="ft-category" id="mens-jeans">Jeans</li>
+            <li class="ft-category" id="mens-accessories">Accessories</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -92,7 +96,7 @@
         };
         $(".unassigned-category").on('click', function(e) {
           $(this).css("color", "#4F4E4E");
-          $(this).find('i').css("display", "inline-block");
+          $(this).find('i').css("display", "inline;");
           var shopStyleCategory = $(this).attr('id');
           if(assignments.shopStyleCategories.indexOf(shopStyleCategory) === -1) {
             assignments.shopStyleCategories.push(shopStyleCategory);
