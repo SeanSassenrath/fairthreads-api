@@ -139,6 +139,11 @@ adminRouter.route('/product/:product_id')
 
   })
 
+  adminRouter.route('/products')
+    .get(function(req, res) {
+      res.render('admin/products.ejs')
+    })
+
   adminRouter.route('/categories')
     .get(function(req, res) {
       products.find({softDelete:false}, function(err, product) {
