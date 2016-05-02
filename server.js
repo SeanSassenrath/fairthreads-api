@@ -144,6 +144,36 @@ adminRouter.route('/product/:product_id')
       res.render('admin/products.ejs')
     })
 
+  adminRouter.route('/product-lists')
+    .get(function(req, res) {
+      products.find(function(err, product) {
+        if(err) {
+          res.send(err);
+        }
+
+        var productLists = {
+          womensCategories: {},
+          mensCategories: {},
+          womensProducts: [],
+          mensProducts: [],
+          allProducts: [],
+        }
+
+        product.map(function(item) {
+          productLists.allProducts.push(item)
+          if(item.gender === 'womens-clothes') {
+            productLists.womensProducts.push(item)
+            console.log('here', productLists.womensCategories.hasOwnProperty(item.category))
+            productLists.womensCategories.hasOwnProperty(item.category) ? productLists.womensCategories[item.category].push(item) : productLists.womensCategories[item.category] = [item]
+          } else if(item.gender === 'men') {
+            productLists.mensProducts.push(item)
+            productLists.mensCategories.hasOwnProperty(item.category) ? productLists.mensCategories[item.category].push(item) : productLists.mensCategories[item.category] = [item]
+          }
+        })
+        res.json(productLists)
+      })
+    })
+
   adminRouter.route('/categories')
     .get(function(req, res) {
       products.find({softDelete:false}, function(err, product) {

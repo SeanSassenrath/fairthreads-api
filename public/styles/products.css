@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+ul {
+  padding: 0;
+}
+
 .page-container {
   border: 1px solid red;
   min-width: 960px;
@@ -49,6 +53,7 @@ nav.main-nav span {
 
 .select-active i {
   padding-left: 15px;
+  cursor: pointer;
 }
 
 .main-area-container {
@@ -57,6 +62,11 @@ nav.main-nav span {
   display: flex;
 }
 
+.main-area-container nav {
+  width: 250px;
+}
+
 .main-area-container nav ul li {
   list-style: none;
+  padding: 5px 0;
 }

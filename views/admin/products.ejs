@@ -5,6 +5,7 @@
     <title>FairtThreads Products</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <link href="/styles/products.css" rel="stylesheet" type="text/css">
   </head>
   <body>
@@ -30,14 +31,30 @@
             <li>Sort</li>
             <li>Assign</li>
           </ul>
+          <ul>
+            <li>Women</li>
+            <li>Men</li>
+          </ul>
+          <ul>
+
+          </ul>
         </nav>
-        <div class="products-container" style="border: 1px solid green;">
+        <div class="">
           <p>
-            I'm a product
+            test
           </p>
         </div>
       </div>
 
     </div>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $.getJSON('/admin/product-lists', function(data) {
+          console.log(data)
+        })
+      })
+
+    </script>
   </body>
 </html>
