@@ -39,10 +39,7 @@
 
           </ul>
         </nav>
-        <div class="">
-          <p>
-            test
-          </p>
+        <div class="products-container">
         </div>
       </div>
 
@@ -50,10 +47,35 @@
 
     <script type="text/javascript">
       $(document).ready(function() {
-        $.getJSON('/admin/product-lists', function(data) {
-          console.log(data)
+        var womensCategories;
+        var mensCategories;
+        var womensProducts;
+        var mensProducts;
+        var allProducts;
+
+        $.ajax({
+          type: 'get',
+          url: '/admin/product-lists',
+          dataType: 'JSON',
+        }).done(function(data) {
+          womensCategories = data.womensCategories;
+          mensCategories = data.mensCategories;
+          womensProducts = data.womensProducts;
+          mensProducts = data.mensProducts;
+          allProducts = data.allProducts;
+
+          populateProducts(allProducts)
+        }).fail(function(err) {
+          console.log('Error: ', err)
         })
+
+        var populateProducts = function(products) {
+          $.each(products, function( i, product ) {
+            $("<img>").attr( "src", product.imageOriginal).addClass('product-image').appendTo('.products-container');
+          })
+        }
       })
+
 
     </script>
   </body>

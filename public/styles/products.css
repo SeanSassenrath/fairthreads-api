@@ -70,3 +70,13 @@ nav.main-nav span {
   list-style: none;
   padding: 5px 0;
 }
+
+.products-container {
+  max-width: 900px;
+}
+
+.product-image {
+  width: 200px;
+  height: 300px;
+  object-fit: contain;
+}
