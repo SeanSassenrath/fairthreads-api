@@ -5,6 +5,7 @@
     <title>FairtThreads Products</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <link href="/styles/products.css" rel="stylesheet" type="text/css">
   </head>
@@ -26,32 +27,77 @@
       </div>
 
       <div class="main-area-container">
-        <nav class="" style="border: 1px solid purple;">
-          <ul>
-            <li>Sort</li>
-            <li>Assign</li>
-          </ul>
-          <ul>
-            <li>Women</li>
-            <li>Men</li>
-          </ul>
-          <ul>
-
-          </ul>
-        </nav>
-        <div class="products-container">
+        <div class="assign-product-container">
+          <nav style="border: 1px solid purple;">
+            <h3>Assign</h3>
+            <ul class="assign-list">
+              <li class="assign">Women</li>
+              <li class="assign">Men</li>
+            </ul>
+            <h3>Filter</h3>
+            <ul class="filter-list">
+              <li class="no-filter">All Clothes</li>
+              <li class="filter-women">Women</li>
+              <li class="filter-men">Men</li>
+            </ul>
+          </nav>
+          <div class="products-container" style="border: 1px solid black;">
+          </div>
         </div>
-      </div>
 
     </div>
 
+    <script id="product-template" type="text/x-handlebars-template">
+      {{#each product}}
+      {{#equal this.gender "womens-clothes"}}
+      <div class="product womens">
+      {{else}}
+      <div class="product mens">
+      {{/equal}}
+        <img class="product-image" src={{this.imageOriginal}} />
+        <p>{{this.name}}</p>
+        <p>{{this.fairThreadsCategory}}</p>
+        <p class="product-id">{{this._id}}</p>
+      </div>
+      {{/each}}
+    </script>
+
     <script type="text/javascript">
       $(document).ready(function() {
+        var source = $("#product-template").html();
         var womensCategories;
         var mensCategories;
-        var womensProducts;
-        var mensProducts;
         var allProducts;
+        var genderToAssign;
+        var changes = {};
+
+        $('.assign-product-container nav ul li').on('click', function() {
+          $(this).toggleClass('active')
+          $(this).siblings().removeClass('active')
+        })
+
+        $('.assign').on('click', function() {
+          changes = {};
+          genderToAssign === $(this).html().toLowerCase() ? genderToAssign = null : genderToAssign = $(this).html().toLowerCase();
+        })
+
+        $('.no-filter').on('click', function() {
+          populateProducts({product: allProducts});
+        })
+
+        $('.filter-women').on('click', function() {
+          var womensClothes = allProducts.filter(function(product) {
+            return product ? product.gender === 'womens-clothes' : null
+          })
+          populateProducts({product: womensClothes});
+        })
+
+        $('.filter-men').on('click', function() {
+          var mensClothes = allProducts.filter(function(product) {
+            return product ? product.gender === 'men' : null
+          })
+          populateProducts({product: mensClothes});
+        })
 
         $.ajax({
           type: 'get',
@@ -60,20 +106,43 @@
         }).done(function(data) {
           womensCategories = data.womensCategories;
           mensCategories = data.mensCategories;
-          womensProducts = data.womensProducts;
-          mensProducts = data.mensProducts;
           allProducts = data.allProducts;
-
-          populateProducts(allProducts)
+          populateProducts({product: allProducts})
         }).fail(function(err) {
           console.log('Error: ', err)
         })
 
         var populateProducts = function(products) {
-          $.each(products, function( i, product ) {
-            $("<img>").attr( "src", product.imageOriginal).addClass('product-image').appendTo('.products-container');
+          $('.products-container').empty()
+          var template = Handlebars.compile(source);
+          var data = products;
+          var html = template(data);
+          $('.products-container').append(html)
+          $('.product').on('click', function() {
+            if(genderToAssign) {
+              $(this).toggleClass('active');
+              $(this).siblings().removeClass('active')
+              if($(this).hasClass('active')) {
+                changes[$(this).find('.product-id').html()] = genderToAssign
+              } else {
+                delete changes[$(this).find('.product-id').html()]
+              }
+            }
+            // console.log(changes)
+            // console.log($(this).find('.product-id').html())
           })
         }
+
+        Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
+          if (arguments.length < 3)
+              throw new Error("Handlebars Helper equal needs 2 parameters");
+          if( lvalue!=rvalue ) {
+              return options.inverse(this);
+          } else {
+              return options.fn(this);
+          }
+        });
+
       })
 
 
