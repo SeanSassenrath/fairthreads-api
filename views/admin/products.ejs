@@ -29,10 +29,13 @@
       <div class="main-area-container">
         <div class="assign-product-container">
           <nav style="border: 1px solid purple;">
+            <div class="save">
+              Save changes
+            </div>
             <h3>Assign</h3>
             <ul class="assign-list">
-              <li class="assign">Women</li>
-              <li class="assign">Men</li>
+              <li class="assign">womens-clothes</li>
+              <li class="assign">men</li>
             </ul>
             <h3>Filter</h3>
             <ul class="filter-list">
@@ -64,13 +67,13 @@
 
     <script type="text/javascript">
       $(document).ready(function() {
-        var source = $("#product-template").html();
         var womensCategories;
         var mensCategories;
         var allProducts;
         var genderToAssign;
         var changes = {};
 
+        // Assigning gender
         $('.assign-product-container nav ul li').on('click', function() {
           $(this).toggleClass('active')
           $(this).siblings().removeClass('active')
@@ -78,9 +81,10 @@
 
         $('.assign').on('click', function() {
           changes = {};
-          genderToAssign === $(this).html().toLowerCase() ? genderToAssign = null : genderToAssign = $(this).html().toLowerCase();
+          genderToAssign === $(this).html().toLowerCase() ? genderToAssign = null : genderToAssign = $(this).html();
         })
 
+        // Filtering
         $('.no-filter').on('click', function() {
           populateProducts({product: allProducts});
         })
@@ -99,6 +103,20 @@
           populateProducts({product: mensClothes});
         })
 
+        // Handlebars Templating
+        var source = $("#product-template").html();
+
+        Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
+          if (arguments.length < 3)
+              throw new Error("Handlebars Helper equal needs 2 parameters");
+          if( lvalue!=rvalue ) {
+              return options.inverse(this);
+          } else {
+              return options.fn(this);
+          }
+        });
+
+        // Get request for products
         $.ajax({
           type: 'get',
           url: '/admin/product-lists',
@@ -112,6 +130,24 @@
           console.log('Error: ', err)
         })
 
+        // Put request for saving changes
+        $('.save').on('click', function() {
+          console.log(changes)
+          changes = JSON.stringify(changes);
+          $.ajax({
+            type: 'put',
+            url: '/admin/product-lists',
+            dataType: 'json',
+            data: {data: changes}
+          }).done(function(data) {
+            console.log(data)
+          }).fail(function(err) {
+            console.log(err)
+          })
+        })
+
+
+        // Populate products to the view
         var populateProducts = function(products) {
           $('.products-container').empty()
           var template = Handlebars.compile(source);
@@ -128,21 +164,8 @@
                 delete changes[$(this).find('.product-id').html()]
               }
             }
-            // console.log(changes)
-            // console.log($(this).find('.product-id').html())
           })
         }
-
-        Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
-          if (arguments.length < 3)
-              throw new Error("Handlebars Helper equal needs 2 parameters");
-          if( lvalue!=rvalue ) {
-              return options.inverse(this);
-          } else {
-              return options.fn(this);
-          }
-        });
-
       })
 
 

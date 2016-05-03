@@ -173,6 +173,23 @@ adminRouter.route('/product/:product_id')
         res.json(productLists)
       })
     })
+    .put(function(req, res) {
+      var data = JSON.parse(req.body.data)
+      products.find({softDelete: false}, function(err, product) {
+        if(err) {
+          res.send(err);
+        }
+        product.map(function(item) {
+          if(data[item._id]) {
+            item.gender = data[item._id]
+            item.save(function(err) {
+              if(err) res.send(err)
+            })
+          }
+        })
+      })
+      res.send('sent')
+    })
 
   adminRouter.route('/categories')
     .get(function(req, res) {

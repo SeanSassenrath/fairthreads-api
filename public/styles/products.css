@@ -91,6 +91,16 @@ nav.main-nav span {
   margin: 20px 0 5px 0;
 }
 
+.assign-product-container nav .save {
+  padding: 8px 5px;
+  border: 1px solid black;
+  width: 115px;
+  margin: 20px 0;
+  border-radius: 3px;
+  text-align: center;
+  cursor: pointer;
+}
+
 .products-container {
   max-width: 1200px;
   display: flex;
