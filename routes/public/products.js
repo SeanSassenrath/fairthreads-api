@@ -1,4 +1,4 @@
-var Product = require('../models/product');
+var Product = require('../../models/product');
 
 module.exports = function(app, express) {
   var productsRouter = express.Router();
