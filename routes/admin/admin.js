@@ -86,7 +86,7 @@ module.exports = function(app, express) {
 
     adminRouter.route('/product-lists')
       .get(function(req, res) {
-        products.find(function(err, product) {
+        products.find({softDelete: false}, function(err, product) {
           if(err) {
             res.send(err);
           }
@@ -103,7 +103,6 @@ module.exports = function(app, express) {
             productLists.allProducts.push(item)
             if(item.gender === 'womens-clothes') {
               productLists.womensProducts.push(item)
-              console.log('here', productLists.womensCategories.hasOwnProperty(item.category))
               productLists.womensCategories.hasOwnProperty(item.category) ? productLists.womensCategories[item.category].push(item) : productLists.womensCategories[item.category] = [item]
             } else if(item.gender === 'men') {
               productLists.mensProducts.push(item)
@@ -129,6 +128,25 @@ module.exports = function(app, express) {
           })
         })
         res.send('sent')
+      })
+
+    adminRouter.route('/product-lists/delete')
+      .put(function(req, res) {
+        var data = JSON.parse(req.body.data)
+        products.find(function(err, product) {
+          if(err) {
+            res.send(err);
+          }
+          product.map(function(item) {
+            if(item._id.toString() === data.toString()) {
+              item.softDelete = true;
+              item.save(function(err) {
+                if(err) res.send(err)
+              })
+            }
+          })
+        })
+        res.send('Item softly deleted')
       })
 
     adminRouter.route('/categories')

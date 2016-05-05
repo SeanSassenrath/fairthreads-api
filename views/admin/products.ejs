@@ -12,42 +12,43 @@
   <body>
     <div class="page-container">
       <nav class="main-nav">
-        <ul>
-          <li><a href="#">Products</a></li>
-          <li><a href="#">Categories</a></li>
-          <li><a href="#">Styles</a></li>
-        </ul>
+        <div class="nav-options">
+          <ul class="link-list">
+            <li><a href="#" class="active">Products</a></li>
+            <li><a href="admin/categories">Categories</a></li>
+            <li><a href="admin/styles">Styles</a></li>
+          </ul>
+          <ul class="filter-list">
+            <li class="filter-women">Women</li>
+            <li class="filter-men">Men</li>
+          </ul>
+        </div>
         <div class="">
-          <span>1001</span>
+          <div class="save">
+            Save changes
+          </div>
         </div>
       </nav>
 
-      <div class="select-active">
-        <p>Select products for Womens Tops</p><i class="fa fa-times-circle-o" aria-hidden="true"></i>
+      <div class="help">
+        <p>
+          First, select a category to assign a product to using the left nav.
+        </p>
       </div>
 
       <div class="main-area-container">
         <div class="assign-product-container">
-          <nav style="border: 1px solid purple;">
-            <div class="save">
-              Save changes
-            </div>
+          <nav>
             <h3>Assign</h3>
             <ul class="assign-list">
               <li class="assign">womens-clothes</li>
               <li class="assign">men</li>
             </ul>
-            <h3>Filter</h3>
-            <ul class="filter-list">
-              <li class="no-filter">All Clothes</li>
-              <li class="filter-women">Women</li>
-              <li class="filter-men">Men</li>
-            </ul>
           </nav>
-          <div class="products-container" style="border: 1px solid black;">
+          <div class="products-container">
           </div>
         </div>
-
+      </div>
     </div>
 
     <script id="product-template" type="text/x-handlebars-template">
@@ -57,9 +58,14 @@
       {{else}}
       <div class="product mens">
       {{/equal}}
+        <i class="fa fa-times-circle-o" aria-hidden="true"></i>
         <img class="product-image" src={{this.imageOriginal}} />
         <p>{{this.name}}</p>
+        {{#if this.fairThreadsCategory}}
         <p>{{this.fairThreadsCategory}}</p>
+        {{else}}
+        <p>No category assigned</p>
+        {{/if}}
         <p class="product-id">{{this._id}}</p>
       </div>
       {{/each}}
@@ -73,10 +79,15 @@
         var genderToAssign;
         var changes = {};
 
+        // Helpers
+        var toggleActiveClasses = function(element) {
+          $(element).toggleClass('active')
+          $(element).siblings().removeClass('active')
+        }
+
         // Assigning gender
         $('.assign-product-container nav ul li').on('click', function() {
-          $(this).toggleClass('active')
-          $(this).siblings().removeClass('active')
+          toggleActiveClasses(this)
         })
 
         $('.assign').on('click', function() {
@@ -85,22 +96,21 @@
         })
 
         // Filtering
-        $('.no-filter').on('click', function() {
-          populateProducts({product: allProducts});
-        })
+        var filterClothingByGender = function(products, gender) {
+          var clothes = products.filter(function(product) {
+            return product ? product.gender === gender : null
+          })
+          populateProducts({product: clothes});
+        }
 
         $('.filter-women').on('click', function() {
-          var womensClothes = allProducts.filter(function(product) {
-            return product ? product.gender === 'womens-clothes' : null
-          })
-          populateProducts({product: womensClothes});
+          toggleActiveClasses(this)
+          filterClothingByGender(allProducts, 'womens-clothes');
         })
 
         $('.filter-men').on('click', function() {
-          var mensClothes = allProducts.filter(function(product) {
-            return product ? product.gender === 'men' : null
-          })
-          populateProducts({product: mensClothes});
+          toggleActiveClasses(this)
+          filterClothingByGender(allProducts, 'men');
         })
 
         // Handlebars Templating
@@ -125,14 +135,14 @@
           womensCategories = data.womensCategories;
           mensCategories = data.mensCategories;
           allProducts = data.allProducts;
-          populateProducts({product: allProducts})
+          filterClothingByGender(data.allProducts, 'womens-clothes');
+          $('.filter-women').addClass('active');
         }).fail(function(err) {
           console.log('Error: ', err)
         })
 
         // Put request for saving changes
         $('.save').on('click', function() {
-          console.log(changes)
           changes = JSON.stringify(changes);
           $.ajax({
             type: 'put',
@@ -151,6 +161,21 @@
           })
         })
 
+        // Put request for deleting a product
+        var deleteProduct = function(id, parent) {
+          id = JSON.stringify(id);
+          console.log('id', id)
+          $.ajax({
+            type: 'put',
+            url: '/admin/product-lists/delete',
+            dataType: 'json',
+            data: {data: id}
+          }).done(function(data) {
+            console.log('data', data)
+          }).fail(function(err) {
+            console.log(err)
+          })
+        }
 
         // Populate products to the view
         var populateProducts = function(products) {
@@ -162,13 +187,21 @@
           $('.product').on('click', function() {
             if(genderToAssign) {
               $(this).toggleClass('active');
-              $(this).siblings().removeClass('active')
               if($(this).hasClass('active')) {
                 changes[$(this).find('.product-id').html()] = genderToAssign
               } else {
                 delete changes[$(this).find('.product-id').html()]
               }
+            } else {
+              $('.help').show();
+              setTimeout(function() {$('.help').hide();}, 5000)
             }
+          })
+          $('.product').on('click', '.fa-times-circle-o', function(e) {
+            e.stopPropagation();
+            var id = $(this).siblings('.product-id').html();
+            $(this).parent().hide();
+            deleteProduct(id);
           })
         }
       })

@@ -8,7 +8,6 @@ ul {
 }
 
 .page-container {
-  border: 1px solid red;
   min-width: 960px;
 }
 
@@ -21,7 +20,11 @@ nav.main-nav {
 }
 
 nav.main-nav ul {
-  padding: 0;
+  padding: 10px 0;
+}
+
+nav.main-nav .nav-options .link-list {
+  border-right: 1px solid white;
 }
 
 nav.main-nav li {
@@ -32,12 +35,51 @@ nav.main-nav li {
 nav.main-nav li a {
   text-decoration: none;
   color: white;
+  opacity: .6;
 }
 
-nav.main-nav span {
-  color: #D3D3D3;
-  font-size: 20px;
-  padding-right: 30px;
+nav.main-nav .filter-list li {
+  text-decoration: none;
+  color: white;
+  opacity: .6;
+  cursor: pointer;
+}
+
+nav.main-nav .filter-list li.active {
+  opacity: 1;
+}
+
+nav.main-nav li a.active {
+  text-decoration: none;
+  color: white;
+  opacity: 1;
+}
+
+nav.main-nav .save {
+  padding: 8px 5px;
+  border: 1px solid white;
+  width: 115px;
+  margin: 20px 30px;
+  border-radius: 3px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 1;
+  color: white;
+}
+
+nav.main-nav .nav-options {
+  display: flex;
+}
+
+.help {
+  display: none;
+  padding: 10px;
+  background-color: #a2d2df;
+  color: white;
+}
+
+.help p {
+  padding-left: 20px;
 }
 
 .select-active {
@@ -57,7 +99,6 @@ nav.main-nav span {
 }
 
 .main-area-container {
-  border: 1px solid blue;
   padding: 0 30px;
 }
 
@@ -91,16 +132,6 @@ nav.main-nav span {
   margin: 20px 0 5px 0;
 }
 
-.assign-product-container nav .save {
-  padding: 8px 5px;
-  border: 1px solid black;
-  width: 115px;
-  margin: 20px 0;
-  border-radius: 3px;
-  text-align: center;
-  cursor: pointer;
-}
-
 .products-container {
   max-width: 1200px;
   display: flex;
@@ -113,9 +144,20 @@ nav.main-nav span {
   width: 200px;
   margin: 20px 20px;
   padding: 10px;
-  border: 1px solid black;
   border-radius: 3px;
   cursor: pointer;
+  position: relative;
+}
+
+.product i {
+  position: absolute;
+  right: 10px;
+  font-size: 25px;
+  color: gray;
+}
+
+.product p {
+  text-align: center;
 }
 
 .product.womens {
@@ -134,4 +176,9 @@ nav.main-nav span {
   width: 200px;
   height: 250px;
   object-fit: contain;
+}
+
+.product-id {
+  font-size: 10px;
+  opacity: .4;
 }
