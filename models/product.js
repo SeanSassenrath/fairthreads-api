@@ -22,7 +22,8 @@ var ProductSchema = new Schema({
   active: {type: Boolean, default: false},
   activeTimeStamp: {type: Date},
   style: {type: String},
-  categoryRank: {type: Number}
+  categoryRank: {type: Number},
+  objectFit: {type: String}
 })
 
 var Product = mongoose.model('Products', ProductSchema);
