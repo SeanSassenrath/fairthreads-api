@@ -1,5 +1,5 @@
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   margin: 0;
 }
 
@@ -106,7 +106,7 @@ nav.main-nav .nav-options {
   padding: 20px 0;
 }
 
-.assign-product-container {
+/*.assign-product-container {
   display: flex;
 }
 
@@ -130,14 +130,16 @@ nav.main-nav .nav-options {
 
 .assign-product-container nav h3 {
   margin: 20px 0 5px 0;
-}
+}*/
 
 .products-container {
-  max-width: 1200px;
+  /*max-width: 1200px;*/
   display: flex;
   flex-wrap: wrap;
-  height: 600px;
-  overflow: scroll;
+  justify-content: space-around;
+  margin: 0 auto;
+  /*height: 600px;*/
+  /*overflow: scroll;*/
 }
 
 .product {
@@ -145,15 +147,22 @@ nav.main-nav .nav-options {
   margin: 20px 20px;
   padding: 10px;
   border-radius: 3px;
-  cursor: pointer;
   position: relative;
 }
 
+.tool-bar {
+  max-height: 30px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .product i {
-  position: absolute;
-  right: 10px;
   font-size: 25px;
   color: gray;
+  cursor: pointer;
 }
 
 .product p {
@@ -181,4 +190,106 @@ nav.main-nav .nav-options {
 .product-id {
   font-size: 10px;
   opacity: .4;
+}
+
+.edit-product-details {
+  font-size: 14px;
+}
+
+.edit-name {
+  display: block;
+  width: 170px;
+  margin: 0 auto;
+  border: none;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5px;
+  font-size: 14px;
+}
+
+.edit-category-container {
+  max-width: 172px;
+  margin: 20px auto 10px;
+  border: 1px solid gray;
+  padding: 5px 0;
+  border-radius: 3px;
+}
+
+.edit-category-container p {
+  text-align: left;
+  cursor: pointer;
+  margin: 0;
+  padding-left: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.edit-gender {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.edit-gender div {
+  border: 1px solid gray;
+  padding: 5px 0;
+  border-radius: 3px;
+  cursor: pointer;
+  min-width: 73px;
+  text-align: center;
+}
+
+.edit-fit {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.edit-fit div {
+  border: 1px solid gray;
+  padding: 5px 0;
+  border-radius: 3px;
+  cursor: pointer;
+  min-width: 73px;
+  text-align: center;
+}
+
+.edit-activation {
+  max-width: 172px;
+  margin: 10px auto 10px;
+  border: 1px solid gray;
+  padding: 5px 0;
+  border-radius: 3px;
+}
+
+.edit-activation p {
+  text-align: center;
+  cursor: pointer;
+  margin: 0;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.edit-actions {
+  margin-top: 20px;
+  margin: 20px auto 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.edit-actions .edit-cancel {
+  border: 1px solid gray;
+  padding: 5px 0;
+  border-radius: 3px;
+  cursor: pointer;
+  min-width: 73px;
+  text-align: center;
+}
+
+.edit-actions .edit-save {
+  border: 1px solid gray;
+  padding: 5px 0;
+  border-radius: 3px;
+  cursor: pointer;
+  min-width: 73px;
+  text-align: center;
 }

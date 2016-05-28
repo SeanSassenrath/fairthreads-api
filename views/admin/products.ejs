@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href="/styles/products.css" rel="stylesheet" type="text/css">
   </head>
   <body>
@@ -38,13 +39,13 @@
 
       <div class="main-area-container">
         <div class="assign-product-container">
-          <nav>
+          <%# <nav>
             <h3>Assign</h3>
             <ul class="assign-list">
               <li class="assign">womens-clothes</li>
               <li class="assign">men</li>
             </ul>
-          </nav>
+          </nav>%>
           <div class="products-container">
           </div>
         </div>
@@ -58,15 +59,54 @@
       {{else}}
       <div class="product mens">
       {{/equal}}
-        <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+        <div class="tool-bar">
+          <i class="fa fa-times-circle-o edit" aria-hidden="true"></i>
+          <p>Active<p>
+          <i class="fa fa-times-circle-o delete" aria-hidden="true"></i>
+        </div>
         <img class="product-image" src={{this.imageOriginal}} />
-        <p>{{this.name}}</p>
-        {{#if this.fairThreadsCategory}}
-        <p>{{this.fairThreadsCategory}}</p>
-        {{else}}
-        <p>No category assigned</p>
-        {{/if}}
-        <p class="product-id">{{this._id}}</p>
+        <div class="product-details">
+          <p>{{this.name}}</p>
+          {{#if this.fairThreadsCategory}}
+          <p>{{this.fairThreadsCategory}}</p>
+          {{else}}
+          <p>No category</p>
+          {{/if}}
+          <p class="product-id">{{this._id}}</p>
+        </div>
+        <div class="edit-product-details">
+          <input type="text" value="{{this.name}}" class="edit-name">
+          <div class="edit-category-container">
+            <p>{{this.category}}</p>
+          </div>
+          <div class="edit-gender">
+            <div>
+              Male
+            </div>
+            <div>
+              Female
+            </div>
+          </div>
+          <div class="edit-fit">
+            <div>
+              Contain
+            </div>
+            <div>
+              Cover
+            </div>
+          </div>
+          <div class="edit-activation">
+            <p>Activate</p>
+          </div>
+          <div class="edit-actions">
+            <div class="edit-cancel">
+              Cancel
+            </div>
+            <div class="edit-save">
+              Save
+            </div>
+          </div>
+        </div>
       </div>
       {{/each}}
     </script>
@@ -98,6 +138,11 @@
         // Filtering
         var filterClothingByGender = function(products, gender) {
           var clothes = products.filter(function(product) {
+            if (gender === 'womens-clothes') {
+              product.categories = womensCategories;
+            } else if (gender === 'men'){
+              product.categories = mensCategories;
+            }
             return product ? product.gender === gender : null
           })
           populateProducts({product: clothes});
@@ -125,6 +170,17 @@
               return options.fn(this);
           }
         });
+
+          Handlebars.registerHelper("debug", function(optionalValue) {
+            console.log("Current Context");
+            console.log("====================");
+            console.log(this);
+            if (optionalValue) {
+                console.log("Value");
+                console.log("====================");
+                console.log(optionalValue);
+            }
+          });
 
         // Get request for products
         $.ajax({
