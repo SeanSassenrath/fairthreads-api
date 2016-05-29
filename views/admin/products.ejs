@@ -46,9 +46,9 @@
     <script id="product-template" type="text/x-handlebars-template">
       {{#each product}}
       {{#equal this.gender "womens-clothes"}}
-      <div class="product womens">
+      <div id="{{this._id}}" class="product womens">
       {{else}}
-      <div class="product mens">
+      <div id="{{this._id}}" class="product mens">
       {{/equal}}
         <div class="tool-bar">
           <i class="fa fa-pencil-square-o edit" aria-hidden="true"></i>
@@ -115,8 +115,6 @@
 
         // Helpers
         var toggleActiveClasses = function(element) {
-          console.log('element', element)
-          console.log('element sibling', element)
           $(element).removeClass('active', $(element).siblings())
           $(element).siblings().addClass('active')
         }
@@ -249,16 +247,14 @@
           //     setTimeout(function() {$('.help').hide();}, 5000)
           //   }
           // })
-          $('.edit').on('click', function() {
+          $('.product').on('click', '.edit', function(e) {
+            e.stopPropagation();
             toggleActiveClasses($(this).parent().parent().find('.active'))
           })
-          // $('.edit').on('click', function() {
-          //   toggleActiveClasses($(this).parent().parent().find('.product-details'))
-          // })
-          $('.product').on('click', '.fa-times-circle-o .delete', function(e) {
+          $('.product').on('click', '.delete', function(e) {
             e.stopPropagation();
-            var id = $(this).siblings('.product-id').html();
-            $(this).parent().hide();
+            var id = $(this).closest('.product').attr('id');
+            $(this).closest('.product').hide();
             deleteProduct(id);
           })
         }
