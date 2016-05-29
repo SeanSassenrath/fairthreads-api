@@ -23,7 +23,7 @@ var ProductSchema = new Schema({
   activeTimeStamp: {type: Date},
   style: {type: String},
   categoryRank: {type: Number},
-  objectFit: {type: String}
+  objectFit: {type: String, default: "contain"}
 })
 
 var Product = mongoose.model('Products', ProductSchema);

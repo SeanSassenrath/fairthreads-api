@@ -80,10 +80,10 @@
               </div>
             </div>
             <div class="edit-fit">
-              <div>
+              <div class="contain">
                 Contain
               </div>
-              <div>
+              <div class="cover">
                 Cover
               </div>
             </div>
@@ -111,12 +111,19 @@
         var allProducts;
         var genderToAssign;
         var changes = {};
-        var editedProduct = {}
 
         // Helpers
         var toggleActiveClasses = function(element) {
-          $(element).removeClass('active', $(element).siblings())
-          $(element).siblings().addClass('active')
+          if($(element).hasClass('active')) {
+            $(element).removeClass('active')
+            $(element).siblings().addClass('active')
+          } else if($(element).siblings().hasClass('active')) {
+            $(element).addClass('active')
+            $(element).siblings().removeClass('active')
+          }
+          else {
+            $(element).addClass('active')
+          }
         }
 
         // Assigning gender
@@ -128,6 +135,9 @@
           changes = {};
           genderToAssign === $(this).html().toLowerCase() ? genderToAssign = null : genderToAssign = $(this).html();
         })
+
+        // Assign objectFit
+
 
         // Filtering
         var filterClothingByGender = function(products, gender) {
@@ -256,6 +266,12 @@
             var id = $(this).closest('.product').attr('id');
             $(this).closest('.product').hide();
             deleteProduct(id);
+          })
+          $('.edit-fit div').on('click', function(e) {
+            e.stopPropagation;
+            toggleActiveClasses($(this))
+            changes['objectFit'] = $(this).attr('class').split(' ')[0]
+            console.log(changes)
           })
         }
       })
