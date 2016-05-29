@@ -38,16 +38,7 @@
       </div>
 
       <div class="main-area-container">
-        <div class="assign-product-container">
-          <%# <nav>
-            <h3>Assign</h3>
-            <ul class="assign-list">
-              <li class="assign">womens-clothes</li>
-              <li class="assign">men</li>
-            </ul>
-          </nav>%>
-          <div class="products-container">
-          </div>
+        <div class="products-container">
         </div>
       </div>
     </div>
@@ -60,50 +51,52 @@
       <div class="product mens">
       {{/equal}}
         <div class="tool-bar">
-          <i class="fa fa-times-circle-o edit" aria-hidden="true"></i>
+          <i class="fa fa-pencil-square-o edit" aria-hidden="true"></i>
           <p>Active<p>
           <i class="fa fa-times-circle-o delete" aria-hidden="true"></i>
         </div>
         <img class="product-image" src={{this.imageOriginal}} />
-        <div class="product-details">
-          <p>{{this.name}}</p>
-          {{#if this.fairThreadsCategory}}
-          <p>{{this.fairThreadsCategory}}</p>
-          {{else}}
-          <p>No category</p>
-          {{/if}}
-          <p class="product-id">{{this._id}}</p>
-        </div>
-        <div class="edit-product-details">
-          <input type="text" value="{{this.name}}" class="edit-name">
-          <div class="edit-category-container">
-            <p>{{this.category}}</p>
+        <div class="product-details-container">
+          <div class="product-details active">
+            <p>{{this.name}}</p>
+            {{#if this.fairThreadsCategory}}
+            <p>{{this.fairThreadsCategory}}</p>
+            {{else}}
+            <p>No category</p>
+            {{/if}}
+            <p class="product-id">{{this._id}}</p>
           </div>
-          <div class="edit-gender">
-            <div>
-              Male
+          <div class="edit-product-details">
+            <input type="text" value="{{this.name}}" class="edit-name">
+            <div class="edit-category-container">
+              <p>{{this.category}}</p>
             </div>
-            <div>
-              Female
+            <div class="edit-gender">
+              <div>
+                Male
+              </div>
+              <div>
+                Female
+              </div>
             </div>
-          </div>
-          <div class="edit-fit">
-            <div>
-              Contain
+            <div class="edit-fit">
+              <div>
+                Contain
+              </div>
+              <div>
+                Cover
+              </div>
             </div>
-            <div>
-              Cover
+            <div class="edit-activation">
+              <p>Activate</p>
             </div>
-          </div>
-          <div class="edit-activation">
-            <p>Activate</p>
-          </div>
-          <div class="edit-actions">
-            <div class="edit-cancel">
-              Cancel
-            </div>
-            <div class="edit-save">
-              Save
+            <div class="edit-actions">
+              <div class="edit-cancel">
+                Cancel
+              </div>
+              <div class="edit-save">
+                Save
+              </div>
             </div>
           </div>
         </div>
@@ -118,11 +111,14 @@
         var allProducts;
         var genderToAssign;
         var changes = {};
+        var editedProduct = {}
 
         // Helpers
         var toggleActiveClasses = function(element) {
-          $(element).toggleClass('active')
-          $(element).siblings().removeClass('active')
+          console.log('element', element)
+          console.log('element sibling', element)
+          $(element).removeClass('active', $(element).siblings())
+          $(element).siblings().addClass('active')
         }
 
         // Assigning gender
@@ -240,20 +236,26 @@
           var data = products;
           var html = template(data);
           $('.products-container').append(html)
-          $('.product').on('click', function() {
-            if(genderToAssign) {
-              $(this).toggleClass('active');
-              if($(this).hasClass('active')) {
-                changes[$(this).find('.product-id').html()] = genderToAssign
-              } else {
-                delete changes[$(this).find('.product-id').html()]
-              }
-            } else {
-              $('.help').show();
-              setTimeout(function() {$('.help').hide();}, 5000)
-            }
+          // $('.product').on('click', function() {
+          //   if(genderToAssign) {
+          //     $(this).toggleClass('active');
+          //     if($(this).hasClass('active')) {
+          //       changes[$(this).find('.product-id').html()] = genderToAssign
+          //     } else {
+          //       delete changes[$(this).find('.product-id').html()]
+          //     }
+          //   } else {
+          //     $('.help').show();
+          //     setTimeout(function() {$('.help').hide();}, 5000)
+          //   }
+          // })
+          $('.edit').on('click', function() {
+            toggleActiveClasses($(this).parent().parent().find('.active'))
           })
-          $('.product').on('click', '.fa-times-circle-o', function(e) {
+          // $('.edit').on('click', function() {
+          //   toggleActiveClasses($(this).parent().parent().find('.product-details'))
+          // })
+          $('.product').on('click', '.fa-times-circle-o .delete', function(e) {
             e.stopPropagation();
             var id = $(this).siblings('.product-id').html();
             $(this).parent().hide();
