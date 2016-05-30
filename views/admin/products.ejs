@@ -59,18 +59,17 @@
             {{else}}
             <p>No category</p>
             {{/if}}
+            <p class="product-id">{{this._id}}</p>
           </div>
           <div class="edit-product-details">
             <input type="text" value="{{this.name}}" class="edit-name">
-            <div class="edit-category-container">
-              <div class="dropdown">
-                {{debug}}
-                <p>{{this.fairThreadsCategory}}</p>
-                <div class="dropdown-categories">
-                  {{#each this.categories}}
-                    <p style="text-transform: capitalize;">{{this}}</p>
-                  {{/each}}
-                </div>
+            <div class="edit-category-container dropdown">
+              {{debug}}
+              <p class="current-category" style="text-transform: capitalize;">{{this.fairThreadsCategory}}</p>
+              <div class="dropdown-content">
+                {{#each this.categories}}
+                  <p class="{{this}} category-option" style="text-transform: capitalize;">{{this}}</p>
+                {{/each}}
               </div>
             </div>
             <div class="edit-gender">
@@ -134,10 +133,9 @@
           console.log(changes)
         }
 
-        // Assigning gender
-        $('.assign-product-container nav ul li').on('click', function() {
-          toggleActiveClasses(this)
-        })
+        // Assign Cateogry
+
+        // Assign gender
 
         $('.assign').on('click', function() {
           changes = {};
@@ -276,6 +274,14 @@
             e.stopPropagation;
             toggleActiveClasses($(this))
             changes['gender'] = $(this).attr('class').split(' ')[0]
+            console.log(changes)
+          })
+          $('.category-option').on('click', function(e) {
+            e.stopPropagation;
+            console.log($(this).attr('class').split(' ')[0])
+            var newCategory = $(this).attr('class').split(' ')[0];
+            $('.current-category').html(newCategory);
+            changes['category'] = newCategory;
             console.log(changes)
           })
           saveProductChanges();

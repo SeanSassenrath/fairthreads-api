@@ -98,31 +98,23 @@ module.exports = function(app, express) {
             allProducts: [],
           }
 
-          console.log('list', productLists)
-
           product.map(function(item) {
             productLists.allProducts.push(item)
-            if(item.gender === 'womens-clothes') {
-              productLists.womensCategories.hasOwnProperty(item.category) ? productLists.womensCategories[item.category].push(item) : productLists.womensCategories[item.category] = [item]
-            } else if(item.gender === 'men') {
-              productLists.mensCategories.hasOwnProperty(item.category) ? productLists.mensCategories[item.category].push(item) : productLists.mensCategories[item.category] = [item]
-            }
           })
           res.json(productLists)
         })
       })
       .put(function(req, res) {
         var data = JSON.parse(req.body.data)
-        console.log(data)
 
         products.findOne({_id: data.id}, function(err, product) {
           if(err) {
             res.send(err);
           }
-          console.log("Matched product", product)
-          if(data['objectFit']) { product.objectFit = data['objectFit']}
-          if(data['gender']) { product.gender = data['gender']}
-          if(data['name'] != product.name) { product.name = data['name']}
+          if(data['objectFit']) { product.objectFit = data['objectFit'] }
+          if(data['gender']) { product.gender = data['gender'] }
+          if(data['category']) { product.fairThreadsCategory = data['category'] }
+          if(data['name'] != product.name) { product.name = data['name'] }
 
           product.save(function(err) {
             if(err) res.send(err)

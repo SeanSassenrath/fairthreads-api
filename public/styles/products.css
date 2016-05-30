@@ -280,3 +280,20 @@ nav.main-nav .nav-options {
   min-width: 73px;
   text-align: center;
 }
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+}
+
+.dropdown-content p:hover {
+  background: rgba(51, 51, 51, 0.5);
+  color: white;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
