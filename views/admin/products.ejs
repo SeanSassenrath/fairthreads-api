@@ -24,11 +24,6 @@
             <li class="filter-men">Men</li>
           </ul>
         </div>
-        <div class="">
-          <div class="save">
-            Save changes
-          </div>
-        </div>
       </nav>
 
       <div class="help">
@@ -72,10 +67,10 @@
               <p>{{this.category}}</p>
             </div>
             <div class="edit-gender">
-              <div>
+              <div class="men">
                 Male
               </div>
-              <div>
+              <div class="womens-clothes">
                 Female
               </div>
             </div>
@@ -247,19 +242,6 @@
           var data = products;
           var html = template(data);
           $('.products-container').append(html)
-          // $('.product').on('click', function() {
-          //   if(genderToAssign) {
-          //     $(this).toggleClass('active');
-          //     if($(this).hasClass('active')) {
-          //       changes[$(this).find('.product-id').html()] = genderToAssign
-          //     } else {
-          //       delete changes[$(this).find('.product-id').html()]
-          //     }
-          //   } else {
-          //     $('.help').show();
-          //     setTimeout(function() {$('.help').hide();}, 5000)
-          //   }
-          // })
           $('.product').on('click', '.edit', function(e) {
             e.stopPropagation();
             toggleActiveClasses($(this).parent().parent().find('.active'))
@@ -275,6 +257,12 @@
             e.stopPropagation;
             toggleActiveClasses($(this))
             changes['objectFit'] = $(this).attr('class').split(' ')[0]
+            console.log(changes)
+          })
+          $('.edit-gender div').on('click', function(e) {
+            e.stopPropagation;
+            toggleActiveClasses($(this))
+            changes['gender'] = $(this).attr('class').split(' ')[0]
             console.log(changes)
           })
           saveProductChanges()

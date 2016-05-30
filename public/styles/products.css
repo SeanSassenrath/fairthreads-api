@@ -7,10 +7,6 @@ ul {
   padding: 0;
 }
 
-.page-container {
-  min-width: 960px;
-}
-
 nav.main-nav {
   background-color: black;
   padding: 10px;

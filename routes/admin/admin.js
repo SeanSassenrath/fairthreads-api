@@ -115,13 +115,14 @@ module.exports = function(app, express) {
       .put(function(req, res) {
         var data = JSON.parse(req.body.data)
         console.log(data)
-        
+
         products.findOne({_id: data.id}, function(err, product) {
           if(err) {
             res.send(err);
           }
           console.log("Matched product", product)
           if(data['objectFit']) { product.objectFit = data['objectFit']}
+          if(data['gender']) { product.gender = data['gender']}
 
           product.save(function(err) {
             if(err) res.send(err)
