@@ -1,4 +1,5 @@
 var products = require('../../models/product');
+var internalCategories = require('./src/categories');
 
 module.exports = function(app, express) {
   var adminRouter = express.Router();
@@ -92,20 +93,18 @@ module.exports = function(app, express) {
           }
 
           var productLists = {
-            womensCategories: {},
-            mensCategories: {},
-            womensProducts: [],
-            mensProducts: [],
+            womensCategories: Object.keys(internalCategories.women),
+            mensCategories: Object.keys(internalCategories.men),
             allProducts: [],
           }
+
+          console.log('list', productLists)
 
           product.map(function(item) {
             productLists.allProducts.push(item)
             if(item.gender === 'womens-clothes') {
-              productLists.womensProducts.push(item)
               productLists.womensCategories.hasOwnProperty(item.category) ? productLists.womensCategories[item.category].push(item) : productLists.womensCategories[item.category] = [item]
             } else if(item.gender === 'men') {
-              productLists.mensProducts.push(item)
               productLists.mensCategories.hasOwnProperty(item.category) ? productLists.mensCategories[item.category].push(item) : productLists.mensCategories[item.category] = [item]
             }
           })

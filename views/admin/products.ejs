@@ -59,12 +59,19 @@
             {{else}}
             <p>No category</p>
             {{/if}}
-            <p class="product-id">{{this._id}}</p>
           </div>
           <div class="edit-product-details">
             <input type="text" value="{{this.name}}" class="edit-name">
             <div class="edit-category-container">
-              <p>{{this.category}}</p>
+              <div class="dropdown">
+                {{debug}}
+                <p>{{this.fairThreadsCategory}}</p>
+                <div class="dropdown-categories">
+                  {{#each this.categories}}
+                    <p style="text-transform: capitalize;">{{this}}</p>
+                  {{/each}}
+                </div>
+              </div>
             </div>
             <div class="edit-gender">
               <div class="men">
