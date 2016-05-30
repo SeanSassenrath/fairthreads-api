@@ -123,6 +123,7 @@ module.exports = function(app, express) {
           console.log("Matched product", product)
           if(data['objectFit']) { product.objectFit = data['objectFit']}
           if(data['gender']) { product.gender = data['gender']}
+          if(data['name'] != product.name) { product.name = data['name']}
 
           product.save(function(err) {
             if(err) res.send(err)

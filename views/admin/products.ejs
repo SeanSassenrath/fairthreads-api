@@ -121,6 +121,12 @@
           }
         }
 
+        // Change product name
+        var changeProductName = function(product) {
+          changes['name'] = $(product).parent().parent().find('.edit-name').val()
+          console.log(changes)
+        }
+
         // Assigning gender
         $('.assign-product-container nav ul li').on('click', function() {
           toggleActiveClasses(this)
@@ -199,7 +205,7 @@
         // Put request for saving changes
         var saveProductChanges = function() {
           $('.edit-save').on('click', function() {
-            console.log('Edit save test')
+            changeProductName(this);
             changes = JSON.stringify(changes);
             $.ajax({
               type: 'put',
@@ -265,7 +271,7 @@
             changes['gender'] = $(this).attr('class').split(' ')[0]
             console.log(changes)
           })
-          saveProductChanges()
+          saveProductChanges();
         }
       })
 
