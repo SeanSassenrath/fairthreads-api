@@ -114,17 +114,17 @@ module.exports = function(app, express) {
       })
       .put(function(req, res) {
         var data = JSON.parse(req.body.data)
-        products.find({softDelete: false}, function(err, product) {
+        console.log(data)
+        
+        products.findOne({_id: data.id}, function(err, product) {
           if(err) {
             res.send(err);
           }
-          product.map(function(item) {
-            if(data[item._id]) {
-              item.gender = data[item._id]
-              item.save(function(err) {
-                if(err) res.send(err)
-              })
-            }
+          console.log("Matched product", product)
+          if(data['objectFit']) { product.objectFit = data['objectFit']}
+
+          product.save(function(err) {
+            if(err) res.send(err)
           })
         })
         res.send('sent')

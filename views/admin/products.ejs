@@ -202,24 +202,27 @@
         })
 
         // Put request for saving changes
-        $('.save').on('click', function() {
-          changes = JSON.stringify(changes);
-          $.ajax({
-            type: 'put',
-            url: '/admin/product-lists',
-            dataType: 'json',
-            data: {data: changes}
-          }).done(function(data) {
-            setTimeout(function(){// wait for 5 secs(2)
-              location.reload(); // then reload the page.(3)
-            }, 1000);
-          }).fail(function(err) {
-            console.log(err)
-            setTimeout(function(){// wait for 5 secs(2)
-              location.reload(); // then reload the page.(3)
-            }, 1000);
+        var saveProductChanges = function() {
+          $('.edit-save').on('click', function() {
+            console.log('Edit save test')
+            changes = JSON.stringify(changes);
+            $.ajax({
+              type: 'put',
+              url: '/admin/product-lists',
+              dataType: 'json',
+              data: {data: changes}
+            }).done(function(data) {
+              setTimeout(function(){// wait for 5 secs(2)
+                location.reload(); // then reload the page.(3)
+              }, 1000);
+            }).fail(function(err) {
+              console.log(err)
+              setTimeout(function(){// wait for 5 secs(2)
+                location.reload(); // then reload the page.(3)
+              }, 1000);
+            })
           })
-        })
+        }
 
         // Put request for deleting a product
         var deleteProduct = function(id, parent) {
@@ -260,6 +263,7 @@
           $('.product').on('click', '.edit', function(e) {
             e.stopPropagation();
             toggleActiveClasses($(this).parent().parent().find('.active'))
+            changes["id"] = $(this).closest('.product').attr('id')
           })
           $('.product').on('click', '.delete', function(e) {
             e.stopPropagation();
@@ -273,6 +277,7 @@
             changes['objectFit'] = $(this).attr('class').split(' ')[0]
             console.log(changes)
           })
+          saveProductChanges()
         }
       })
 
