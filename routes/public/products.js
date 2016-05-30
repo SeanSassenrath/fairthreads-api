@@ -8,23 +8,23 @@ module.exports = function(app, express) {
     next()
   })
 
-  productsRouter.get('/gender/:gender', function(req, res) {
+  productsRouter.get('/gender/:gender/category/:category', function(req, res) {
     var products = {};
+    //
+    // var assignCategories = function(items) {
+    //   var categories = [];
+    //     items.forEach(function(item) {
+    //       if(categories.indexOf(item.fairThreadsCategory) < 0 && item.fairThreadsCategory != undefined) categories.push(item.fairThreadsCategory)
+    //     })
+    //   return categories;
+    // }
 
-    var assignCategories = function(items) {
-      var categories = [];
-        items.forEach(function(item) {
-          if(categories.indexOf(item.fairThreadsCategory) < 0 && item.fairThreadsCategory != undefined) categories.push(item.fairThreadsCategory)
-        })
-      return categories;
-    }
-
-    Product.find({gender: req.params.gender}, function(err, productsByGender){
+    Product.find({gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, products){
       if(err) {
         res.send(err)
       } else {
-        products.items = productsByGender;
-        products.categoryList = assignCategories(productsByGender);
+        products.items = products;
+        // products.categoryList = assignCategories(productsByGender);
         res.json(products);
       }
     })
