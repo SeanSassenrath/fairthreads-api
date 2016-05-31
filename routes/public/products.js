@@ -19,11 +19,11 @@ module.exports = function(app, express) {
     //   return categories;
     // }
 
-    Product.find({gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, products){
+    Product.find({gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, matchedProducts){
       if(err) {
         res.send(err)
       } else {
-        products.items = products;
+        products.items = matchedProducts;
         // products.categoryList = assignCategories(productsByGender);
         res.json(products);
       }
