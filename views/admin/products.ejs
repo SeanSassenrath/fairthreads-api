@@ -64,7 +64,6 @@
           <div class="edit-product-details">
             <input type="text" value="{{this.name}}" class="edit-name">
             <div class="edit-category-container dropdown">
-              {{debug}}
               <p class="current-category" style="text-transform: capitalize;">{{this.fairThreadsCategory}}</p>
               <div class="dropdown-content">
                 {{#each this.categories}}
@@ -127,25 +126,63 @@
           }
         }
 
+        // Edit product
+        var editProduct = function() {
+          $('.product').on('click', '.edit', function(e) {
+            e.stopPropagation();
+            toggleActiveClasses($(this).parent().parent().find('.active'))
+            changes["id"] = $(this).closest('.product').attr('id')
+          })
+        }
+
+        // Delete product
+        var deleteProduct = function() {
+          $('.product').on('click', '.delete', function(e) {
+            e.stopPropagation();
+            var id = $(this).closest('.product').attr('id');
+            $(this).closest('.product').hide();
+            deleteProduct(id);
+          })
+        }
+
         // Change product name
         var changeProductName = function(product) {
           changes['name'] = $(product).parent().parent().find('.edit-name').val()
           console.log(changes)
         }
 
-        // Assign Cateogry
+        // Select new img fit
+        var selectNewImgFit = function() {
+          $('.edit-fit div').on('click', function(e) {
+            e.stopPropagation;
+            toggleActiveClasses($(this))
+            changes['objectFit'] = $(this).attr('class').split(' ')[0]
+            console.log(changes)
+          })
+        }
 
-        // Assign gender
+        // Select new gender
+        var selectNewGender = function() {
+          $('.edit-gender div').on('click', function(e) {
+            e.stopPropagation;
+            toggleActiveClasses($(this))
+            changes['gender'] = $(this).attr('class').split(' ')[0]
+            console.log(changes)
+          });
+        };
 
-        $('.assign').on('click', function() {
-          changes = {};
-          genderToAssign === $(this).html().toLowerCase() ? genderToAssign = null : genderToAssign = $(this).html();
-        })
+        //Select new category
+        var selectNewCategory = function() {
+          $('.category-option').on('click', function(e) {
+            e.stopPropagation;
+            var newCategory = $(this).attr('class').split(' ')[0];
+            $('.current-category').html(newCategory);
+            changes['category'] = newCategory;
+            console.log(changes)
+          });
+        };
 
-        // Assign objectFit
-
-
-        // Filtering
+        // Product filters
         var filterClothingByGender = function(products, gender) {
           var clothes = products.filter(function(product) {
             if (gender === 'womens-clothes') {
@@ -171,6 +208,7 @@
         // Handlebars Templating
         var source = $("#product-template").html();
 
+        // Handlebars conditional helper (if / then logic)
         Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
           if (arguments.length < 3)
               throw new Error("Handlebars Helper equal needs 2 parameters");
@@ -181,16 +219,17 @@
           }
         });
 
-          Handlebars.registerHelper("debug", function(optionalValue) {
-            console.log("Current Context");
-            console.log("====================");
-            console.log(this);
-            if (optionalValue) {
-                console.log("Value");
-                console.log("====================");
-                console.log(optionalValue);
-            }
-          });
+        // Handlebars debug helper (console.logs context)
+        Handlebars.registerHelper("debug", function(optionalValue) {
+          console.log("Current Context");
+          console.log("====================");
+          console.log(this);
+          if (optionalValue) {
+              console.log("Value");
+              console.log("====================");
+              console.log(optionalValue);
+          }
+        });
 
         // Get request for products
         $.ajax({
@@ -207,7 +246,7 @@
           console.log('Error: ', err)
         })
 
-        // Put request for saving changes
+        // Put request for saving product changes
         var saveProductChanges = function() {
           $('.edit-save').on('click', function() {
             changeProductName(this);
@@ -218,14 +257,11 @@
               dataType: 'json',
               data: {data: changes}
             }).done(function(data) {
-              setTimeout(function(){// wait for 5 secs(2)
-                location.reload(); // then reload the page.(3)
-              }, 1000);
+              changes = {};
             }).fail(function(err) {
               console.log(err)
-              setTimeout(function(){// wait for 5 secs(2)
-                location.reload(); // then reload the page.(3)
-              }, 1000);
+              changes = {};
+              console.log(changes)
             })
           })
         }
@@ -253,42 +289,14 @@
           var data = products;
           var html = template(data);
           $('.products-container').append(html)
-          $('.product').on('click', '.edit', function(e) {
-            e.stopPropagation();
-            toggleActiveClasses($(this).parent().parent().find('.active'))
-            changes["id"] = $(this).closest('.product').attr('id')
-          })
-          $('.product').on('click', '.delete', function(e) {
-            e.stopPropagation();
-            var id = $(this).closest('.product').attr('id');
-            $(this).closest('.product').hide();
-            deleteProduct(id);
-          })
-          $('.edit-fit div').on('click', function(e) {
-            e.stopPropagation;
-            toggleActiveClasses($(this))
-            changes['objectFit'] = $(this).attr('class').split(' ')[0]
-            console.log(changes)
-          })
-          $('.edit-gender div').on('click', function(e) {
-            e.stopPropagation;
-            toggleActiveClasses($(this))
-            changes['gender'] = $(this).attr('class').split(' ')[0]
-            console.log(changes)
-          })
-          $('.category-option').on('click', function(e) {
-            e.stopPropagation;
-            console.log($(this).attr('class').split(' ')[0])
-            var newCategory = $(this).attr('class').split(' ')[0];
-            $('.current-category').html(newCategory);
-            changes['category'] = newCategory;
-            console.log(changes)
-          })
+          editProduct();
+          deleteProduct();
+          selectNewImgFit();
+          selectNewGender();
+          selectNewCategory();
           saveProductChanges();
         }
       })
-
-
     </script>
   </body>
 </html>
