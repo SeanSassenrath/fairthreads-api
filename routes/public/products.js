@@ -10,21 +10,12 @@ module.exports = function(app, express) {
 
   productsRouter.get('/gender/:gender/category/:category', function(req, res) {
     var products = {};
-    //
-    // var assignCategories = function(items) {
-    //   var categories = [];
-    //     items.forEach(function(item) {
-    //       if(categories.indexOf(item.fairThreadsCategory) < 0 && item.fairThreadsCategory != undefined) categories.push(item.fairThreadsCategory)
-    //     })
-    //   return categories;
-    // }
 
     Product.find({gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, matchedProducts){
       if(err) {
         res.send(err)
       } else {
         products.items = matchedProducts;
-        // products.categoryList = assignCategories(productsByGender);
         res.json(products);
       }
     })
