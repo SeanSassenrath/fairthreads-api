@@ -14,6 +14,9 @@ var categories = {
     },
     underwear: {
       styles: []
+    },
+    accessories: {
+      styles: []
     }
   },
   men: {
@@ -27,6 +30,9 @@ var categories = {
       styles: []
     },
     underwear: {
+      styles: []
+    },
+    accessories: {
       styles: []
     }
   }
