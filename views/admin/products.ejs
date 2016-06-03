@@ -136,7 +136,7 @@
         }
 
         // Delete product
-        var deleteProduct = function() {
+        var selectDeleteProduct = function() {
           $('.product').on('click', '.delete', function(e) {
             e.stopPropagation();
             var id = $(this).closest('.product').attr('id');
@@ -290,7 +290,7 @@
           var html = template(data);
           $('.products-container').append(html)
           editProduct();
-          deleteProduct();
+          selectDeleteProduct();
           selectNewImgFit();
           selectNewGender();
           selectNewCategory();
