@@ -10,31 +10,59 @@ ul {
 nav.main-nav {
   background-color: black;
   padding: 10px;
+}
+
+nav.main-nav .nav-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 300px;
 }
 
-nav.main-nav ul {
+nav.main-nav .nav-container div {
+  color: white;
+}
+
+nav.main-nav .dropdown:hover .dropdown-content {
+  display: block;
+  position: absolute;
+}
+
+nav.main-nav .dropdown-content {
+  background-color: black;
+  z-index: 1;
+  border-radius: 3px;
+}
+
+nav.main-nav .dropdown-content div {
+  padding: 6px 8px;
+}
+
+nav.main-nav .dropdown-content div:hover {
+  background-color: gray;
+  cursor: pointer;
+}
+
+/*nav.main-nav ul {
   padding: 10px 0;
 }
 
 nav.main-nav .nav-options .link-list {
   border-right: 1px solid white;
-}
-
+}*/
+/*
 nav.main-nav li {
   display: inline;
   margin: 0px 20px;
-}
+}*/
 
-nav.main-nav li a {
+/*nav.main-nav li a {
   text-decoration: none;
   color: white;
   opacity: .6;
-}
+}*/
 
-nav.main-nav .filter-list li {
+/*nav.main-nav .filter-list li {
   text-decoration: none;
   color: white;
   opacity: .6;
@@ -49,9 +77,9 @@ nav.main-nav li a.active {
   text-decoration: none;
   color: white;
   opacity: 1;
-}
+}*/
 
-nav.main-nav .save {
+/*nav.main-nav .save {
   padding: 8px 5px;
   border: 1px solid white;
   width: 115px;
@@ -65,7 +93,7 @@ nav.main-nav .save {
 
 nav.main-nav .nav-options {
   display: flex;
-}
+}*/
 
 .help {
   display: none;

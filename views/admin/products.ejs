@@ -13,16 +13,32 @@
   <body>
     <div class="page-container">
       <nav class="main-nav">
-        <div class="nav-options">
-          <ul class="link-list">
-            <li><a href="#" class="active">Products</a></li>
-            <li><a href="admin/categories">Categories</a></li>
-            <li><a href="admin/styles">Styles</a></li>
-          </ul>
-          <ul class="filter-list">
-            <li class="filter-women">Women</li>
-            <li class="filter-men">Men</li>
-          </ul>
+        <div class="nav-container">
+          <div>
+            Products
+          </div>
+          <div class="dropdown">
+            <div class="">Womens</div>
+            <div class="filter-women dropdown-content">
+              <div>All clothes</div>
+              <div class="tops">Tops</div>
+              <div class="bottoms">Bottoms</div>
+              <div class="dresses">Dresses</div>
+              <div class="athleisure">Athleisure</div>
+              <div class="shoes">Shoes</div>
+              <div class="accessories">Accessories</div>
+            </div>
+          </div>
+          <div class="dropdown">
+            <div class="filter-men">Mens</div>
+            <div class="dropdown-content">
+              <div class="tops">Tops</div>
+              <div class="bottoms">Bottoms</div>
+              <div class="active">Active</div>
+              <div class="shoes">Shoes</div>
+              <div class="accessories">Accessories</div>
+            </div>
+          </div>
         </div>
       </nav>
 
@@ -183,26 +199,36 @@
         };
 
         // Product filters
-        var filterClothingByGender = function(products, gender) {
+        var filterClothing = function(products, gender, category) {
           var clothes = products.filter(function(product) {
             if (gender === 'womens-clothes') {
               product.categories = womensCategories;
+              if (category) {
+                console.log("category")
+                return product ? product.gender === gender && product.fairThreadsCategory === category : null
+              } else {
+                console.log("no cat")
+                return product ? product.gender === gender : null
+              }
             } else if (gender === 'men'){
               product.categories = mensCategories;
+              if (category) {
+                return product ? product.gender === gender && product.fairThreadsCategory === category : null
+              } else {
+                return product ? product.gender === gender : null
+              }
             }
-            return product ? product.gender === gender : null
           })
           populateProducts({product: clothes});
         }
 
-        $('.filter-women').on('click', function() {
-          toggleActiveClasses(this)
-          filterClothingByGender(allProducts, 'womens-clothes');
+        $('.filter-women').on('click', 'div', function() {
+          console.log('this id', $(this).attr('class'));
+          filterClothing(allProducts, 'womens-clothes', $(this).attr('class'));
         })
 
         $('.filter-men').on('click', function() {
-          toggleActiveClasses(this)
-          filterClothingByGender(allProducts, 'men');
+          filterClothing(allProducts, 'men', $(this).attr('class'));
         })
 
         // Handlebars Templating
@@ -240,7 +266,7 @@
           womensCategories = data.womensCategories;
           mensCategories = data.mensCategories;
           allProducts = data.allProducts;
-          filterClothingByGender(data.allProducts, 'womens-clothes');
+          filterClothing(data.allProducts, 'womens-clothes');
           $('.filter-women').addClass('active');
         }).fail(function(err) {
           console.log('Error: ', err)
