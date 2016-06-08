@@ -49,6 +49,7 @@
       </div>
 
       <div class="main-area-container">
+        <h3 class="category-title"></h3>
         <div class="products-container">
         </div>
       </div>
@@ -200,14 +201,15 @@
 
         // Product filters
         var filterClothing = function(products, gender, category) {
+          var categoryTitle = $('.category-title');
           var clothes = products.filter(function(product) {
             if (gender === 'womens-clothes') {
               product.categories = womensCategories;
               if (category) {
-                console.log("category")
+                categoryTitle.html(category)
                 return product ? product.gender === gender && product.fairThreadsCategory === category : null
               } else {
-                console.log("no cat")
+                categoryTitle.html('All products')
                 return product ? product.gender === gender : null
               }
             } else if (gender === 'men'){
@@ -223,7 +225,6 @@
         }
 
         $('.filter-women').on('click', 'div', function() {
-          console.log('this id', $(this).attr('class'));
           filterClothing(allProducts, 'womens-clothes', $(this).attr('class'));
         })
 
