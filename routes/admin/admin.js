@@ -104,12 +104,15 @@ module.exports = function(app, express) {
           res.json(productLists)
         })
       })
+
+    adminRouter.route('/product-lists/edit')
       .put(function(req, res) {
+        console.log('hit')
         var data = JSON.parse(req.body.data)
 
         products.findOne({_id: data.id}, function(err, product) {
           if(err) {
-            res.send(err);
+            console.log("ERROR", err);
           }
           if(data['objectFit']) { product.objectFit = data['objectFit'] }
           if(data['gender']) { product.gender = data['gender'] }
@@ -117,10 +120,10 @@ module.exports = function(app, express) {
           if(data['name'] != product.name) { product.name = data['name'] }
 
           product.save(function(err) {
-            if(err) res.send(err)
+            if(err) { console.log("ERROR", err); };
           })
         })
-        res.send('sent')
+        res.json({'message': 'Product edit saved'});
       })
 
     adminRouter.route('/product-lists/delete')
@@ -139,7 +142,7 @@ module.exports = function(app, express) {
             }
           })
         })
-        res.send('Item softly deleted')
+        res.message({'message': 'Item softly deleted'})
       })
 
     adminRouter.route('/categories')

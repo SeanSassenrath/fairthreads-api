@@ -88,6 +88,9 @@
                 {{/each}}
               </div>
             </div>
+            <div class="edit-activation">
+              <p>Activate</p>
+            </div>
             <div class="edit-gender">
               <div class="men">
                 Male
@@ -104,16 +107,13 @@
                 Cover
               </div>
             </div>
-            <div class="edit-activation">
-              <p>Activate</p>
+          </div>
+          <div class="edit-actions">
+            <div class="edit-cancel">
+              Cancel
             </div>
-            <div class="edit-actions">
-              <div class="edit-cancel">
-                Cancel
-              </div>
-              <div class="edit-save">
-                Save
-              </div>
+            <div class="edit-save">
+              Save
             </div>
           </div>
         </div>
@@ -138,22 +138,48 @@
           } else if($(element).siblings().hasClass('active')) {
             $(element).addClass('active')
             $(element).siblings().removeClass('active')
-          }
-          else {
+          } else {
             $(element).addClass('active')
-          }
-        }
+          };
+        };
 
         // Edit product
         var editProduct = function() {
-          $('.product').on('click', function(e) {
+          $('.edit-product-details').on('click', function(e) {
             if(editId === undefined || editId === $(this).closest('.product').attr('id')) {
-              console.log("Product Id is being edited", $(this).attr('id'))
-              editId = $(this).attr('id')
-              changes["id"] = $(this).attr('id')
+              console.log("Product Id is being edited", $(this).closest('.product').attr('id'));
+              editId = $(this).closest('.product').attr('id');
+              changes["id"] = editId;
             } else {
-              alert("Cancel or save edit in progress for product " + editId + " before editing another product.")
-            }
+              alert("Cancel or save edit in progress for product " + editId + " before editing another product.");
+            };
+          });
+        };
+
+        // Cancel edit
+        var cancelEdit = function() {
+          $('.edit-cancel').on('click', function() {
+            console.log('Cancel request')
+            if(editId === $(this).closest('.product').attr('id')) {
+              alert('The editing of product ' + editId + ' has been canceled.');
+              editId = undefined;
+            } else {
+              alert('This product is not being edited and cannot be canceled.');
+            };
+          });
+        };
+
+        // Save edit
+        var saveEdit = function() {
+          $('.edit-save').on('click', function() {
+            console.log('Save request')
+            if(editId === $(this).closest('.product').attr('id')) {
+              changeProductName($(this).closest('.product'))
+              alert('The editing of product ' + editId + ' has been saved.');
+              saveProductChanges();
+            } else {
+              alert('This product is not being edited and cannot be saved.');
+            };
           });
         };
 
@@ -169,8 +195,8 @@
 
         // Change product name
         var changeProductName = function(product) {
-          editId === $(this).closest('.product').attr('id') || editId === undefined ? changes['name'] = $(product).parent().parent().find('.edit-name').val() : null
-          console.log(changes)
+          changes['name'] = product.find('.edit-name').val()
+          console.log("Changing product name", changes)
         }
 
         // Select new img fit
@@ -193,9 +219,9 @@
               toggleActiveClasses($(this));
               changes['gender'] = $(this).attr('class').split(' ')[0];
               console.log(changes);
+            } else {
+              console.log("Incorrect product", changes);
             }
-            console.log("Incorrect product", changes);
-            return null;
           });
         };
 
@@ -289,21 +315,21 @@
 
         // Put request for saving product changes
         var saveProductChanges = function() {
-          $('.edit-save').on('click', function() {
-            changeProductName(this);
-            changes = JSON.stringify(changes);
-            $.ajax({
-              type: 'put',
-              url: '/admin/product-lists',
-              dataType: 'json',
-              data: {data: changes}
-            }).done(function(data) {
-              changes = {};
-            }).fail(function(err) {
-              console.log(err)
-              changes = {};
-              console.log(changes)
-            })
+          changes = JSON.stringify(changes);
+          $.ajax({
+            type: 'put',
+            url: '/admin/product-lists/edit',
+            dataType: 'json',
+            data: {data: changes}
+          }).done(function(data) {
+            console.log('success')
+            changes = {};
+            editId = undefined;
+          }).fail(function(err) {
+            console.log(err)
+            // changes = {};
+            // editId = undefined;
+            console.log(changes)
           })
         }
 
@@ -335,7 +361,8 @@
           selectNewImgFit();
           selectNewGender();
           selectNewCategory();
-          saveProductChanges();
+          saveEdit();
+          cancelEdit();
         }
       })
     </script>
