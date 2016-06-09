@@ -7,64 +7,50 @@ ul {
   padding: 0;
 }
 
+.page-container {
+  background-color: #F2F2F2;
+}
+
 nav.main-nav {
   background-color: black;
   padding: 10px;
+}
+
+nav.main-nav .nav-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 40px;
 }
 
-nav.main-nav ul {
-  padding: 10px 0;
+nav.main-nav .nav-container > div {
+  margin-right: 40px;
 }
 
-nav.main-nav .nav-options .link-list {
-  border-right: 1px solid white;
-}
-
-nav.main-nav li {
-  display: inline;
-  margin: 0px 20px;
-}
-
-nav.main-nav li a {
-  text-decoration: none;
+nav.main-nav .nav-container div {
   color: white;
-  opacity: .6;
 }
 
-nav.main-nav .filter-list li {
-  text-decoration: none;
-  color: white;
-  opacity: .6;
-  cursor: pointer;
+nav.main-nav .dropdown:hover .dropdown-content {
+  display: block;
+  position: absolute;
 }
 
-nav.main-nav .filter-list li.active {
-  opacity: 1;
-}
-
-nav.main-nav li a.active {
-  text-decoration: none;
-  color: white;
-  opacity: 1;
-}
-
-nav.main-nav .save {
-  padding: 8px 5px;
-  border: 1px solid white;
-  width: 115px;
-  margin: 20px 30px;
+nav.main-nav .dropdown-content {
+  background-color: black;
+  z-index: 1;
   border-radius: 3px;
-  text-align: center;
-  cursor: pointer;
-  opacity: 1;
-  color: white;
+  padding-top: 8px;
 }
 
-nav.main-nav .nav-options {
-  display: flex;
+nav.main-nav .dropdown-content div {
+  padding: 8px 8px;
+}
+
+nav.main-nav .dropdown-content div:hover {
+  background-color: gray;
+  cursor: pointer;
 }
 
 .help {
@@ -95,27 +81,32 @@ nav.main-nav .nav-options {
 }
 
 .main-area-container {
-  padding: 0 30px;
+  padding: 0 30px 40px 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.main-area-container > nav {
-  padding: 20px 0;
+.main-area-container .category-title {
+  text-transform: capitalize;
+  margin-left: 20px;
+  margin-bottom: 0px;
 }
 
 .products-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
   margin: 0 auto;
 }
 
 .product {
-  width: 200px;
+  background-color: white;
+  max-width: 230px;
   margin: 20px 20px;
   padding: 10px;
   border-radius: 3px;
   position: relative;
   font-size: 14px;
+  flex: 1 1 auto;
 }
 
 .tool-bar {
@@ -152,6 +143,8 @@ nav.main-nav .nav-options {
 .product-image {
   width: 200px;
   height: 250px;
+  display: block;
+  margin: 0 auto;
   object-fit: contain;
 }
 
