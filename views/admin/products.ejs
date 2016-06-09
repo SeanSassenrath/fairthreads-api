@@ -18,7 +18,7 @@
             Products
           </div>
           <div class="dropdown">
-            <div class="">Womens</div>
+            <div style="padding: 8px 0px;">Womens</div>
             <div class="filter-women dropdown-content">
               <div>All clothes</div>
               <div class="tops">Tops</div>
@@ -69,7 +69,7 @@
         </div>
         <img class="product-image" src={{this.imageOriginal}} />
         <div class="product-details-container">
-          <div class="product-details active">
+          <!-- <div class="product-details active">
             <p>{{this.name}}</p>
             {{#if this.fairThreadsCategory}}
             <p>{{this.fairThreadsCategory}}</p>
@@ -77,7 +77,7 @@
             <p>No category</p>
             {{/if}}
             <p class="product-id">{{this._id}}</p>
-          </div>
+          </div> -->
           <div class="edit-product-details">
             <input type="text" value="{{this.name}}" class="edit-name">
             <div class="edit-category-container dropdown">
@@ -127,6 +127,7 @@
         var mensCategories;
         var allProducts;
         var genderToAssign;
+        var editId;
         var changes = {};
 
         // Helpers
@@ -145,12 +146,16 @@
 
         // Edit product
         var editProduct = function() {
-          $('.product').on('click', '.edit', function(e) {
-            e.stopPropagation();
-            toggleActiveClasses($(this).parent().parent().find('.active'))
-            changes["id"] = $(this).closest('.product').attr('id')
-          })
-        }
+          $('.product').on('click', function(e) {
+            if(editId === undefined || editId === $(this).closest('.product').attr('id')) {
+              console.log("Product Id is being edited", $(this).attr('id'))
+              editId = $(this).attr('id')
+              changes["id"] = $(this).attr('id')
+            } else {
+              alert("Cancel or save edit in progress for product " + editId + " before editing another product.")
+            }
+          });
+        };
 
         // Delete product
         var selectDeleteProduct = function() {
@@ -164,38 +169,47 @@
 
         // Change product name
         var changeProductName = function(product) {
-          changes['name'] = $(product).parent().parent().find('.edit-name').val()
+          editId === $(this).closest('.product').attr('id') || editId === undefined ? changes['name'] = $(product).parent().parent().find('.edit-name').val() : null
           console.log(changes)
         }
 
         // Select new img fit
         var selectNewImgFit = function() {
           $('.edit-fit div').on('click', function(e) {
-            e.stopPropagation;
-            toggleActiveClasses($(this))
-            changes['objectFit'] = $(this).attr('class').split(' ')[0]
-            console.log(changes)
-          })
-        }
+            if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
+              toggleActiveClasses($(this));
+              changes['objectFit'] = $(this).attr('class').split(' ')[0];
+              console.log(changes);
+            }
+            console.log("Incorrect product", changes);
+            return null;
+          });
+        };
 
         // Select new gender
         var selectNewGender = function() {
           $('.edit-gender div').on('click', function(e) {
-            e.stopPropagation;
-            toggleActiveClasses($(this))
-            changes['gender'] = $(this).attr('class').split(' ')[0]
-            console.log(changes)
+            if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
+              toggleActiveClasses($(this));
+              changes['gender'] = $(this).attr('class').split(' ')[0];
+              console.log(changes);
+            }
+            console.log("Incorrect product", changes);
+            return null;
           });
         };
 
         //Select new category
         var selectNewCategory = function() {
           $('.category-option').on('click', function(e) {
-            e.stopPropagation;
-            var newCategory = $(this).attr('class').split(' ')[0];
-            $('.current-category').html(newCategory);
-            changes['category'] = newCategory;
-            console.log(changes)
+            if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
+              var newCategory = $(this).attr('class').split(' ')[0];
+              $(this).parent().siblings('.current-category').html(newCategory);
+              changes['category'] = newCategory;
+              console.log(changes);
+            } else {
+              console.log("Incorrect product", changes);
+            }
           });
         };
 

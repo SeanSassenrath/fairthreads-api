@@ -164,7 +164,6 @@ nav.main-nav .dropdown-content div:hover {
 .edit-product-details {
   font-size: 14px;
   margin-top: 20px;
-  display: none;
 }
 
 .edit-product-details.active {
