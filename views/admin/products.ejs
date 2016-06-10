@@ -153,8 +153,7 @@
 
         var editMoreDetail = function() {
           $('.edit').on('click', function() {
-            console.log('Click editing', $(this).parent().parent().find('.edit-more-detail'))
-            $(this).find('.edit-more-detail').addClass('.active')
+            toggleActiveClasses($(this).parent().parent().find('.edit-more-detail'))
           });
         }
 
