@@ -94,10 +94,10 @@
                 </div>
               </div>
               <div class="edit-fit">
-                <div class="contain">
+                <div class="contain {{isActive this.objectFit 'contain'}}">
                   Contain
                 </div>
-                <div class="cover">
+                <div class="cover {{isActive this.objectFit 'cover'}}">
                   Cover
                 </div>
               </div>
@@ -297,6 +297,11 @@
               console.log("====================");
               console.log(optionalValue);
           }
+        });
+
+        // Load data with active styles
+        Handlebars.registerHelper('isActive', function (input, value) {
+          return input === value ? 'active' : '';
         });
 
         // Get request for products
