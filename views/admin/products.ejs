@@ -69,20 +69,13 @@
         </div>
         <img class="product-image" src={{this.imageOriginal}} />
         <div class="product-details-container">
-          <!-- <div class="product-details active">
-            <p>{{this.name}}</p>
-            {{#if this.fairThreadsCategory}}
-            <p>{{this.fairThreadsCategory}}</p>
-            {{else}}
-            <p>No category</p>
-            {{/if}}
-            <p class="product-id">{{this._id}}</p>
-          </div> -->
+          <p>${{this.price}}</p>
           <div class="edit-product-details">
             <input type="text" value="{{this.name}}" class="edit-name">
             <div class="edit-category-container dropdown">
               <p class="current-category" style="text-transform: capitalize;">{{this.fairThreadsCategory}}</p>
               <div class="dropdown-content">
+                <hr />
                 {{#each this.categories}}
                   <p class="{{this}} category-option" style="text-transform: capitalize;">{{this}}</p>
                 {{/each}}
@@ -91,20 +84,22 @@
             <div class="edit-activation">
               <p>Activate</p>
             </div>
-            <div class="edit-gender">
-              <div class="men">
-                Male
+            <div class="edit-more-detail">
+              <div class="edit-gender">
+                <div class="men">
+                  Male
+                </div>
+                <div class="womens-clothes">
+                  Female
+                </div>
               </div>
-              <div class="womens-clothes">
-                Female
-              </div>
-            </div>
-            <div class="edit-fit">
-              <div class="contain">
-                Contain
-              </div>
-              <div class="cover">
-                Cover
+              <div class="edit-fit">
+                <div class="contain">
+                  Contain
+                </div>
+                <div class="cover">
+                  Cover
+                </div>
               </div>
             </div>
           </div>
@@ -156,6 +151,13 @@
           });
         };
 
+        var editMoreDetail = function() {
+          $('.edit').on('click', function() {
+            console.log('Click editing', $(this).parent().parent().find('.edit-more-detail'))
+            $(this).find('.edit-more-detail').addClass('.active')
+          });
+        }
+
         // Cancel edit
         var cancelEdit = function() {
           $('.edit-cancel').on('click', function() {
@@ -206,9 +208,9 @@
               toggleActiveClasses($(this));
               changes['objectFit'] = $(this).attr('class').split(' ')[0];
               console.log(changes);
+            } else {
+              console.log("Incorrect product", changes);
             }
-            console.log("Incorrect product", changes);
-            return null;
           });
         };
 
@@ -361,6 +363,7 @@
           selectNewImgFit();
           selectNewGender();
           selectNewCategory();
+          editMoreDetail();
           saveEdit();
           cancelEdit();
         }

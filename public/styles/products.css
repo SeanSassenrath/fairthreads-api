@@ -197,10 +197,19 @@ nav.main-nav .dropdown-content div:hover {
   padding-bottom: 3px;
 }
 
+.edit-more-detail {
+  display: none;
+}
+
+.edit-more-detail.active {
+  display: block;
+}
+
 .edit-gender {
-  margin: 10px 0;
+  margin: 10px auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  max-width: 174px;
 }
 
 .edit-gender div {
@@ -213,9 +222,10 @@ nav.main-nav .dropdown-content div:hover {
 }
 
 .edit-fit {
-  margin: 10px 0;
+  margin: 10px auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  max-width: 174px;
 }
 
 .edit-fit div {
@@ -250,9 +260,10 @@ nav.main-nav .dropdown-content div:hover {
 
 .edit-actions {
   margin-top: 20px;
+  max-width: 174px;
   margin: 20px auto 10px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .edit-actions .edit-cancel {
