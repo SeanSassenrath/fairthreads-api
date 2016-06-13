@@ -270,6 +270,11 @@ nav.main-nav .dropdown-content div:hover {
   border-radius: 3px;
 }
 
+.edit-activation.active {
+  background-color:green;
+  color:white;
+}
+
 .edit-activation p {
   text-align: center;
   cursor: pointer;

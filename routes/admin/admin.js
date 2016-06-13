@@ -109,6 +109,7 @@ module.exports = function(app, express) {
       .put(function(req, res) {
         console.log('hit')
         var data = JSON.parse(req.body.data)
+        console.log('data', data)
 
         products.findOne({_id: data.id}, function(err, product) {
           if(err) {
@@ -118,6 +119,7 @@ module.exports = function(app, express) {
           if(data['gender']) { product.gender = data['gender'] }
           if(data['category']) { product.fairThreadsCategory = data['category'] }
           if(data['name'] != product.name) { product.name = data['name'] }
+          if(data['active']) { product.active = data['active']}
 
           product.save(function(err) {
             if(err) { console.log("ERROR", err); };

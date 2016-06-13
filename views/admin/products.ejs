@@ -36,7 +36,7 @@
               <div class="">All clothes</div>
               <div class="tops">Tops</div>
               <div class="bottoms">Bottoms</div>
-              <div class="active">Active</div>
+              <div class="athleisure">Athleisure</div>
               <div class="shoes">Shoes</div>
               <div class="accessories">Accessories</div>
             </div>
@@ -85,7 +85,7 @@
                 {{/each}}
               </div>
             </div>
-            <div class="edit-activation">
+            <div class="edit-activation {{isActive this.active true}}">
               <p>Activate</p>
             </div>
             <div class="edit-more-detail">
@@ -119,6 +119,14 @@
       </div>
       {{/each}}
     </script>
+
+
+
+
+
+
+
+
 
     <script type="text/javascript">
       $(document).ready(function() {
@@ -243,6 +251,30 @@
             }
           });
         };
+
+        //Activate Product
+
+        var activateProduct = function() {
+          $('.edit-activation').on('click', function(e) {
+            if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
+              if($(this).hasClass('active')){
+                changes['active'] = false;
+                toggleActiveClasses($(this))
+              }
+              else {
+                changes['active'] = true;
+                toggleActiveClasses($(this))
+              }
+              console.log(changes);
+            }
+            else {
+              console.log("Incorrect product", changes);
+
+            }
+            
+          })
+
+        }
 
         // Product filters
         var filterClothing = function(products, gender, category) {
@@ -371,6 +403,7 @@
           selectNewImgFit();
           selectNewGender();
           selectNewCategory();
+          activateProduct();
           editMoreDetail();
           saveEdit();
           cancelEdit();
