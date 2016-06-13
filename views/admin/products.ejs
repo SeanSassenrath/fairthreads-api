@@ -65,7 +65,7 @@
       <div id="{{this._id}}" class="product mens">
       {{/equal}}
         <div class="tool-bar">
-          <i class="fa fa-pencil-square-o edit" aria-hidden="true"></i>
+          <i class="fa fa-pencil-square-o toggle-edit-more-detail" aria-hidden="true"></i>
           {{#if this.salePrice}}
             <p>On Sale for ${{this.salePrice}}</p>
           {{/if}}
@@ -120,14 +120,6 @@
       {{/each}}
     </script>
 
-
-
-
-
-
-
-
-
     <script type="text/javascript">
       $(document).ready(function() {
         var womensCategories;
@@ -155,6 +147,7 @@
           $('.edit-product-details').on('click', function(e) {
             if(editId === undefined || editId === $(this).closest('.product').attr('id')) {
               console.log("Product Id is being edited", $(this).closest('.product').attr('id'));
+              $(this).closest('.product').addClass('active');
               editId = $(this).closest('.product').attr('id');
               changes["id"] = editId;
             } else {
@@ -164,7 +157,7 @@
         };
 
         var editMoreDetail = function() {
-          $('.edit').on('click', function() {
+          $('.toggle-edit-more-detail').on('click', function() {
             toggleActiveClasses($(this).parent().parent().find('.edit-more-detail'))
           });
         }
@@ -175,6 +168,7 @@
             console.log('Cancel request')
             if(editId === $(this).closest('.product').attr('id')) {
               alert('The editing of product ' + editId + ' has been canceled.');
+              $(this).closest('.product').removeClass('active');
               editId = undefined;
             } else {
               alert('This product is not being edited and cannot be canceled.');
@@ -189,6 +183,7 @@
             if(editId === $(this).closest('.product').attr('id')) {
               changeProductName($(this).closest('.product'))
               alert('The editing of product ' + editId + ' has been saved.');
+              $(this).closest('.product').removeClass('active');
               saveProductChanges();
             } else {
               alert('This product is not being edited and cannot be saved.');
@@ -257,23 +252,20 @@
         var activateProduct = function() {
           $('.edit-activation').on('click', function(e) {
             if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
+              var now = new Date();
               if($(this).hasClass('active')){
                 changes['active'] = false;
-                toggleActiveClasses($(this))
-              }
-              else {
+                $(this).removeClass('active')
+              } else {
                 changes['active'] = true;
-                toggleActiveClasses($(this))
+                changes['activeTimeStamp'] = now;
+                $(this).addClass('active')
               }
               console.log(changes);
-            }
-            else {
+            } else {
               console.log("Incorrect product", changes);
-
             }
-            
           })
-
         }
 
         // Product filters

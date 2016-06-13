@@ -107,7 +107,6 @@ module.exports = function(app, express) {
 
     adminRouter.route('/product-lists/edit')
       .put(function(req, res) {
-        console.log('hit')
         var data = JSON.parse(req.body.data)
         console.log('data', data)
 
@@ -119,7 +118,8 @@ module.exports = function(app, express) {
           if(data['gender']) { product.gender = data['gender'] }
           if(data['category']) { product.fairThreadsCategory = data['category'] }
           if(data['name'] != product.name) { product.name = data['name'] }
-          if(data['active']) { product.active = data['active']}
+          if(data['active']) { product.active = data['active'] }
+          if(data['activeTimeStamp']) { product.activeTimeStamp = data['activeTimeStamp'] }
 
           product.save(function(err) {
             if(err) { console.log("ERROR", err); };
