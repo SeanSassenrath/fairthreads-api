@@ -85,6 +85,11 @@ module.exports = function(app, express) {
         res.render('admin/products.ejs')
       })
 
+    adminRouter.route('/about')
+      .get(function(req,res) {
+        res.render('admin/about.ejs')
+      })
+
     adminRouter.route('/product-lists')
       .get(function(req, res) {
         products.find({softDelete: false}, function(err, product) {
@@ -119,6 +124,8 @@ module.exports = function(app, express) {
           if(data['category']) { product.fairThreadsCategory = data['category'] }
           if(data['name'] != product.name) { product.name = data['name'] }
           if(data['active']) { product.active = data['active'] }
+          if(data['stylistPick']) { product.stylistPick = data['stylistPick'] }
+
           if(data['activeTimeStamp']) { product.activeTimeStamp = data['activeTimeStamp'] }
 
           product.save(function(err) {

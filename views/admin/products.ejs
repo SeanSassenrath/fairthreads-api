@@ -22,12 +22,14 @@
             <div style="padding: 8px 0px;">Womens</div>
             <div class="filter-women dropdown-content">
               <div>All clothes</div>
+              <div class="stylistPick">stylistPick</div>
               <div class="tops">Tops</div>
               <div class="bottoms">Bottoms</div>
               <div class="dresses">Dresses</div>
               <div class="athleisure">Athleisure</div>
               <div class="shoes">Shoes</div>
               <div class="accessories">Accessories</div>
+
             </div>
           </div>
           <div class="dropdown">
@@ -74,6 +76,7 @@
         <img class="product-image" src={{this.imageOriginal}} />
         <div class="product-details-container">
           <p>${{this.price}}</p>
+          <p>{{this.brand}}</p>
           <div class="edit-product-details">
             <input type="text" value="{{this.name}}" class="edit-name">
             <div class="edit-category-container dropdown">
@@ -85,8 +88,12 @@
                 {{/each}}
               </div>
             </div>
-            <div class="edit-activation {{isActive this.active true}}">
+            <div class="edit-activation btn-style {{isActive this.active true}}">
               <p>Activate</p>
+            </div>
+            <div class="stylistPick-activation btn-style {{isActive this.stylistPick true}} ">
+            {{this.stylistPick}}
+              Stylist Picks
             </div>
             <div class="edit-more-detail">
               <div class="edit-gender">
@@ -267,14 +274,61 @@
             }
           })
         }
+        //add product to Stylist Picks
+
+        var stylistPick = function() {
+          $('.stylistPick-activation').on('click', function(e) {
+            if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
+              if($(this).hasClass('active')){
+                changes['stylistPick'] = false;
+                $(this).removeClass('active')
+              } else {
+                changes['stylistPick'] = true;
+                $(this).addClass('active')
+              }
+              console.log(changes);
+            } else {
+              console.log("Incorrect product", changes);
+            }
+          })
+        }
 
         // Product filters
         var filterClothing = function(products, gender, category) {
+          console.log(category)
           var categoryTitle = $('.category-title');
           var clothes = products.filter(function(product) {
             if (gender === 'womens-clothes') {
               product.categories = womensCategories;
               if (category) {
+                console.log('registers as cat!')
+                console.log()
+                categoryTitle.html(category)
+                return product ? product.gender === gender && product.fairThreadsCategory === category : null
+              } else {
+                categoryTitle.html('All products')
+                return product ? product.gender === gender : null
+              }
+            } else if (gender === 'men'){
+              product.categories = mensCategories;
+              if (category) {
+                return product ? product.gender === gender && product.fairThreadsCategory === category : null
+              } else {
+                return product ? product.gender === gender : null
+              }
+            }
+          })
+          populateProducts({product: clothes});
+        }
+        var filterStylistPicks = function(products, gender, stylistPick) {
+          console.log(category)
+          var categoryTitle = $('.category-title');
+          var clothes = products.filter(function(product) {
+            if (gender === 'womens-clothes') {
+              product.categories = womensCategories;
+              if (category) {
+                console.log('registers as cat!')
+                console.log()
                 categoryTitle.html(category)
                 return product ? product.gender === gender && product.fairThreadsCategory === category : null
               } else {
@@ -396,6 +450,7 @@
           selectNewGender();
           selectNewCategory();
           activateProduct();
+          stylistPick(); 
           editMoreDetail();
           saveEdit();
           cancelEdit();

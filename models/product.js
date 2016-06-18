@@ -24,7 +24,8 @@ var ProductSchema = new Schema({
   new: { type: Boolean },
   style: { type: String },
   categoryRank: { type: Number },
-  objectFit: { type: String, default: "contain" }
+  objectFit: { type: String, default: "contain" },
+  stylistPick: {type:Boolean,default:false}
 })
 
 var Product = mongoose.model('Products', ProductSchema);
