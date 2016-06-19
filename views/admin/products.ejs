@@ -29,7 +29,6 @@
               <div class="athleisure">Athleisure</div>
               <div class="shoes">Shoes</div>
               <div class="accessories">Accessories</div>
-
             </div>
           </div>
           <div class="dropdown">
@@ -42,6 +41,9 @@
               <div class="shoes">Shoes</div>
               <div class="accessories">Accessories</div>
             </div>
+          </div>
+          <div>
+            <div class="active-filter">Active</div>
           </div>
         </div>
       </nav>
@@ -320,25 +322,36 @@
           })
           populateProducts({product: clothes});
         }
+
+        $('.filter-women').on('click', 'div', function() {
+          if($(this).attr('class') === "stylistPick") {
+            filterStylistPicks(allProducts, 'womens-clothes', true)
+          } else {
+            filterClothing(allProducts, 'womens-clothes', $(this).attr('class'));
+          }
+        })
+
+        $('.filter-men').on('click', 'div', function() {
+          filterClothing(allProducts, 'men', $(this).attr('class'));
+        })
+
         var filterStylistPicks = function(products, gender, stylistPick) {
-          console.log(category)
           var categoryTitle = $('.category-title');
           var clothes = products.filter(function(product) {
             if (gender === 'womens-clothes') {
               product.categories = womensCategories;
-              if (category) {
-                console.log('registers as cat!')
-                console.log()
-                categoryTitle.html(category)
-                return product ? product.gender === gender && product.fairThreadsCategory === category : null
+              if (stylistPick) {
+                console.log('Stylist Pick is true')
+                categoryTitle.html("Stylist Picks")
+                return product ? product.gender === gender && product.stylistPick === true : null
               } else {
                 categoryTitle.html('All products')
                 return product ? product.gender === gender : null
               }
             } else if (gender === 'men'){
               product.categories = mensCategories;
-              if (category) {
-                return product ? product.gender === gender && product.fairThreadsCategory === category : null
+              if (stylistPick) {
+                return product ? product.gender === gender && product.stylistPick === true : null
               } else {
                 return product ? product.gender === gender : null
               }
@@ -347,13 +360,9 @@
           populateProducts({product: clothes});
         }
 
-        $('.filter-women').on('click', 'div', function() {
-          filterClothing(allProducts, 'womens-clothes', $(this).attr('class'));
-        })
+        
 
-        $('.filter-men').on('click', 'div', function() {
-          filterClothing(allProducts, 'men', $(this).attr('class'));
-        })
+
 
         // Handlebars Templating
         var source = $("#product-template").html();
@@ -415,8 +424,6 @@
             editId = undefined;
           }).fail(function(err) {
             console.log(err)
-            // changes = {};
-            // editId = undefined;
             console.log(changes)
           })
         }
@@ -450,7 +457,7 @@
           selectNewGender();
           selectNewCategory();
           activateProduct();
-          stylistPick(); 
+          stylistPick();
           editMoreDetail();
           saveEdit();
           cancelEdit();
