@@ -85,30 +85,58 @@ module.exports = function(app, express) {
         res.render('admin/products.ejs')
       })
 
-    adminRouter.route('/about')
-      .get(function(req,res) {
-        res.render('admin/about.ejs')
-      })
-
-    adminRouter.route('/product-lists')
+    adminRouter.route('/product-list')
       .get(function(req, res) {
-        products.find({softDelete: false}, function(err, product) {
-          if(err) {
-            res.send(err);
-          }
+        var gender = req.query.gender,
+            category = req.query.category,
+            stylistPick = req.query.stylistPick
 
-          var productLists = {
-            womensCategories: Object.keys(internalCategories.women),
-            mensCategories: Object.keys(internalCategories.men),
-            allProducts: [],
-          }
+            console.log('req sean', req.query)
 
-          product.map(function(item) {
-            productLists.allProducts.push(item)
+        if(category) {
+          products.find({ softDelete: false, gender: gender, fairThreadsCategory: category }, function(err, productList) {
+            if(err) {
+              res.send(err);
+            }
+            res.json(productList)
           })
-          res.json(productLists)
-        })
+        } else if(stylistPick === 'true') {
+          products.find({ softDelete: false, gender: gender, stylistPick: true }, function(err, productList) {
+            if(err) {
+              res.send(err);
+            }
+            res.json(productList)
+          })
+        } else {
+          products.find({ softDelete: false, gender: gender }, function(err, productList) {
+            if(err) {
+              res.send(err);
+            }
+            res.json(productList)
+          })
+        }
       })
+
+
+    // adminRouter.route('/product-lists')
+    //   .get(function(req, res) {
+    //     products.find({softDelete: false}, function(err, product) {
+    //       if(err) {
+    //         res.send(err);
+    //       }
+    //
+    //       var productLists = {
+    //         womensCategories: Object.keys(internalCategories.women),
+    //         mensCategories: Object.keys(internalCategories.men),
+    //         allProducts: [],
+    //       }
+    //
+    //       product.map(function(item) {
+    //         productLists.allProducts.push(item)
+    //       })
+    //       res.json(productLists)
+    //     })
+    //   })
 
     adminRouter.route('/product-lists/edit')
       .put(function(req, res) {
@@ -124,8 +152,6 @@ module.exports = function(app, express) {
           if(data['category']) { product.fairThreadsCategory = data['category'] }
           if(data['name'] != product.name) { product.name = data['name'] }
           if(data['active']) { product.active = data['active'] }
-          if(data['stylistPick']) { product.stylistPick = data['stylistPick'] }
-
           if(data['activeTimeStamp']) { product.activeTimeStamp = data['activeTimeStamp'] }
 
           product.save(function(err) {

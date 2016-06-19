@@ -131,10 +131,7 @@
 
     <script type="text/javascript">
       $(document).ready(function() {
-        var womensCategories;
-        var mensCategories;
-        var allProducts;
-        var genderToAssign;
+        var products;
         var editId;
         var changes = {};
 
@@ -257,7 +254,6 @@
         };
 
         //Activate Product
-
         var activateProduct = function() {
           $('.edit-activation').on('click', function(e) {
             if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
@@ -276,8 +272,8 @@
             }
           })
         }
-        //add product to Stylist Picks
 
+        // Add product to Stylist Picks
         var stylistPick = function() {
           $('.stylistPick-activation').on('click', function(e) {
             if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
@@ -295,74 +291,21 @@
           })
         }
 
-        // Product filters
-        var filterClothing = function(products, gender, category) {
-          console.log(category)
-          var categoryTitle = $('.category-title');
-          var clothes = products.filter(function(product) {
-            if (gender === 'womens-clothes') {
-              product.categories = womensCategories;
-              if (category) {
-                console.log('registers as cat!')
-                console.log()
-                categoryTitle.html(category)
-                return product ? product.gender === gender && product.fairThreadsCategory === category : null
-              } else {
-                categoryTitle.html('All products')
-                return product ? product.gender === gender : null
-              }
-            } else if (gender === 'men'){
-              product.categories = mensCategories;
-              if (category) {
-                return product ? product.gender === gender && product.fairThreadsCategory === category : null
-              } else {
-                return product ? product.gender === gender : null
-              }
-            }
-          })
-          populateProducts({product: clothes});
-        }
-
         $('.filter-women').on('click', 'div', function() {
           if($(this).attr('class') === "stylistPick") {
-            filterStylistPicks(allProducts, 'womens-clothes', true)
+            requestProducts('womens-clothes', null, true)
           } else {
-            filterClothing(allProducts, 'womens-clothes', $(this).attr('class'));
+            requestProducts('womens-clothes', $(this).attr('class'), false);
           }
         })
 
         $('.filter-men').on('click', 'div', function() {
-          filterClothing(allProducts, 'men', $(this).attr('class'));
+          if($(this).attr('class') === "stylistPick") {
+            requestProducts('men', null, true)
+          } else {
+            requestProducts('men', $(this).attr('class'), false);
+          }
         })
-
-        var filterStylistPicks = function(products, gender, stylistPick) {
-          var categoryTitle = $('.category-title');
-          var clothes = products.filter(function(product) {
-            if (gender === 'womens-clothes') {
-              product.categories = womensCategories;
-              if (stylistPick) {
-                console.log('Stylist Pick is true')
-                categoryTitle.html("Stylist Picks")
-                return product ? product.gender === gender && product.stylistPick === true : null
-              } else {
-                categoryTitle.html('All products')
-                return product ? product.gender === gender : null
-              }
-            } else if (gender === 'men'){
-              product.categories = mensCategories;
-              if (stylistPick) {
-                return product ? product.gender === gender && product.stylistPick === true : null
-              } else {
-                return product ? product.gender === gender : null
-              }
-            }
-          })
-          populateProducts({product: clothes});
-        }
-
-        
-
-
 
         // Handlebars Templating
         var source = $("#product-template").html();
@@ -395,20 +338,40 @@
           return input === value ? 'active' : '';
         });
 
+        // Set category title
+        var setCategoryTitle = function(category, stylistPick) {
+          var categoryTitle = $('.category-title');
+
+          if(category) {
+            categoryTitle.html(category)
+          } else if(stylistPick === true) {
+            categoryTitle.html('StylistPick')
+          } else {
+            categoryTitle.html('All products')
+          }
+        }
+
         // Get request for products
-        $.ajax({
-          type: 'get',
-          url: '/admin/product-lists',
-          dataType: 'JSON',
-        }).done(function(data) {
-          womensCategories = data.womensCategories;
-          mensCategories = data.mensCategories;
-          allProducts = data.allProducts;
-          filterClothing(data.allProducts, 'womens-clothes');
-          $('.filter-women').addClass('active');
-        }).fail(function(err) {
-          console.log('Error: ', err)
-        })
+        var requestProducts = function(gender, category, stylistPick) {
+          setCategoryTitle(category, stylistPick);
+
+          $.ajax({
+            type: 'GET',
+            url: '/admin/product-list',
+            dataType: 'JSON',
+            data: {
+              'gender': gender,
+              'category': category,
+              'stylistPick': stylistPick
+            }
+          }).done(function(data) {
+            populateProducts({product: data});
+          }).fail(function(data) {
+            console.log("Get request failed");
+          })
+        };
+
+        requestProducts('womens-clothes', null, false)
 
         // Put request for saving product changes
         var saveProductChanges = function() {
