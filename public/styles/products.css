@@ -26,6 +26,7 @@ nav.main-nav .nav-container {
 
 nav.main-nav .nav-container > div {
   margin-right: 40px;
+  cursor: pointer;
 }
 
 nav.main-nav .nav-container div {
