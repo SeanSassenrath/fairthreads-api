@@ -174,6 +174,7 @@ module.exports = function(app, express) {
           if(data['name'] != product.name) { product.name = data['name'] }
           if(data['active']) { product.active = data['active'] }
           if(data['activeTimeStamp']) { product.activeTimeStamp = data['activeTimeStamp'] }
+          if(data['stylistPick']) { product.stylistPick = data['stylistPick'] }
 
           product.save(function(err) {
             if(err) { console.log("ERROR", err); };

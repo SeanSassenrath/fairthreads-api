@@ -168,15 +168,11 @@ $(document).ready(function() {
   }
 
   $('.active-filter').on('click', function() {
-    console.log("products", products)
     activeFilter === true ? activeFilter = false : activeFilter = true;
-    console.log("active filter", activeFilter);
     if(activeFilter === true) {
       var activeProducts = filterActiveProducts(products);
-      console.log('active products', activeProducts)
       populateProducts({product: activeProducts});
     } else {
-      console.log('all products')
       populateProducts({product: products})
     }
   })
@@ -256,7 +252,6 @@ $(document).ready(function() {
       }
     }).done(function(data) {
       products = data.products;
-      console.log(data, 'data')
       populateProducts({product: products});
     }).fail(function(data) {
       console.log("Get request failed");
