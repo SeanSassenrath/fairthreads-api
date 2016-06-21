@@ -87,32 +87,53 @@ module.exports = function(app, express) {
 
     adminRouter.route('/product-list')
       .get(function(req, res) {
-        var gender = req.query.gender,
-            category = req.query.category,
-            stylistPick = req.query.stylistPick
+        var gender = req.query.gender;
+        var category = req.query.category;
+        var stylistPick = req.query.stylistPick;
+        var productsWithCategories = {
+          products: []
+        };
 
-            console.log('req sean', req.query)
+        console.log('req sean', req.query)
 
         if(category) {
           products.find({ softDelete: false, gender: gender, fairThreadsCategory: category }, function(err, productList) {
             if(err) {
               res.send(err);
             }
-            res.json(productList)
+            productList.map(function(product) {
+              var categories = Object.keys(internalCategories[gender]);
+              product['categories'] = categories;
+              productsWithCategories.products.push(product)
+            })
+            res.json(productsWithCategories)
           })
         } else if(stylistPick === 'true') {
           products.find({ softDelete: false, gender: gender, stylistPick: true }, function(err, productList) {
             if(err) {
               res.send(err);
             }
-            res.json(productList)
+            console.log('stylistPick')
+
+            productList.map(function(product) {
+              var categories = Object.keys(internalCategories[gender]);
+              product['categories'] = categories;
+              productsWithCategories.products.push(product)
+            })
+            res.json(productsWithCategories)
           })
         } else {
           products.find({ softDelete: false, gender: gender }, function(err, productList) {
             if(err) {
               res.send(err);
             }
-            res.json(productList)
+            productList.map(function(product) {
+              var categories = Object.keys(internalCategories[gender]);
+              product['categories'] = categories;
+              productsWithCategories.products.push(product)
+              console.log('Product with categories', product)
+            })
+            res.json(productsWithCategories)
           })
         }
       })

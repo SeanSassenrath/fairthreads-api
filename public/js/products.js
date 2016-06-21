@@ -57,6 +57,7 @@ $(document).ready(function() {
       console.log('Save request')
       if(editId === $(this).closest('.product').attr('id')) {
         changeProductName($(this).closest('.product'))
+        changes["id"] = editId;
         alert('The editing of product ' + editId + ' has been saved.');
         $(this).closest('.product').removeClass('active');
         saveProductChanges();
@@ -254,8 +255,9 @@ $(document).ready(function() {
         'stylistPick': stylistPick
       }
     }).done(function(data) {
-      products = data;
-      populateProducts({product: data});
+      products = data.products;
+      console.log(data, 'data')
+      populateProducts({product: products});
     }).fail(function(data) {
       console.log("Get request failed");
     })

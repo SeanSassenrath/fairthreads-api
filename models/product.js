@@ -14,6 +14,7 @@ var ProductSchema = new Schema({
   imageSmall: { type: String, required: true },
   imageOriginal: { type: String, required: true },
   category: { type: String, required: true },
+  categories: { type: Array },
   fairThreadsCategory: { type: String, default: 'No category' },
   description: { type: String },
   color: { type: String },
@@ -25,7 +26,7 @@ var ProductSchema = new Schema({
   style: { type: String },
   categoryRank: { type: Number },
   objectFit: { type: String, default: "contain" },
-  stylistPick: {type:Boolean,default:false}
+  stylistPick: { type:Boolean, default: false }
 })
 
 var Product = mongoose.model('Products', ProductSchema);

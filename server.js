@@ -20,9 +20,9 @@ app.use(methodOverride(function(req, res){
  }
 }))
 
-app.get('/', function(req,res) {
-	res.render('./views/admin/about')
-})
+// app.get('/', function(req,res) {
+// 	res.render('./views/admin/about')
+// })
 
 mongoose.connect(config.mongoLabURI);
 // mongoose.connect(config.mongoLocal);
