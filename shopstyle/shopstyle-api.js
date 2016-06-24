@@ -40,7 +40,8 @@ function requestProduct(url) {
 
 
 function saveProduct(item, gender) {
-  var product = new Product ();
+  var product = {};
+  var query = {'name': item.brandedName};
 
   if(item.salePrice) {
     product.salePrice = item.salePrice;
@@ -50,7 +51,6 @@ function saveProduct(item, gender) {
   product.name = item.brandedName;
   product.brand = item.brand.name;
   product.price = item.price;
-  // product.salePrice = item.salePrice;
   product.category = item.categories[0].id;
   product.vendUrl = item.clickUrl;
   product.imageLarge = item.image.sizes.Large.url;
@@ -59,12 +59,8 @@ function saveProduct(item, gender) {
   product.description = item.description;
   product.color = item.colors[0].name;
 
-  product.save(function(err) {
-    if (err) {
-      console.log("Can't save product", err)
-    }
-    else {
-      console.log("Saving product ", product)
-    }
-  })
+  Product.findOneAndUpdate(query, {name: item.brandedName}, {upsert:true}, function(err, doc){
+      if (err) console.log("Can't save product", err);
+      console.log('Updating / Saving proudct', doc)
+  });
 }
