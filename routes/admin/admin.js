@@ -113,8 +113,6 @@ module.exports = function(app, express) {
             if(err) {
               res.send(err);
             }
-            console.log('stylistPick')
-
             productList.map(function(product) {
               var categories = Object.keys(internalCategories[gender]);
               product['categories'] = categories;
@@ -123,7 +121,7 @@ module.exports = function(app, express) {
             res.json(productsWithCategories)
           })
         } else {
-          products.find({ softDelete: false, gender: gender }, function(err, productList) {
+          products.find({softDelete: false, gender: gender }, function(err, productList) {
             if(err) {
               res.send(err);
             }
@@ -137,27 +135,6 @@ module.exports = function(app, express) {
           })
         }
       })
-
-
-    // adminRouter.route('/product-lists')
-    //   .get(function(req, res) {
-    //     products.find({softDelete: false}, function(err, product) {
-    //       if(err) {
-    //         res.send(err);
-    //       }
-    //
-    //       var productLists = {
-    //         womensCategories: Object.keys(internalCategories.women),
-    //         mensCategories: Object.keys(internalCategories.men),
-    //         allProducts: [],
-    //       }
-    //
-    //       product.map(function(item) {
-    //         productLists.allProducts.push(item)
-    //       })
-    //       res.json(productLists)
-    //     })
-    //   })
 
     adminRouter.route('/product-lists/edit')
       .put(function(req, res) {

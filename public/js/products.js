@@ -1,6 +1,7 @@
 $(document).ready(function() {
   var products;
   var activeFilter = false;
+  var newFilter = false;
   var editId;
   var changes = {};
 
@@ -167,11 +168,33 @@ $(document).ready(function() {
     })
   }
 
+  var filterNewProducts = function(products) {
+    console.log('any products', products)
+    var today = new Date();
+    var fiveDaysAgoMilliseconds = today.setDate(today.getDate() - 25);
+    var fiveDaysAgo = new Date(fiveDaysAgoMilliseconds)
+    console.log('filterNewProducts', fiveDaysAgo)
+    console.log('first product', products[0].time)
+    return products.filter(function(product) {
+      return product.time >= fiveDaysAgo;
+    })
+  }
+
   $('.active-filter').on('click', function() {
     activeFilter === true ? activeFilter = false : activeFilter = true;
     if(activeFilter === true) {
       var activeProducts = filterActiveProducts(products);
       populateProducts({product: activeProducts});
+    } else {
+      populateProducts({product: products})
+    }
+  })
+
+  $('.new-filter').on('click', function() {
+    newFilter === true ? newFilter = false : newFilter = true;
+    if(newFilter === true) {
+      var newProducts = filterNewProducts(products);
+      populateProducts({product: newProducts});
     } else {
       populateProducts({product: products})
     }
@@ -253,6 +276,7 @@ $(document).ready(function() {
     }).done(function(data) {
       products = data.products;
       populateProducts({product: products});
+      console.log(products)
     }).fail(function(data) {
       console.log("Get request failed");
     })

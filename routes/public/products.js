@@ -10,12 +10,15 @@ module.exports = function(app, express) {
 
   productsRouter.get('/gender/:gender/category/:category', function(req, res) {
     var products = {};
+    console.log("ANYTHING?")
 
     Product.find({gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, matchedProducts){
       if(err) {
+        console.log('error', err)
         res.send(err)
       } else {
         products.items = matchedProducts;
+        console.log('products', products.items)
         res.json(products);
       }
     })

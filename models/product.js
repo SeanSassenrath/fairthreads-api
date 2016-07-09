@@ -8,7 +8,7 @@ var ProductSchema = new Schema({
   name: { type: String,required: true },
   brand: { type: String,required: true },
   price: { type: Number, min: 0, required: true },
-  salePrice: { type: Number },
+  salePrice: { type: Number, default: 0 },
   vendUrl: { type: String, required: true },
   imageLarge: { type: String, required: true },
   imageSmall: { type: String, required: true },
@@ -27,6 +27,8 @@ var ProductSchema = new Schema({
   categoryRank: { type: Number },
   objectFit: { type: String, default: "contain" },
   stylistPick: { type:Boolean, default: false }
+}, {
+  timestamps: true
 })
 
 var Product = mongoose.model('Products', ProductSchema);

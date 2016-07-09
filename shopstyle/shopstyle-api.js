@@ -59,7 +59,7 @@ function saveProduct(item, gender) {
   product.description = item.description;
   product.color = item.colors[0].name;
 
-  Product.findOneAndUpdate(query, {name: item.brandedName}, {upsert:true}, function(err, doc){
+  Product.findOneAndUpdate(query, product, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
       if (err) console.log("Can't save product", err);
       console.log('Updating / Saving proudct', doc)
   });
