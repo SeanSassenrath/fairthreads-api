@@ -12,7 +12,7 @@ module.exports = function(app, express) {
     var products = {};
     console.log("ANYTHING?")
 
-    Product.find({gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, matchedProducts){
+    Product.find({softDelete: false, gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, matchedProducts){
       if(err) {
         console.log('error', err)
         res.send(err)
