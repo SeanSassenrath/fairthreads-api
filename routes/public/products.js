@@ -10,15 +10,25 @@ module.exports = function(app, express) {
 
   productsRouter.get('/gender/:gender/category/:category', function(req, res) {
     var products = {};
-    console.log("ANYTHING?")
 
-    Product.find({softDelete: false, gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, matchedProducts){
+    Product.find({gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, matchedProducts){
       if(err) {
-        console.log('error', err)
         res.send(err)
       } else {
         products.items = matchedProducts;
-        console.log('products', products.items)
+        res.json(products);
+      }
+    })
+  })
+
+  productsRouter.get('/gender/:gender', function(req, res) {
+    var products = {};
+
+    Product.find({gender: req.params.gender}, function(err, matchedProducts){
+      if(err) {
+        res.send(err)
+      } else {
+        products.items = matchedProducts;
         res.json(products);
       }
     })
