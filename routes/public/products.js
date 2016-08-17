@@ -34,6 +34,32 @@ module.exports = function(app, express) {
     })
   })
 
+  productsRouter.get('/stylistpick', function(req, res) {
+    var stylistPicks = {}
+    var randomIndex;
+
+    Product.find({gender: 'men', stylistPick: true}).exec()
+      .then(function(mensPicks) {
+        randomIndex = Math.floor(Math.random() * mensPicks.length);
+        stylistPicks.men = mensPicks[randomIndex];
+      })
+      .then(function() {
+        return Product.find({gender: 'womens-clothes', stylistPick: true}).exec()
+          .then(function(womensPicks) {
+            console.log('wpa', womensPicks.length)
+            randomIndex = Math.floor(Math.random() * womensPicks.length);
+            stylistPicks.women = womensPicks[randomIndex];
+            return stylistPicks;
+          })
+      })
+      .then(function(stylistPicks) {
+        res.json(stylistPicks)
+      })
+      .catch(function(e) {
+        res.json(e)
+      })
+  })
+
   productsRouter.get('/less-than-fifty', function(req, res) {
     Product.find({price: {$lt: 50}}, function(err, products) {
       err ? res.send(err) : res.json(products)
