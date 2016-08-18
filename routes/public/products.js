@@ -4,38 +4,37 @@ module.exports = function(app, express) {
   var productsRouter = express.Router();
 
   productsRouter.use(function(req, res, next) {
-    // console.log("API was just hit by", req)
     next()
   })
 
   productsRouter.get('/gender/:gender/category/:category', function(req, res) {
     var products = {};
 
-    Product.find({gender: req.params.gender, fairThreadsCategory: req.params.category}, function(err, matchedProducts){
-      if(err) {
-        res.send(err)
-      } else {
-        products.items = matchedProducts;
+    Product.find({gender: req.params.gender, fairThreadsCategory: req.params.category}).exec()
+      .then(function(matchedProducts) {
+        products.items = matchedProducts
         res.json(products);
-      }
-    })
-  })
+      })
+      .catch(function(err) {
+        res.json(err);
+      })
+  });
 
   productsRouter.get('/gender/:gender', function(req, res) {
     var products = {};
 
-    Product.find({gender: req.params.gender}, function(err, matchedProducts){
-      if(err) {
-        res.send(err)
-      } else {
+    Product.find({gender: req.params.gender}).exec()
+      .then(function(matchedProducts) {
         products.items = matchedProducts;
         res.json(products);
-      }
-    })
-  })
+      })
+      .catch(function(err) {
+        res.json(err);
+      });
+  });
 
   productsRouter.get('/stylistpick', function(req, res) {
-    var stylistPicks = {}
+    var stylistPicks = {};
     var randomIndex;
 
     Product.find({gender: 'men', stylistPick: true}).exec()
