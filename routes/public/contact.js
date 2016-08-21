@@ -12,15 +12,13 @@ module.exports = function(app, express) {
     var name = req.body.name.replace(/'/g, '"');
     console.log('name', name)
 
-    // console.log('Email req', req)
-
     transporter = nodemailer.createTransport('smtps://shopfairthreads%40gmail.com:mdrmtenbpgqkamxs@smtp.gmail.com');
 
     mailOptions = {
       from: '' + name + '<info@müriaad-polüteism.info>',
       to: 'shopfairthreads@gmail.com',
       subject: 'Contact - ' + name,
-      text: name + "\n" + req.body.email + "\n\n" + req.body.message
+      text: name + "\n" + req.body.email + "\n\n" + req.body.subject + "\n" + req.body.message
     };
 
     transporter.sendMail(mailOptions, function(err, response) {
@@ -28,7 +26,6 @@ module.exports = function(app, express) {
         console.log('ERROR', err)
         res.json({"key": "error"});
       } else {
-        // console.log('INFO', response)
         res.json({"key": "success"});
       }
     })
