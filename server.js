@@ -20,10 +20,6 @@ app.use(methodOverride(function(req, res){
  }
 }))
 
-// app.get('/', function(req,res) {
-// 	res.render('./views/admin/about')
-// })
-
 mongoose.connect(config.mongoLabURI);
 // mongoose.connect(config.mongoLocal);
 
@@ -47,6 +43,9 @@ app.use('/admin', adminRouter);
 
 var productsRouter = require('./routes/public/products')(app, express);
 app.use('/products', productsRouter);
+
+var contactRouter = require('./routes/public/contact')(app, express);
+app.use('/contact', contactRouter);
 
 
 
