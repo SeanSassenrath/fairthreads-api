@@ -59,6 +59,32 @@ module.exports = function(app, express) {
       })
   })
 
+  productsRouter.get('/home-carousel', function(req, res) {
+    var carouselProducts = {womens: [], mens: []}
+
+    Product.find({gender: 'womens-clothes', stylistPick: true}).exec()
+      .then(function(womensClothes) {
+        for(var i = 0; i < 5; i++) {
+          carouselProducts.womens.push(womensClothes[i])
+        }
+      })
+      .then(function() {
+        return Product.find({gender: 'men', stylistPick: true}).exec()
+          .then(function(mensClothes) {
+            for(var i = 0; i < 5; i++) {
+              carouselProducts.mens.push(mensClothes[i])
+            }
+            return carouselProducts;
+          })
+      })
+      .then(function(carouselProducts) {
+        res.json(carouselProducts);
+      })
+      .catch(function(e) {
+        res.json(e);
+      })
+  });
+
   productsRouter.get('/less-than-fifty', function(req, res) {
     Product.find({price: {$lt: 50}}, function(err, products) {
       err ? res.send(err) : res.json(products)
