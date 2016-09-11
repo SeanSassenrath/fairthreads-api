@@ -28,7 +28,10 @@ function requestProduct(url) {
       console.log("error", err);
     } else {
       var products = JSON.parse(body).products;
-      var gender = JSON.parse(body).metadata.category.id;
+      var gender = JSON.parse(body).metadata.category.id === 'womens-clothes' ?
+        'womens'
+      :
+        JSON.parse(body).metadata.category.id;
       products.forEach(function(product) {
         if(product.brand && product.colors[0]) {
           saveProduct(product, gender);
