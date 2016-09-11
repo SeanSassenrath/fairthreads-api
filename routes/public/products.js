@@ -43,7 +43,7 @@ module.exports = function(app, express) {
         stylistPicks.men = mensPicks[randomIndex];
       })
       .then(function() {
-        return Product.find({gender: 'womens-clothes', stylistPick: true}).exec()
+        return Product.find({gender: 'womens', stylistPick: true}).exec()
           .then(function(womensPicks) {
             console.log('wpa', womensPicks.length)
             randomIndex = Math.floor(Math.random() * womensPicks.length);
@@ -62,7 +62,7 @@ module.exports = function(app, express) {
   productsRouter.get('/home-carousel', function(req, res) {
     var carouselProducts = {womens: [], mens: []}
 
-    Product.find({gender: 'womens-clothes', stylistPick: true}).exec()
+    Product.find({gender: 'womens', stylistPick: true}).exec()
       .then(function(womensClothes) {
         for(var i = 0; i < 5; i++) {
           carouselProducts.womens.push(womensClothes[i])

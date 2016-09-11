@@ -32,6 +32,7 @@ function requestProduct(url) {
         'womens'
       :
         JSON.parse(body).metadata.category.id;
+        
       products.forEach(function(product) {
         if(product.brand && product.colors[0]) {
           saveProduct(product, gender);
