@@ -37,7 +37,7 @@ module.exports = function(app, express) {
     var stylistPicks = {};
     var randomIndex;
 
-    Product.find({gender: 'men', stylistPick: true}).exec()
+    Product.find({gender: 'mens', stylistPick: true}).exec()
       .then(function(mensPicks) {
         randomIndex = Math.floor(Math.random() * mensPicks.length);
         stylistPicks.men = mensPicks[randomIndex];
@@ -69,7 +69,7 @@ module.exports = function(app, express) {
         }
       })
       .then(function() {
-        return Product.find({gender: 'men', stylistPick: true}).exec()
+        return Product.find({gender: 'mens', stylistPick: true}).exec()
           .then(function(mensClothes) {
             for(var i = 0; i < 5; i++) {
               carouselProducts.mens.push(mensClothes[i])

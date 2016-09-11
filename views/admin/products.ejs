@@ -71,7 +71,7 @@
 
     <script id="product-template" type="text/x-handlebars-template">
       {{#each product}}
-      {{#equal this.gender "womens-clothes"}}
+      {{#equal this.gender "womens"}}
       <div id="{{this._id}}" class="product womens">
       {{else}}
       <div id="{{this._id}}" class="product mens">
@@ -106,10 +106,10 @@
             </div>
             <div class="edit-more-detail">
               <div class="edit-gender">
-                <div class="men {{isActive this.gender 'men'}}">
+                <div class="mens {{isActive this.gender 'mens'}}">
                   Male
                 </div>
-                <div class="womens-clothes {{isActive this.gender 'womens-clothes'}}">
+                <div class="womens {{isActive this.gender 'womens'}}">
                   Female
                 </div>
               </div>
