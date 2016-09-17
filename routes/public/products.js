@@ -7,6 +7,22 @@ module.exports = function(app, express) {
     next()
   })
 
+  productsRouter.get('/gender/:gender/category/:category/page/:page', function(req, res) {
+    var products = {};
+    Product
+      .find({gender: req.params.gender, fairThreadsCategory: req.params.category})
+      .skip(req.params.page > 0 ? ((req.params.page - 1) * 99) : 0)
+      .limit(99)
+      .exec()
+        .then(function(matchedProducts) {
+          products.items = matchedProducts
+          res.json(products);
+        })
+        .catch(function(err) {
+          res.json(err);
+        })
+  });
+
   productsRouter.get('/gender/:gender/category/:category', function(req, res) {
     var products = {};
 
