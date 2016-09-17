@@ -11,8 +11,8 @@ module.exports = function(app, express) {
     var products = {};
     Product
       .find({gender: req.params.gender, fairThreadsCategory: req.params.category})
-      .skip(req.params.page > 0 ? ((req.params.page - 1) * 5) : 0)
-      .limit(5)
+      .skip(req.params.page > 0 ? ((req.params.page - 1) * 75) : 0)
+      .limit(75)
       .exec()
         .then(function(matchedProducts) {
           products.items = matchedProducts
@@ -27,8 +27,8 @@ module.exports = function(app, express) {
     var products = {};
     Product
       .find({gender: req.params.gender})
-      .skip(req.params.page > 0 ? ((req.params.page - 1) * 5) : 0)
-      .limit(5)
+      .skip(req.params.page > 0 ? ((req.params.page - 1) * 75) : 0)
+      .limit(75)
       .exec()
         .then(function(matchedProducts) {
           products.items = matchedProducts
