@@ -20,6 +20,17 @@ module.exports = function(app, express) {
       })
   });
 
+  productsRouter.get('/product/:id', function(req, res) {
+
+    Product.find({_id: req.params.id}).exec()
+      .then(function(product) {
+        res.json(product);
+      })
+      .catch(function(err) {
+        res.json(err);
+      })
+  });
+
   productsRouter.get('/gender/:gender', function(req, res) {
     var products = {};
 
