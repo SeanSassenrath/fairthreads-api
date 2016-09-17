@@ -11,8 +11,8 @@ module.exports = function(app, express) {
     var products = {};
     Product
       .find({gender: req.params.gender, fairThreadsCategory: req.params.category})
-      .skip(req.params.page > 0 ? ((req.params.page - 1) * 99) : 0)
-      .limit(99)
+      .skip(req.params.page > 0 ? ((req.params.page - 1) * 5) : 0)
+      .limit(5)
       .exec()
         .then(function(matchedProducts) {
           products.items = matchedProducts
