@@ -1,5 +1,5 @@
 var categories = {
-  'womens-clothes': {
+  'womens': {
     tops: {
       styles: []
     },
@@ -19,7 +19,7 @@ var categories = {
       styles: []
     }
   },
-  'men': {
+  'mens': {
     tops: {
       styles: []
     },

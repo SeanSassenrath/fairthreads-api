@@ -202,17 +202,17 @@ $(document).ready(function() {
 
   $('.filter-women').on('click', 'div', function() {
     if($(this).attr('class') === "stylistPick") {
-      requestProducts('womens-clothes', null, true)
+      requestProducts('womens', null, true)
     } else {
-      requestProducts('womens-clothes', $(this).attr('class'), false);
+      requestProducts('womens', $(this).attr('class'), false);
     }
   })
 
   $('.filter-men').on('click', 'div', function() {
     if($(this).attr('class') === "stylistPick") {
-      requestProducts('men', null, true)
+      requestProducts('mens', null, true)
     } else {
-      requestProducts('men', $(this).attr('class'), false);
+      requestProducts('mens', $(this).attr('class'), false);
     }
   })
 
@@ -282,7 +282,7 @@ $(document).ready(function() {
     })
   };
 
-  requestProducts('womens-clothes', null, false)
+  requestProducts('womens', null, false)
 
   // Put request for saving product changes
   var saveProductChanges = function() {
