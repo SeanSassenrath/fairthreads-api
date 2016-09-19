@@ -10,7 +10,7 @@ module.exports = function(app, express) {
   productsRouter.get('/gender/:gender/category/:category/page/:page', function(req, res) {
     var products = {};
     Product
-      .find({gender: req.params.gender, fairThreadsCategory: req.params.category})
+      .find({gender: req.params.gender, fairThreadsCategory: req.params.category, active: true})
       .skip(req.params.page > 0 ? ((req.params.page - 1) * 75) : 0)
       .limit(75)
       .exec()
@@ -26,7 +26,7 @@ module.exports = function(app, express) {
   productsRouter.get('/gender/:gender/page/:page', function(req, res) {
     var products = {};
     Product
-      .find({gender: req.params.gender})
+      .find({gender: req.params.gender, active: true})
       .skip(req.params.page > 0 ? ((req.params.page - 1) * 75) : 0)
       .limit(75)
       .exec()

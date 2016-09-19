@@ -19,7 +19,6 @@ module.exports = {
     "b5573", //Brother Vellies
     "b31937", //Maiyet
     "b2034", //Stella McCartney
-    "b192", //Eileen Fisher
     "b29731", //Araks
     "b189", //Edun
     "b29377", //Chinti & Parker
