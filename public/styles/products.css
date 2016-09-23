@@ -195,10 +195,6 @@ nav.main-nav .dropdown-content div:hover {
 }
 
 .edit-more-detail {
-  display: none;
-}
-
-.edit-more-detail.active {
   display: block;
 }
 

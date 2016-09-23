@@ -32,12 +32,6 @@ $(document).ready(function() {
     });
   };
 
-  var editMoreDetail = function() {
-    $('.toggle-edit-more-detail').on('click', function() {
-      toggleActiveClasses($(this).parent().parent().find('.edit-more-detail'))
-    });
-  }
-
   // Cancel edit
   var cancelEdit = function() {
     $('.edit-cancel').on('click', function() {
