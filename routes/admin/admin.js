@@ -129,7 +129,6 @@ module.exports = function(app, express) {
               var categories = Object.keys(internalCategories[gender]);
               product['categories'] = categories;
               productsWithCategories.products.push(product)
-              console.log('Product with categories', product)
             })
             res.json(productsWithCategories)
           })

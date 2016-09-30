@@ -326,7 +326,6 @@ $(document).ready(function() {
     selectNewCategory();
     activateProduct();
     stylistPick();
-    editMoreDetail();
     saveEdit();
     cancelEdit();
   }
