@@ -144,13 +144,16 @@ module.exports = function(app, express) {
           if(err) {
             console.log("ERROR", err);
           }
-          if(data['objectFit']) { product.objectFit = data['objectFit'] }
+          if(data['objectFit']) {
+            console.log('product stylistpick')
+            product.objectFit = data['objectFit']
+          }
           if(data['gender']) { product.gender = data['gender'] }
           if(data['category']) { product.fairThreadsCategory = data['category'] }
           if(data['name'] != product.name) { product.name = data['name'] }
-          if(data['active']) { product.active = data['active'] }
+          if(data['active'] !== undefined) { product.active = data['active'] }
           if(data['activeTimeStamp']) { product.activeTimeStamp = data['activeTimeStamp'] }
-          if(data['stylistPick']) { product.stylistPick = data['stylistPick'] }
+          if(data['stylistPick'] !== undefined) { product.stylistPick = data['stylistPick'] }
 
           product.save(function(err) {
             if(err) { console.log("ERROR", err); };
