@@ -107,7 +107,7 @@ module.exports = function(app, express) {
 
     Product.find({gender: 'womens', stylistPick: true}).exec()
       .then(function(womensClothes) {
-        for(var i = 0; i < 5; i++) {
+        for(var i = 0; i < 25; i++) {
           carouselProducts.womens.push(womensClothes[i])
         }
       })

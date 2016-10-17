@@ -149,7 +149,7 @@ $(document).ready(function() {
           changes['stylistPick'] = true;
           $(this).addClass('active')
         }
-        console.log(changes);
+        console.log('changes made are:', changes['stylistPick']);
       } else {
         console.log("Incorrect product", changes);
       }
@@ -287,7 +287,7 @@ $(document).ready(function() {
       dataType: 'json',
       data: {data: changes}
     }).done(function(data) {
-      console.log('success')
+      console.log('success product changes!')
       changes = {};
       editId = undefined;
     }).fail(function(err) {
