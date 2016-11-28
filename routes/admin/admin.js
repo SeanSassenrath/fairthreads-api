@@ -105,6 +105,7 @@ module.exports = function(app, express) {
             })
             res.json(productsWithCategories)
           })
+        // Currently used by mobile web app client
         } else if (active === 'false') {
           products.find({ active: false, softDelete: false, gender: gender }, function(err, productList) {
             if(err) {
