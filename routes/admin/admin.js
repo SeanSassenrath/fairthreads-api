@@ -23,9 +23,6 @@ module.exports = function(app, express) {
       })
     })
     .put(function(req,res) {
-
-      // console.log(req.body.arrayIds)
-
       var data = JSON.parse(req.body.arrayIds)
       for(var i=0; i < data.length; i ++) {
         products.findById(data[i], function(err, product) {
@@ -38,18 +35,7 @@ module.exports = function(app, express) {
         })
       }
       res.json({message : 'success'})
-
     })
-
-
-      // products.findById( id, function(err, product) {
-      //   if(id) product.softDelete = true
-      //     product.save(function(err) {
-      //     if(err) res.send(err)
-      //       res.redirect('/admin')
-      //   })
-      // })
-
 
   adminRouter.route('/product/:product_id')
     .get(function(req,res) {
@@ -64,8 +50,6 @@ module.exports = function(app, express) {
     .put(function(req,res) {
       var newId = req.params.product_id
       products.findById(newId, function(err, product) {
-        // console.log(req.body.name)
-
         if (req.body.name) {product.name = req.body.name }
         if (req.body.description) product.description = req.body.description;
         if (req.body.vendUrl) product.vendUrl = req.body.vendUrl;
@@ -182,6 +166,11 @@ module.exports = function(app, express) {
       })
 
     adminRouter.route('/categories')
+      .get(function(req, res) {
+        res.json(Object.keys(internalCategories[req.query.gender]));
+      });
+
+    adminRouter.route('/category-view')
       .get(function(req, res) {
         products.find({softDelete:false}, function(err, product) {
           if(err) {
