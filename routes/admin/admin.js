@@ -71,6 +71,7 @@ module.exports = function(app, express) {
 
     adminRouter.route('/product-list')
       .get(function(req, res) {
+        var active = req.query.active;
         var gender = req.query.gender;
         var category = req.query.category;
         var stylistPick = req.query.stylistPick;
@@ -103,6 +104,13 @@ module.exports = function(app, express) {
               productsWithCategories.products.push(product)
             })
             res.json(productsWithCategories)
+          })
+        } else if (active === 'false') {
+          products.find({ active: false, softDelete: false, gender: gender }, function(err, productList) {
+            if(err) {
+              res.send(err);
+            }
+            res.json(productList)
           })
         } else {
           products.find({softDelete: false, gender: gender }, function(err, productList) {
