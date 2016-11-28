@@ -157,8 +157,8 @@ module.exports = function(app, express) {
 
     adminRouter.route('/product-lists/delete')
       .put(function(req, res) {
-        console.log('request --- ', req.body)
-        var data = JSON.parse(req.body.data)
+        console.log('request --- ', req.query)
+        var data = JSON.parse(req.query.data)
         products.find(function(err, product) {
           if(err) {
             res.send(err);
