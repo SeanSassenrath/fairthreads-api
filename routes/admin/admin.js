@@ -168,7 +168,7 @@ module.exports = function(app, express) {
             if (err) res.send(err);
           })
         })
-        res.message({'message': 'Item softly deleted'})
+        res.json({'message': 'Item softly deleted'})
       })
 
     adminRouter.route('/categories')
