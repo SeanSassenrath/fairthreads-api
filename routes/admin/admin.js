@@ -160,7 +160,7 @@ module.exports = function(app, express) {
         console.log('request --- ', req.body)
         var id = req.body.id;
         console.log('id --- ', id)
-        products.find(ObjectId(id.toString()), function(err, product) {
+        products.findOne({ _id : id }, function(err, product) {
           if (err) res.send(err);
 
           item.softDelete = true;
