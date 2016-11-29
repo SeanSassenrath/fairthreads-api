@@ -159,7 +159,8 @@ module.exports = function(app, express) {
       .put(function(req, res) {
         console.log('request --- ', req.body)
         var id = JSON.parse(req.body.id)
-        products.findOne({ _id: ObjectId(id) }, function(err, product) {
+        console.log('id --- ', id)
+        products.find(ObjectId(id), function(err, product) {
           if (err) res.send(err);
 
           item.softDelete = true;
