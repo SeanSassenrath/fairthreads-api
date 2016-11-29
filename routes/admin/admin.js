@@ -163,8 +163,8 @@ module.exports = function(app, express) {
         products.findOne({ _id : id }, function(err, product) {
           if (err) res.send(err);
 
-          item.softDelete = true;
-          item.save(function(err) {
+          product.softDelete = true;
+          product.save(function(err) {
             if (err) res.send(err);
           })
         })
