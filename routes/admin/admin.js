@@ -158,18 +158,13 @@ module.exports = function(app, express) {
     adminRouter.route('/product-lists/delete')
       .put(function(req, res) {
         console.log('request --- ', req.body)
-        var data = JSON.parse(req.body.data)
-        products.find(function(err, product) {
-          if(err) {
-            res.send(err);
-          }
-          product.map(function(item) {
-            if(item._id.toString() === data.toString()) {
-              item.softDelete = true;
-              item.save(function(err) {
-                if(err) res.send(err)
-              })
-            }
+        var id = JSON.parse(req.body.id)
+        products.findOne({ _id: id }, function(err, product) {
+          if (err) res.send(err);
+
+          item.softDelete = true;
+          item.save(function(err) {
+            if (err) res.send(err);
           })
         })
         res.message({'message': 'Item softly deleted'})
