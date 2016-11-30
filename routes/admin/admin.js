@@ -130,6 +130,7 @@ module.exports = function(app, express) {
 
     adminRouter.route('/product-lists/edit')
       .put(function(req, res) {
+        console.log('body data', req.body.data)
         var data = JSON.parse(req.body.data)
         console.log('data', data)
 
