@@ -143,7 +143,7 @@ module.exports = function(app, express) {
           }
           if(data['gender']) { product.gender = data['gender'] }
           if(data['category']) { product.fairThreadsCategory = data['category'] }
-          if(data['name'] != product.name) { product.name = data['name'] }
+          if(data['name'] != product.name || !data['name']) { product.name = data['name'] }
           if(data['active'] !== undefined) { product.active = data['active'] }
           if(data['activeTimeStamp']) { product.activeTimeStamp = data['activeTimeStamp'] }
           if(data['stylistPick'] !== undefined) { product.stylistPick = data['stylistPick'] }
