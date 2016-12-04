@@ -1,11 +1,29 @@
 var products = require('../../models/product');
 var internalCategories = require('./src/categories');
 
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex ;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 module.exports = function(app, express) {
   var adminRouter = express.Router();
 
   adminRouter.use(function(req,res,next) {
-    console.log('somebody just came to the admin portal!')
     next();
   })
 
@@ -29,7 +47,6 @@ module.exports = function(app, express) {
             product.softDelete = true
             product.save(function(err) {
               if(err) res.send(err)
-                console.log(product)
             })
 
         })
@@ -45,7 +62,6 @@ module.exports = function(app, express) {
             product: product
           })
         })
-        // console.log(req)
     })
     .put(function(req,res) {
       var newId = req.params.product_id
@@ -59,7 +75,6 @@ module.exports = function(app, express) {
             res.redirect('/admin')
 
         })
-        console.log(product)
       })
 
     })
@@ -79,7 +94,6 @@ module.exports = function(app, express) {
           products: []
         };
 
-        console.log('req sean', req.query)
 
         if(category) {
           products.find({ softDelete: false, gender: gender, fairThreadsCategory: category }, function(err, productList) {
@@ -131,14 +145,12 @@ module.exports = function(app, express) {
     adminRouter.route('/product-lists/edit')
       .put(function(req, res) {
         var data = req.body.data
-        console.log('data', data)
 
         products.findOne({_id: data.id}, function(err, product) {
           if(err) {
-            console.log("ERROR", err);
+            res.send(err)
           }
           if(data['objectFit']) {
-            console.log('product stylistpick')
             product.objectFit = data['objectFit']
           }
           if(data['gender']) { product.gender = data['gender'] }
@@ -157,9 +169,7 @@ module.exports = function(app, express) {
 
     adminRouter.route('/product-lists/delete')
       .put(function(req, res) {
-        console.log('request --- ', req.body)
         var id = req.body.id;
-        console.log('id --- ', id)
         products.findOne({ _id : id }, function(err, product) {
           if (err) res.send(err);
 
@@ -169,6 +179,19 @@ module.exports = function(app, express) {
           })
         })
         res.json({'message': 'Item softly deleted'})
+      })
+
+    adminRouter.route('/product-list/random/:gender/:active')
+      .get(function(req, res) {
+        var active = JSON.parse(req.params.active);
+        var gender = req.params.gender;
+
+        products.find({active: active, gender: gender, softDelete: false}, function(err, productList) {
+          if (err) res.send(err);
+
+          var shuffledProducts = shuffle(productList);
+          res.json(shuffledProducts)
+        })
       })
 
     adminRouter.route('/categories')
@@ -190,7 +213,6 @@ module.exports = function(app, express) {
               return categories[item.category] = [item]
             }
           })
-          // console.log('Categories', categories)
           res.render('admin/categories.ejs', {
             shopStyleCategories: categories
           })
@@ -199,9 +221,7 @@ module.exports = function(app, express) {
       })
       .put(function(req, res) {
         var data = JSON.parse(req.body.data)
-        // console.log("keys", Object.keys(data))
         var shopStyleCategories = data.shopStyleCategories;
-        // console.log('selections', shopStyleCategories)
         var fairThreadsCategory = data.fairThreadsCategory;
         products.find({softDelete: false}, function(err, product) {
           product.forEach(function(item) {
