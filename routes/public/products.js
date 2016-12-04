@@ -11,6 +11,7 @@ module.exports = function(app, express) {
     var products = {};
     Product
       .find({gender: req.params.gender, fairThreadsCategory: req.params.category, active: true})
+      .sort({ activeTimeStamp: -1 })
       .skip(req.params.page > 0 ? ((req.params.page - 1) * 75) : 0)
       .limit(75)
       .exec()
