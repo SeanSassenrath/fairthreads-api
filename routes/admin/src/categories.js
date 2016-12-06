@@ -17,6 +17,9 @@ var categories = {
     },
     accessories: {
       styles: []
+    },
+    outerwear: {
+      styles: []
     }
   },
   'mens': {
@@ -33,6 +36,9 @@ var categories = {
       styles: []
     },
     accessories: {
+      styles: []
+    },
+    outerwear: {
       styles: []
     }
   }
