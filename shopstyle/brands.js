@@ -1,5 +1,5 @@
 module.exports = {
-  brands: [
+  brandsById: [
     "b22931",//Reformation
     "b7768", //Kuyichi
     "b30363", //Everlane
@@ -27,5 +27,9 @@ module.exports = {
     "b6937", //Fortress of Inca
     "b14903", //Prairie Underground
     "b8029", //Pons Avaracas
+  ],
+  brandsBySearch: [
+    'ecoalf',
+    'toad&co'
   ]
 }

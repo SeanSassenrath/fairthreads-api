@@ -1,5 +1,5 @@
 var request = require('request');
-var brands = require('./brands').brands;
+var brands = require('./brands');
 var prettyjson = require('prettyjson');
 var apiKey = require('../config').shopstyleAPIKey
 var Product = require('../models/product.js')
@@ -10,12 +10,30 @@ module.exports = {
 }
 
 function addProducts() {
+  // addProductsFromBrand();
+  addProductsFromSearch();
+}
+
+function addProductsFromBrand() {
   var gender = ['men', 'womens-clothes'];
   var url = "http://api.shopstyle.com/api/v2/products?pid=" + apiKey + "&limit=50&fl=";
   var counter = 0;
   console.log("Querying based on brand")
-    brands.forEach(function(brand) {
+    brands.brandsById.forEach(function(brand) {
       _.times(2, function() {
+        requestProduct(url + brand + "&cat=" + gender[counter])
+        counter >= 1 ? counter = 0 : counter++;
+      })
+    })
+}
+
+function addProductsFromSearch() {
+  var gender = ['men', 'womens-clothes'];
+  var url = "http://api.shopstyle.com/api/v2/products?pid=" + apiKey + "&limit=50&fts=";
+  var counter = 0;
+    brands.brandsBySearch.forEach(function(brand) {
+      _.times(2, function() {
+        console.log('---- URL ----', url + brand + "&cat=" + gender[counter])
         requestProduct(url + brand + "&cat=" + gender[counter])
         counter >= 1 ? counter = 0 : counter++;
       })
@@ -34,7 +52,7 @@ function requestProduct(url) {
         'mens';
 
       products.forEach(function(product) {
-        if(product.brand && product.colors[0]) {
+        if(product.brand || product.brandedName) {
           saveProduct(product, gender);
         }
       })
@@ -46,6 +64,8 @@ function requestProduct(url) {
 function saveProduct(item, gender) {
   var product = {};
   var query = {'name': item.brandedName};
+  var brand = item.brand ? item.brand.name : item.brandedName;
+  gender = gender || 'womens';
 
   if(item.salePrice) {
     product.salePrice = item.salePrice;
@@ -53,7 +73,7 @@ function saveProduct(item, gender) {
   product.shopstyleId = item.id;
   product.gender = gender;
   product.name = item.brandedName;
-  product.brand = item.brand.name;
+  product.brand = brand;
   product.price = item.price;
   product.category = item.categories[0].id;
   product.vendUrl = item.clickUrl;
@@ -61,7 +81,7 @@ function saveProduct(item, gender) {
   product.imageSmall = item.image.sizes.Small.url;
   product.imageOriginal = item.image.sizes.Original.url;
   product.description = item.description;
-  product.color = item.colors[0].name;
+  // product.color = item.colors[0].name;
 
   Product.findOneAndUpdate(query, product, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
       if (err) console.log("Can't save product", err);
