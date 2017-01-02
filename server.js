@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-// require('dotenv').config({path: __dirname + '/.env'});
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
@@ -8,7 +7,11 @@ var config = require('./config');
 var shopStyleApi = require('./shopstyle/shopstyle-api').addProducts
 var products = require('./models/product');
 var path = require('path');
-var methodOverride = require('method-override')
+var methodOverride = require('method-override');
+var dotenv = require('dotenv');
+
+dotenv.load();
+
 app.set("view engine", "ejs");
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
