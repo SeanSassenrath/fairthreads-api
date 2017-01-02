@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-require('dotenv').config({path: __dirname + '/.env'});
+// require('dotenv').config({path: __dirname + '/.env'});
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
