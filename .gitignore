@@ -1,2 +1,3 @@
 do-not-push.txt
 node_modules
+.env

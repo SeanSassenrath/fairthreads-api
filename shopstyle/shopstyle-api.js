@@ -1,7 +1,6 @@
 var request = require('request');
 var brands = require('./brands');
 var prettyjson = require('prettyjson');
-var apiKey = require('../config').shopstyleAPIKey
 var Product = require('../models/product.js')
 var _ = require('lodash');
 
@@ -16,7 +15,7 @@ function addProducts() {
 
 function addProductsFromBrand() {
   var gender = ['men', 'womens-clothes'];
-  var url = "http://api.shopstyle.com/api/v2/products?pid=" + apiKey + "&limit=50&fl=";
+  var url = "http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY + "&limit=50&fl=";
   var counter = 0;
   console.log("Querying based on brand")
     brands.brandsById.forEach(function(brand) {

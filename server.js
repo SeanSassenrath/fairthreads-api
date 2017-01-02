@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+require('dotenv').config();
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
@@ -20,8 +21,8 @@ app.use(methodOverride(function(req, res){
  }
 }))
 
-mongoose.connect(config.mongoLabURI);
-// mongoose.connect(config.mongoLocal);
+mongoose.connect(process.env.MONGO_LAB_URI);
+// mongoose.connect(process.env.MONGO_LAB_LOCAL);
 
 // logs all requests to the console
 app.use(morgan('dev'));
