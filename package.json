@@ -29,6 +29,7 @@
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
     "node-mailer": "^0.1.1",
+    "nodemon": "^1.11.0",
     "prettyjson": "^1.2.0",
     "request": "^2.69.0"
   }

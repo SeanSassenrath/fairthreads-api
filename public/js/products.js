@@ -21,44 +21,10 @@ $(document).ready(function() {
   // Edit product
   var editProduct = function() {
     $('.edit-product-details').on('click', function(e) {
-      if(editId === undefined || editId === $(this).closest('.product').attr('id')) {
-        console.log("Product Id is being edited", $(this).closest('.product').attr('id'));
-        $(this).closest('.product').addClass('active');
-        editId = $(this).closest('.product').attr('id');
-        changes["id"] = editId;
-      } else {
-        alert("Cancel or save edit in progress for product " + editId + " before editing another product.");
-      };
-    });
-  };
-
-  // Cancel edit
-  var cancelEdit = function() {
-    $('.edit-cancel').on('click', function() {
-      console.log('Cancel request')
-      if(editId === $(this).closest('.product').attr('id')) {
-        alert('The editing of product ' + editId + ' has been canceled.');
-        $(this).closest('.product').removeClass('active');
-        editId = undefined;
-      } else {
-        alert('This product is not being edited and cannot be canceled.');
-      };
-    });
-  };
-
-  // Save edit
-  var saveEdit = function() {
-    $('.edit-save').on('click', function() {
-      console.log('Save request')
-      if(editId === $(this).closest('.product').attr('id')) {
-        changeProductName($(this).closest('.product'))
-        changes["id"] = editId;
-        alert('The editing of product ' + editId + ' has been saved.');
-        $(this).closest('.product').removeClass('active');
-        saveProductChanges();
-      } else {
-        alert('This product is not being edited and cannot be saved.');
-      };
+      console.log("Product Id is being edited", $(this).closest('.product').attr('id'));
+      $(this).closest('.product').addClass('active');
+      editId = $(this).closest('.product').attr('id');
+      changes["id"] = editId;
     });
   };
 
@@ -81,59 +47,44 @@ $(document).ready(function() {
   // Select new img fit
   var selectNewImgFit = function() {
     $('.edit-fit div').on('click', function(e) {
-      if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
-        toggleActiveClasses($(this));
-        changes['objectFit'] = $(this).attr('class').split(' ')[0];
-        console.log(changes);
-      } else {
-        console.log("Incorrect product", changes);
-      }
+      toggleActiveClasses($(this));
+      changes['objectFit'] = $(this).attr('class').split(' ')[0];
+      saveProductChanges($(this));
     });
   };
 
   // Select new gender
   var selectNewGender = function() {
     $('.edit-gender div').on('click', function(e) {
-      if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
         toggleActiveClasses($(this));
         changes['gender'] = $(this).attr('class').split(' ')[0];
-        console.log(changes);
-      } else {
-        console.log("Incorrect product", changes);
-      }
+        saveProductChanges($(this));
     });
   };
 
   //Select new category
   var selectNewCategory = function() {
     $('.category-option').on('click', function(e) {
-      if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
-        var newCategory = $(this).attr('class').split(' ')[0];
-        $(this).parent().siblings('.current-category').html(newCategory);
-        changes['category'] = newCategory;
-        console.log(changes);
-      } else {
-        console.log("Incorrect product", changes);
-      }
+      var newCategory = $(this).attr('class').split(' ')[0];
+      $(this).parent().siblings('.current-category').html(newCategory);
+      changes['category'] = newCategory;
+      saveProductChanges($(this));
     });
   };
 
   //Activate Product
   var activateProduct = function() {
     $('.edit-activation').on('click', function(e) {
-      if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
-        var now = new Date();
-        if($(this).hasClass('active')){
-          changes['active'] = false;
-          $(this).removeClass('active')
-        } else {
-          changes['active'] = true;
-          changes['activeTimeStamp'] = now;
-          $(this).addClass('active')
-        }
-        console.log(changes);
+      var now = new Date();
+      if($(this).hasClass('active')){
+        changes['active'] = false;
+        $(this).removeClass('active')
+        saveProductChanges($(this));
       } else {
-        console.log("Incorrect product", changes);
+        changes['active'] = true;
+        changes['activeTimeStamp'] = now;
+        $(this).addClass('active')
+        saveProductChanges($(this));
       }
     })
   }
@@ -141,18 +92,16 @@ $(document).ready(function() {
   // Add product to Stylist Picks
   var stylistPick = function() {
     $('.stylistPick-activation').on('click', function(e) {
-      if(editId === $(this).closest('.product').attr('id') || editId === undefined) {
-        if($(this).hasClass('active')){
-          changes['stylistPick'] = false;
-          $(this).removeClass('active')
-        } else {
-          changes['stylistPick'] = true;
-          $(this).addClass('active')
-        }
-        console.log('changes made are:', changes['stylistPick']);
+      if($(this).hasClass('active')){
+        changes['stylistPick'] = false;
+        $(this).removeClass('active')
+        saveProductChanges($(this));
       } else {
-        console.log("Incorrect product", changes);
+        changes['stylistPick'] = true;
+        $(this).addClass('active');
+        saveProductChanges($(this));
       }
+      console.log('changes made are:', changes['stylistPick']);
     })
   }
 
@@ -279,8 +228,12 @@ $(document).ready(function() {
   requestProducts('womens', null, false)
 
   // Put request for saving product changes
-  var saveProductChanges = function() {
+  var saveProductChanges = function(product) {
+    editId = product.closest('.product').attr('id');
+    changeProductName(product.closest('.product'));
+    changes["id"] = editId;
     changes = JSON.stringify(changes);
+    console.log('changes', changes)
     $.ajax({
       type: 'put',
       url: '/admin/product-lists/edit',
@@ -326,7 +279,5 @@ $(document).ready(function() {
     selectNewCategory();
     activateProduct();
     stylistPick();
-    saveEdit();
-    cancelEdit();
   }
 })
