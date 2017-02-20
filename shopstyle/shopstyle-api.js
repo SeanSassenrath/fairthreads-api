@@ -92,8 +92,6 @@ function saveProduct(item, gender) {
 
   Product.findOneAndUpdate(query, product, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
       if (err) { console.log("Can't save product", err); }
-      if (doc != null) {
-        console.log('--- Updating product ---', doc.brand)
-      }
+      console.log('Updating / Saving product', doc)
   });
 }

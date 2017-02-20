@@ -94,7 +94,6 @@ module.exports = function(app, express) {
           products: []
         };
 
-
         if(category) {
           products.find({ softDelete: false, gender: gender, fairThreadsCategory: category }, function(err, productList) {
             if(err) {
@@ -132,6 +131,7 @@ module.exports = function(app, express) {
             if(err) {
               res.send(err);
             }
+            console.log('productList', productList)
             productList.map(function(product) {
               var categories = Object.keys(internalCategories[gender]);
               product['categories'] = categories;

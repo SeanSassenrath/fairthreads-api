@@ -29,7 +29,7 @@ mongoose.connect(process.env.MONGO_LAB_URI);
 
 // logs all requests to the console
 app.use(morgan('dev'));
-shopStyleApi();
+// shopStyleApi();
 
 app.use(express.static(path.join(__dirname, 'public')));
 

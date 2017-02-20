@@ -206,7 +206,6 @@ $(document).ready(function() {
   // Get request for products
   var requestProducts = function(gender, category, stylistPick) {
     setCategoryTitle(category, stylistPick);
-
     $.ajax({
       type: 'GET',
       url: '/admin/product-list',
@@ -217,8 +216,8 @@ $(document).ready(function() {
         'stylistPick': stylistPick
       }
     }).done(function(data) {
-      populateProducts({product: products});
-      console.log(products)
+      products = data.products;
+      populateProducts({product: data.products});
     }).fail(function(data) {
       console.log("Get request failed");
     })
