@@ -18,6 +18,9 @@ var categories = {
     accessories: {
       styles: []
     },
+    athleisure: {
+      styles: []
+    },
     outerwear: {
       styles: []
     }
@@ -36,6 +39,9 @@ var categories = {
       styles: []
     },
     accessories: {
+      styles: []
+    },
+      athleisure: {
       styles: []
     },
     outerwear: {
