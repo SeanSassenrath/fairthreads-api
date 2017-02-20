@@ -217,7 +217,15 @@ $(document).ready(function() {
         'stylistPick': stylistPick
       }
     }).done(function(data) {
-      products = data.products;
+      products = data.products.sort(function(a, b) {
+        if (a.updatedAt > b.updatedAt) {
+          return -1;
+        }
+        if (a.updatedAt < b.updatedAt) {
+          return 1;
+        }
+        return 0;
+      });
       populateProducts({product: products});
       console.log(products)
     }).fail(function(data) {

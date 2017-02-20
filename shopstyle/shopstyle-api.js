@@ -28,7 +28,7 @@ function addProductsFromBrand() {
 
 function addProductsFromSearch() {
   var gender = ['men', 'womens-clothes'];
-  var url = "http://api.shopstyle.com/api/v2/products?pid=" + apiKey + "&limit=50&fts=";
+  var url = "http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY + "&limit=50&fts=";
   var counter = 0;
     brands.brandsBySearch.forEach(function(brand) {
       _.times(2, function() {
