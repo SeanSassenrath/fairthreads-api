@@ -1,4 +1,4 @@
-var request = require('request');
+var rp = require('request-promise');
 var brands = require('./brands');
 var prettyjson = require('prettyjson');
 var Product = require('../models/product.js')
@@ -9,61 +9,69 @@ module.exports = {
 }
 
 function addProducts() {
-  // addProductsFromBrand();
-  addProductsFromSearch();
+  addProductsByGender('womens-clothes');
+  addProductsBySearch('womens-clothes');
+  addProductsByGender('men');
+  addProductsBySearch('men');
 }
 
-function addProductsFromBrand() {
-  var gender = ['men', 'womens-clothes'];
-  var url = "http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY + "&limit=50&fl=";
-  var counter = 0;
-  console.log("Querying based on brand")
-    brands.brandsById.forEach(function(brand) {
-      _.times(2, function() {
-        requestProduct(url + brand + "&cat=" + gender[counter])
-        counter >= 1 ? counter = 0 : counter++;
-      })
-    })
+function productUrlGenByBrand(gender, brand) {
+  var leftPath = "http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY + "&limit=50&fl=";
+  return leftPath + brand + "&cat=" + gender;
 }
 
-function addProductsFromSearch() {
-  var gender = ['men', 'womens-clothes'];
-  var url = "http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY + "&limit=50&fts=";
-  var counter = 0;
-    brands.brandsBySearch.forEach(function(brand) {
-      _.times(2, function() {
-        console.log('---- URL ----', url + brand + "&cat=" + gender[counter])
-        requestProduct(url + brand + "&cat=" + gender[counter])
-        counter >= 1 ? counter = 0 : counter++;
-      })
-    })
+function productUrlGenBySearch(gender, brand) {
+  var leftPath = "http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY + "&limit=50&fts=";
+  return leftPath + brand + "&cat=" + gender;
 }
 
-function requestProduct(url) {
-  request(url, function(err, res, body) {
-    if(err) {
-      console.log("error", err);
-    } else {
-      var products = JSON.parse(body).products;
-      var gender = JSON.parse(body).metadata.category.id === 'womens-clothes' ?
-        'womens'
-      :
-        'mens';
-
-      products.forEach(function(product) {
-        if(product.brand || product.brandedName) {
-          saveProduct(product, gender);
-        }
+function addProductsByGender(gender) {
+  var brandArray = brands.brandsById;
+  brandArray.forEach(function(brand) {
+    var url = productUrlGenByBrand(gender, brand);
+    // console.log('url', url)
+    rp(url)
+      .then(function(body) {
+        requestProduct(body)
       })
-    }
+      .catch(function(err) {
+        console.log('Error', err);
+      })
   })
+}
+
+function addProductsBySearch(gender) {
+    var brandArray = brands.brandsById;
+    brandArray.forEach(function(brand) {
+      var url = productUrlGenByBrand(gender, brand);
+      // console.log('url', url)
+      rp(url)
+        .then(function(body) {
+          requestProduct(body)
+        })
+        .catch(function(err) {
+          console.log('Error', err);
+        })
+    })
+}
+
+function requestProduct(body) {
+  var products = JSON.parse(body).products;
+  var gender = JSON.parse(body).metadata.category.id === 'womens-clothes' ? 'womens' : 'mens';
+
+  for (var i = 0; i < products.length; i++) {
+    if (products[i].brand || products[i].brandName) {
+      saveProduct(products[i], gender);
+    }
+  }
 }
 
 
 function saveProduct(item, gender) {
   var product = {};
-  var query = {'name': item.brandedName};
+  var query = {'shopstyleId': item.id};
   var brand = item.brand ? item.brand.name : item.brandedName;
+  var name = item.unbrandedName || item.brandedName;
   gender = gender || 'womens';
 
   if(item.salePrice) {
@@ -71,7 +79,7 @@ function saveProduct(item, gender) {
   }
   product.shopstyleId = item.id;
   product.gender = gender;
-  product.name = item.brandedName;
+  product.name = name;
   product.brand = brand;
   product.price = item.price;
   product.category = item.categories[0].id;
@@ -80,10 +88,12 @@ function saveProduct(item, gender) {
   product.imageSmall = item.image.sizes.Small.url;
   product.imageOriginal = item.image.sizes.Original.url;
   product.description = item.description;
-  // product.color = item.colors[0].name;
+  // product.color = item.colors[0].name || "";
 
   Product.findOneAndUpdate(query, product, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
-      if (err) console.log("Can't save product", err);
-      console.log('Updating / Saving proudct', doc)
+      if (err) { console.log("Can't save product", err); }
+      if (doc != null) {
+        console.log('--- Updating product ---', doc.brand)
+      }
   });
 }

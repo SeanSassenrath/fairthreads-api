@@ -5,8 +5,8 @@ var Schema =  mongoose.Schema;
 
 var ProductSchema = new Schema({
   shopstyleId: { type: Number, required: true, unique: true },
-  name: { type: String,required: true },
-  brand: { type: String,required: true },
+  name: { type: String, required: true, default: "" },
+  brand: { type: String, required: true },
   price: { type: Number, min: 0, required: true },
   salePrice: { type: Number, default: 0 },
   vendUrl: { type: String, required: true },
@@ -26,7 +26,7 @@ var ProductSchema = new Schema({
   style: { type: String },
   categoryRank: { type: Number },
   objectFit: { type: String, default: "contain" },
-  stylistPick: { type:Boolean, default: false }
+  stylistPick: { type: Boolean, default: false }
 }, {
   timestamps: true
 })
