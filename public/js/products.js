@@ -19,14 +19,14 @@ $(document).ready(function() {
   };
 
   // Edit product
-  var editProduct = function() {
-    $('.edit-product-details').on('click', function(e) {
-      console.log("Product Id is being edited", $(this).closest('.product').attr('id'));
-      $(this).closest('.product').addClass('active');
-      editId = $(this).closest('.product').attr('id');
-      changes["id"] = editId;
-    });
-  };
+  // var editProduct = function() {
+  //   $('.edit-product-details').on('click', function(e) {
+  //     console.log("Product Id is being edited", $(this).closest('.product').attr('id'));
+  //     $(this).closest('.product').addClass('active');
+  //     editId = $(this).closest('.product').attr('id');
+  //     changes["id"] = editId;
+  //   });
+  // };
 
   // Delete product
   var selectDeleteProduct = function() {
@@ -50,6 +50,7 @@ $(document).ready(function() {
     $('.edit-fit div').on('click', function(e) {
       toggleActiveClasses($(this));
       changes['objectFit'] = $(this).attr('class').split(' ')[0];
+      console.log('this', $(this))
       saveProductChanges($(this));
     });
   };
@@ -231,17 +232,20 @@ $(document).ready(function() {
     editId = product.closest('.product').attr('id');
     changeProductName(product.closest('.product'));
     changes["id"] = editId;
-    changes = JSON.stringify(changes);
+    changesJSON = JSON.stringify(changes);
     console.log('changes', changes)
     $.ajax({
       type: 'put',
       url: '/admin/product-lists/edit',
       dataType: 'json',
-      data: {data: changes}
+      data: {data: changesJSON}
     }).done(function(data) {
       console.log('success product changes!')
+      changesJSON = {}
       changes = {};
       editId = undefined;
+      console.log('CHANGES', changes);
+      console.log('editID', editId)
     }).fail(function(err) {
       console.log(err)
       console.log(changes)
@@ -271,7 +275,7 @@ $(document).ready(function() {
     var data = products;
     var html = template(data);
     $('.products-container').append(html)
-    editProduct();
+    // editProduct();
     selectDeleteProduct();
     selectNewImgFit();
     selectNewGender();

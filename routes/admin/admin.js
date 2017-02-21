@@ -144,10 +144,13 @@ module.exports = function(app, express) {
 
     adminRouter.route('/product-lists/edit')
       .put(function(req, res) {
+        console.log("REQ ---", req.body)
         var data = JSON.parse(req.body.data)
-        console.log('DATA --- ', data)
+        var id = data.id;
+        console.log('ID --- ', id);
+        console.log('DATA --- ', data);
 
-        products.findOne({_id: data.id}, function(err, product) {
+        products.findById({_id: id}, function(err, product) {
           if(err) {
             res.send(err)
           }
@@ -167,7 +170,6 @@ module.exports = function(app, express) {
             if(err) { console.log("ERROR", err); };
           })
         })
-        res.json({'message': 'Product edit saved'});
       })
 
     adminRouter.route('/product-lists/delete')
