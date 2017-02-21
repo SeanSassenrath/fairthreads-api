@@ -145,11 +145,14 @@ module.exports = function(app, express) {
     adminRouter.route('/product-lists/edit')
       .put(function(req, res) {
         var data = JSON.parse(req.body.data)
+        console.log('DATA --- ', data)
 
         products.findOne({_id: data.id}, function(err, product) {
           if(err) {
             res.send(err)
           }
+
+          console.log("Product ---- ", product)
           if(data['objectFit']) {
             product.objectFit = data['objectFit']
           }
