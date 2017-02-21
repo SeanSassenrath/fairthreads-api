@@ -169,8 +169,8 @@ module.exports = function(app, express) {
 
     adminRouter.route('/product-lists/delete')
       .put(function(req, res) {
-        var id = req.body.id;
-        products.findOne({ _id : id }, function(err, product) {
+        var id = JSON.parse(req.body.id);
+        products.findById({ _id : id }, function(err, product) {
           if (err) res.send(err);
 
           product.softDelete = true;
@@ -178,7 +178,6 @@ module.exports = function(app, express) {
             if (err) res.send(err);
           })
         })
-        res.json({'message': 'Item softly deleted'})
       })
 
     adminRouter.route('/product-list/random/:gender/:active')

@@ -34,6 +34,7 @@ $(document).ready(function() {
       e.stopPropagation();
       var id = $(this).closest('.product').attr('id');
       $(this).closest('.product').hide();
+      console.log('ID', id)
       deleteProduct(id);
     })
   }
@@ -255,7 +256,7 @@ $(document).ready(function() {
       type: 'put',
       url: '/admin/product-lists/delete',
       dataType: 'json',
-      data: {data: id}
+      data: {id: id}
     }).done(function(data) {
       console.log('data', data)
     }).fail(function(err) {
