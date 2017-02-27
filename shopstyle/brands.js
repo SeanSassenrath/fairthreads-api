@@ -21,6 +21,7 @@ module.exports = {
     "b5506", //nudie jeans
     "b31969", //Threads 4 Thought
     "b26183", //Prana
+    "b6287", //Patagonia
   ],
   brandsBySearch: [
     'ecoalf',
