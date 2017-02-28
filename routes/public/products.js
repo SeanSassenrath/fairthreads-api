@@ -29,8 +29,8 @@ module.exports = function(app, express) {
     Product
       .find({gender: req.params.gender, active: true})
       .sort({ activeTimeStamp: -1 })
-      .skip(req.params.page > 0 ? ((req.params.page - 1) * 75) : 0)
-      .limit(75)
+      .skip(req.params.page > 0 ? ((req.params.page - 1) * 80) : 0)
+      .limit(80)
       .exec()
         .then(function(matchedProducts) {
           products.items = matchedProducts
