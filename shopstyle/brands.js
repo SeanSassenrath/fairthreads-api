@@ -22,10 +22,11 @@ module.exports = {
     "b31969", //Threads 4 Thought
     "b26183", //Prana
     "b6287", //Patagonia
+    "b3284", //Sorel
   ],
   brandsBySearch: [
     'ecoalf',
-    'toad&co'
+    'toad&co',
   ]
 }
 
