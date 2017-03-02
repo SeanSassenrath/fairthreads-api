@@ -2,70 +2,49 @@ var rp = require('request-promise');
 var brands = require('./brands');
 var prettyjson = require('prettyjson');
 var Product = require('../models/product.js')
-var _ = require('lodash');
 
 module.exports = {
-  addProducts: addProducts
+  addProducts: fetchProducts
 }
 
-function addProducts() {
-  addProductsByGender('womens-clothes');
-  addProductsBySearch('womens-clothes');
-  addProductsByGender('men');
-  addProductsBySearch('men');
+function fetchProducts() {
+  addProducts(brands.brandsById, 'fl', 'womens-clothes', 50);
+  addProducts(brands.brandsBySearch, 'fts', 'womens-clothes', 50);
+  addProducts(brands.brandsById, 'fl', 'men', 50);
+  addProducts(brands.brandsBySearch, 'fts', 'men', 50);
 }
 
-function productUrlGenByBrand(gender, brand) {
-  var leftPath = "http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY + "&limit=50&fl=";
-  return leftPath + brand + "&cat=" + gender;
+function buildRequestOptions(brand, searchType, gender, limitNumber) {
+  var base ="http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY;
+  var limit = "&limit=50" + limitNumber;
+  var search = "&" + searchType + "=";
+  var category = "&cat=" + gender;
+  return {
+    uri: base + limit + search + brand + category,
+    json: true,
+  }
 }
 
-function productUrlGenBySearch(gender, brand) {
-  var leftPath = "http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY + "&limit=50&fts=";
-  return leftPath + brand + "&cat=" + gender;
-}
-
-function addProductsByGender(gender) {
-  var brandArray = brands.brandsById;
-  brandArray.forEach(function(brand) {
-    var url = productUrlGenByBrand(gender, brand);
-    // console.log('url', url)
-    rp(url)
-      .then(function(body) {
-        requestProduct(body)
+function addProducts(dataSource, searchType, gender, limit) {
+  dataSource.forEach(function(brand) {
+    rp(buildRequestOptions(brand, searchType, gender, limit))
+      .then(function(resp) {
+        saveProducts(resp);
       })
       .catch(function(err) {
-        console.log('Error', err);
+        console.log("--- Error, caught in promise ---", err);
       })
   })
 }
 
-function addProductsBySearch(gender) {
-    var brandArray = brands.brandsById;
-    brandArray.forEach(function(brand) {
-      var url = productUrlGenByBrand(gender, brand);
-      // console.log('url', url)
-      rp(url)
-        .then(function(body) {
-          requestProduct(body)
-        })
-        .catch(function(err) {
-          console.log('Error', err);
-        })
-    })
-}
-
-function requestProduct(body) {
-  var products = JSON.parse(body).products;
-  var gender = JSON.parse(body).metadata.category.id === 'womens-clothes' ? 'womens' : 'mens';
-
-  for (var i = 0; i < products.length; i++) {
-    if (products[i].brand || products[i].brandName) {
-      saveProduct(products[i], gender);
+function saveProducts(resp) {
+  var gender = resp.metadata.category.id === 'womens-clothes' ? 'womens' : 'mens';
+  resp.products.forEach(function(product) {
+    if (product.brand || product.brandName) {
+      saveProduct(product, gender);
     }
-  }
+  })
 }
-
 
 function saveProduct(item, gender) {
   var product = {};
@@ -74,7 +53,7 @@ function saveProduct(item, gender) {
   var name = item.unbrandedName || item.brandedName;
   gender = gender || 'womens';
 
-  if(item.salePrice) {
+  if (item.salePrice) {
     product.salePrice = item.salePrice;
   }
   product.shopstyleId = item.id;
@@ -88,10 +67,9 @@ function saveProduct(item, gender) {
   product.imageSmall = item.image.sizes.Small.url;
   product.imageOriginal = item.image.sizes.Original.url;
   product.description = item.description;
-  // product.color = item.colors[0].name || "";
 
   Product.findOneAndUpdate(query, product, {upsert: true, setDefaultsOnInsert: true}, function(err, doc){
-      if (err) { console.log("Can't save product", err); }
-      console.log('Updating / Saving product', doc)
+      if (err) { console.log("--- Error, can't save product ---", err); }
+      console.log(">>> Saving or updating " + product.brand + " | " + product.name + " | " + product.price + " | " + product.gender);
   });
 }
