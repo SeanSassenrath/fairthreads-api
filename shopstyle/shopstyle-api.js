@@ -8,15 +8,15 @@ module.exports = {
 }
 
 function fetchProducts() {
-  addProducts(brands.brandsById, 'fl', 'womens-clothes', 50);
-  addProducts(brands.brandsBySearch, 'fts', 'womens-clothes', 50);
-  addProducts(brands.brandsById, 'fl', 'men', 50);
-  addProducts(brands.brandsBySearch, 'fts', 'men', 50);
+  addProducts(brands.brandsById, 'fl', 'womens-clothes');
+  addProducts(brands.brandsBySearch, 'fts', 'womens-clothes');
+  addProducts(brands.brandsById, 'fl', 'men');
+  addProducts(brands.brandsBySearch, 'fts', 'men');
 }
 
-function buildRequestOptions(brand, searchType, gender, limitNumber) {
+function buildRequestOptions(brand, searchType, gender) {
   var base ="http://api.shopstyle.com/api/v2/products?pid=" + process.env.SHOPSTYLE_API_KEY;
-  var limit = "&limit=50" + limitNumber;
+  var limit = "&limit=50";
   var search = "&" + searchType + "=";
   var category = "&cat=" + gender;
   return {
@@ -25,9 +25,9 @@ function buildRequestOptions(brand, searchType, gender, limitNumber) {
   }
 }
 
-function addProducts(dataSource, searchType, gender, limit) {
+function addProducts(dataSource, searchType, gender) {
   dataSource.forEach(function(brand) {
-    rp(buildRequestOptions(brand, searchType, gender, limit))
+    rp(buildRequestOptions(brand, searchType, gender))
       .then(function(resp) {
         saveProducts(resp);
       })
@@ -43,8 +43,8 @@ function saveProducts(resp) {
     if (product.brand || product.brandName) {
       saveProduct(product, gender);
     }
-  })
-}
+  });
+};
 
 function saveProduct(item, gender) {
   var product = {};
