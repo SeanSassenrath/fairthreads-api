@@ -2,6 +2,7 @@
   "name": "fairthreads-api",
   "version": "1.0.0",
   "description": "fairthreads backend api",
+  "private": true,
   "main": "server.js",
   "scripts": {
     "setup": "node server.js",
@@ -9,14 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SeanSassenrath/fairthreads-api.git"
+    "url": "https://gitlab.com/fairthreads/api"
   },
-  "author": "sean and alex",
+  "author": "Sean Sassenrath and Alexandra Estrada",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/SeanSassenrath/fairthreads-api/issues"
-  },
-  "homepage": "https://github.com/SeanSassenrath/fairthreads-api",
   "dependencies": {
     "body-parser": "^1.15.2",
     "dotenv": "^2.0.0",
