@@ -1,15 +1,14 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
-var mongoose = require('mongoose');
-var config = require('./config');
-var shopStyleApi = require('./shopstyle/shopstyle-api').addProducts
-var products = require('./models/product');
-var path = require('path');
-var methodOverride = require('method-override');
-var dotenv = require('dotenv');
+const express = require('express');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const config = require('./config');
+const products = require('./models/product');
+const path = require('path');
+const methodOverride = require('method-override');
+const dotenv = require('dotenv');
 
+const app = express();
 dotenv.load();
 
 app.set("view engine", "ejs");
@@ -27,9 +26,15 @@ app.use(methodOverride(function(req, res){
 mongoose.connect(process.env.MONGO_LAB_URI);
 // mongoose.connect(process.env.MONGO_LAB_LOCAL);
 
+// don't show the log when it is test
+if (config.util.getEnv('NODE_ENV') !== 'test') {
+  // use morgan to log at command line
+  app.use(morgan());
+}
+
 // logs all requests to the console
+
 app.use(morgan('dev'));
-shopStyleApi();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
