@@ -26,9 +26,9 @@ mongoose.connect(process.env.MONGO_LAB_URI);
 // mongoose.connect(process.env.MONGO_LAB_LOCAL);
 
 // don't show the log when it is test
-if (config.util.getEnv('NODE_ENV') !== 'test') {
+if (process.env.NODE_ENV !== 'test') {
   // use morgan to log at command line
-  app.use(morgan());
+  app.use(morgan('dev'));
 }
 
 // logs all requests to the console

@@ -8,6 +8,7 @@
     "linter-setup": "node airbnb-linter-setup.js",
     "env-setup": "node setup.js",
     "pull-products": "node shopstyle/shopstyle-api.js",
+    "dev": "set NODE_ENV=dev && node server.js",
     "test": "mocha --timeout 10000"
   },
   "repository": {
