@@ -1,6 +1,6 @@
 {
   "name": "fairthreads-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "fairthreads backend api",
   "private": true,
   "main": "server.js",
