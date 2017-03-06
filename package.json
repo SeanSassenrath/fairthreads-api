@@ -7,6 +7,7 @@
   "scripts": {
     "linter-setup": "node airbnb-linter-setup.js",
     "env-setup": "node setup.js",
+    "pull-products": "node shopstyle/shopstyle-api.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
