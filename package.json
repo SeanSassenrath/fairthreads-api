@@ -5,7 +5,8 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "setup": "node server.js",
+    "linter-setup": "node airbnb-linter-setup.js",
+    "env-setup": "node setup.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,6 +16,7 @@
   "author": "Sean Sassenrath and Alexandra Estrada",
   "license": "ISC",
   "dependencies": {
+    "airbnb-style": "^2.0.0",
     "body-parser": "^1.15.2",
     "dotenv": "^2.0.0",
     "ejs": "^2.4.1",
@@ -30,5 +32,13 @@
     "prettyjson": "^1.2.0",
     "request": "^2.69.0",
     "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2 || ^4.0.0",
+    "eslint-plugin-react": "^6.9.0"
   }
 }
