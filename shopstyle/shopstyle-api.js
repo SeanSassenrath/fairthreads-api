@@ -1,10 +1,10 @@
 const rp = require('request-promise');
 const brands = require('./brands');
 const prettyjson = require('prettyjson');
-const Product = require('../models/product.js');
+const Product = require('../models/product');
 
 function buildRequestOptions(brand, searchType, gender) {
-  const base = `http://api.shopstyle.com/api/v2/products?pid='${process.env.SHOPSTYLE_API_KEY}`;
+  const base = `http://api.shopstyle.com/api/v2/products?pid=${process.env.SHOPSTYLE_API_KEY}`;
   const limit = '&limit=50';
   const search = `&${searchType}=`;
   const category = `&cat=${gender}`;
@@ -60,7 +60,11 @@ function addProducts(dataSource, searchType, gender) {
   });
 }
 
-addProducts(brands.brandsById, 'fl', 'womens-clothes');
-addProducts(brands.brandsBySearch, 'fts', 'womens-clothes');
-addProducts(brands.brandsById, 'fl', 'men');
-addProducts(brands.brandsBySearch, 'fts', 'men');
+const pullProducts = () => {
+  addProducts(brands.brandsById, 'fl', 'womens-clothes');
+  addProducts(brands.brandsBySearch, 'fts', 'womens-clothes');
+  addProducts(brands.brandsById, 'fl', 'men');
+  addProducts(brands.brandsBySearch, 'fts', 'men');
+};
+
+module.exports = { pullProducts };

@@ -2,11 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const config = require('./config');
+const config = require('config');
 const products = require('./models/product');
 const path = require('path');
 const methodOverride = require('method-override');
 const dotenv = require('dotenv');
+const { pullProducts } = require('./shopstyle/shopstyle-api');
 
 const app = express();
 dotenv.load();
@@ -22,13 +23,19 @@ app.use(methodOverride((req, res) => {
   }
 }));
 
-const dbEnv = process.env.NODE_ENV === 'test' ? process.env.MONGO_LAB_TEST_URI : process.env.MONGO_LAB_PROD_URI;
-mongoose.connect(dbEnv);
+// pullProducts();
+
+const options = {
+  server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+  replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+};
+
+mongoose.connect(config.DBHost, options);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan('combined'));
+  app.use(morgan('dev'));
 }
 
 // CORS
@@ -53,7 +60,7 @@ app.use('/api', apiRouter);
 
 
 
-app.listen(config.port);
-console.log(`FairThread API is live on ${config.port}`);
+app.listen(process.env.PORT || 9000);
+console.log(`FairThread API is live on ${process.env.PORT || 9000}`);
 
 module.exports = app;

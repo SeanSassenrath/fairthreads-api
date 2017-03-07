@@ -20,6 +20,7 @@
   "dependencies": {
     "airbnb-style": "^2.0.0",
     "body-parser": "^1.15.2",
+    "config": "^1.25.1",
     "dotenv": "^2.0.0",
     "ejs": "^2.4.1",
     "express": "^4.14.0",

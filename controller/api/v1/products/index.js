@@ -7,6 +7,8 @@ products.use((req, res, next) => {
   next();
 });
 
-products.get('/products', productsCtrl.getProducts);
+products.get('/', productsCtrl.getProducts);
+products.get('/:id', productsCtrl.getProduct);
+products.put('/:id', productsCtrl.updateProduct);
 
 module.exports = products;
