@@ -1,5 +1,5 @@
 const express = require('express');
-const { productCtrl } = require('./productController.js');
+const { productsCtrl } = require('./productsController');
 
 const products = new express.Router();
 
@@ -7,6 +7,6 @@ products.use((req, res, next) => {
   next();
 });
 
-products.get('/products', productCtrl.getProducts);
+products.get('/products', productsCtrl.getProducts);
 
 module.exports = products;

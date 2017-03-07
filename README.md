@@ -12,6 +12,7 @@ Run `yarn`
 
 ### Linting
 Run `yarn run linter-setup`
+[ESLint configuration details](http://eslint.org/docs/user-guide/configuring.html#configuring-rules)
 
 ### Setup local env
 Run `yarn run env-setup`

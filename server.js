@@ -22,13 +22,13 @@ app.use(methodOverride((req, res) => {
   }
 }));
 
-mongoose.connect(process.env.MONGO_LAB_URI);
-// mongoose.connect(process.env.MONGO_LAB_LOCAL);
+const dbEnv = process.env.NODE_ENV === 'test' ? process.env.MONGO_LAB_TEST_URI : process.env.MONGO_LAB_PROD_URI;
+mongoose.connect(dbEnv);
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
-// don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {
-  // use morgan to log at command line
-  app.use(morgan('dev'));
+  app.use(morgan('combined'));
 }
 
 // CORS
@@ -40,16 +40,20 @@ app.use((req, res, next) => {
 });
 
 // routers
-const adminRouter = require('./routes/admin/admin')(app, express);
-app.use('/admin', adminRouter);
+const apiRouter = require('./controller/api');
+app.use('/api', apiRouter);
+// const adminRouter = require('./routes/admin/admin')(app, express);
+// app.use('/admin', adminRouter);
 
-const productsRouter = require('./routes/public/products')(app, express);
-app.use('/products', productsRouter);
+// const productsRouter = require('./routes/public/products')(app, express);
+// app.use('/products', productsRouter);
 
-const contactRouter = require('./routes/public/contact')(app, express);
-app.use('/contact', contactRouter);
+// const contactRouter = require('./routes/public/contact')(app, express);
+// app.use('/contact', contactRouter);
 
 
 
 app.listen(config.port);
 console.log(`FairThread API is live on ${config.port}`);
+
+module.exports = app;
