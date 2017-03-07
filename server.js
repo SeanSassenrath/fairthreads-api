@@ -31,12 +31,6 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
-// logs all requests to the console
-
-app.use(morgan('dev'));
-
-app.use(express.static(path.join(__dirname, 'public')));
-
 // CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');

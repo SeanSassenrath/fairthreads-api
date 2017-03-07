@@ -1,3 +1,4 @@
 SHOPSTYLE_API_KEY=shop_style_secret
 MONGO_LAB_URI=mongo_lab_uri
+MONGO_LAB_TEST_URI=mongo_lab_test_uri
 MONGO_LOCAL=mongo_local
