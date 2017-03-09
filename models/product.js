@@ -1,35 +1,53 @@
 
-var morgan = require('morgan');
-var mongoose = require('mongoose');
-var Schema =  mongoose.Schema;
+const mongoose = require('mongoose');
 
-var ProductSchema = new Schema({
+const Schema = mongoose.Schema;
+
+const ProductSchema = new Schema({
   shopstyleId: { type: Number, unique: true },
-  name: { type: String, required: true, default: '' },
-  brand: { type: String },
-  price: { type: Number, min: 0 },
-  salePrice: { type: Number, default: 0 },
-  vendUrl: { type: String },
-  imageLarge: { type: String },
-  imageSmall: { type: String },
-  imageOriginal: { type: String },
-  category: { type: String },
-  categories: { type: Array },
-  fairThreadsCategory: { type: String, default: 'No category' },
-  description: { type: String },
-  color: { type: String },
-  gender: { type: String },
-  softDelete: { type: Boolean, default: false },
-  active: { type: Boolean, default: false },
-  activeTimeStamp: { type: Date },
-  new: { type: Boolean },
-  style: { type: String },
-  categoryRank: { type: Number },
-  objectFit: { type: String, default: "contain" },
-  stylistPick: { type: Boolean, default: false }
+  metadata: {
+    softDelete: { type: Boolean, default: false },
+    active: { type: Boolean, default: false },
+  },
+  details: {
+    name: { type: String, required: true, default: '' },
+    brand: { type: String }, // Needs to be its own Collection - populate it
+    vendUrl: { type: String },
+    description: { type: String },
+    gender: { type: String },
+  },
+  prices: {
+    price: { type: Number, min: 0 },
+    salePrice: { type: Number, default: 0 },
+  },
+  images: {
+    imageLarge: { type: String },
+    imageSmall: { type: String },
+    imageOriginal: { type: String },
+  },
+  styles: {
+    objectFit: { type: String, default: 'contain' },
+  },
+  // categories: Needs to be its own Collection - populate it
+  //attributes: Needs to be its own Collection - populate it
+    // color goes under attributes
+    // stylistPick goes under attributes
 }, {
-  timestamps: true
-})
+  timestamps: true,
+});
 
-var Product = mongoose.model('Products', ProductSchema);
-module.exports = Product
+// ProductSchema.pre('save', ((next) => {
+//   const now = new Date();
+//   if (!this.metadata.createdAt) {
+//     this.metadata.createdAt = now;
+//   }
+//   next();
+// }));
+
+// ProductSchema.pre('findOneAndUpdate', ((next) => {
+//   const now = new Date();
+//   console.log('This', this)
+//   next();
+// }));
+
+module.exports = mongoose.model('product', ProductSchema);
