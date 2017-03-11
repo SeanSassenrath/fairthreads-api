@@ -28,26 +28,14 @@ const productSchema = new Schema({
   styles: {
     objectFit: { type: String, default: 'contain' },
   },
-  categories: [{ type: Number, ref: categories.Schema }],
+  categories: {
+    mainCategories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+  },
   //attributes: Needs to be its own Collection - populate it
     // color goes under attributes
-    // stylistPick goes under attributes
+    // stylistPick goes under attributes?
 }, {
   timestamps: true,
 });
-
-// ProductSchema.pre('save', ((next) => {
-//   const now = new Date();
-//   if (!this.metadata.createdAt) {
-//     this.metadata.createdAt = now;
-//   }
-//   next();
-// }));
-
-// ProductSchema.pre('findOneAndUpdate', ((next) => {
-//   const now = new Date();
-//   console.log('This', this)
-//   next();
-// }));
 
 module.exports = mongoose.model('Product', productSchema);

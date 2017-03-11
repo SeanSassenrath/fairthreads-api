@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const categorySchema = new Schema({
+const subcategorySchema = new Schema({
   metadata: {
     softDelete: { type: Boolean, default: false },
     active: { type: Boolean, default: false },
@@ -14,11 +14,10 @@ const categorySchema = new Schema({
     // gender: { type: String } - do we want to have gender here?
   },
   products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-  subcategories: [{ type: Schema.Types.ObjectId, ref: 'Subcategory' }],
-  // subcategories: Needs to be its own Collection - populate it
+  parentCategories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
 }, {
   timestamps: true,
 });
 
 
-module.exports = mongoose.model('Category', categorySchema);
+module.exports = mongoose.model('Subcategory', subcategorySchema);
