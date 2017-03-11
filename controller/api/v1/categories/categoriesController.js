@@ -43,10 +43,8 @@ const categoriesCtrl = {
   },
 
   updateCategory(req, res) {
-    console.log('req.body', req.body)
     Category.findById({ _id: req.params.id })
       .then((category) => {
-        console.log('category', category);
         Object.assign(category, req.body).save((err, savedCategory) => {
           if (err) res.send(err);
           res.json({ message: 'Category updated', category });
