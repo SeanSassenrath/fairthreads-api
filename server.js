@@ -31,8 +31,7 @@ const options = {
 };
 
 mongoose.Promise = Promise;
-// mongoose.connect(config.DBHost, options);
-mongoose.connect(process.env.MONGO_LAB_TEST_URI, options);
+mongoose.connect(config.DBHost, options);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 

@@ -25,7 +25,7 @@ const productSchema = new Schema({
     imageSmall: { type: String },
     imageOriginal: { type: String },
   },
-  styles: {
+  css: {
     objectFit: { type: String, default: 'contain' },
   },
   categories: {
