@@ -1,9 +1,9 @@
-
 const mongoose = require('mongoose');
+const categories = require('./category');
 
 const Schema = mongoose.Schema;
 
-const ProductSchema = new Schema({
+const productSchema = new Schema({
   shopstyleId: { type: Number, unique: true },
   metadata: {
     softDelete: { type: Boolean, default: false },
@@ -28,7 +28,7 @@ const ProductSchema = new Schema({
   styles: {
     objectFit: { type: String, default: 'contain' },
   },
-  // categories: Needs to be its own Collection - populate it
+  categories: [{ type: Number, ref: categories.Schema }],
   //attributes: Needs to be its own Collection - populate it
     // color goes under attributes
     // stylistPick goes under attributes
@@ -50,4 +50,4 @@ const ProductSchema = new Schema({
 //   next();
 // }));
 
-module.exports = mongoose.model('product', ProductSchema);
+module.exports = mongoose.model('Product', productSchema);

@@ -1,8 +1,6 @@
 const Product = require('../../../../models/product');
 const mongoose = require('mongoose');
 
-// mongoose.Promise = Promise;
-
 const productsCtrl = {
 
   getProducts(req, res) {
@@ -12,6 +10,7 @@ const productsCtrl = {
     } = req.query;
 
     Product.find({})
+      .populate('categories')
       .then((products) => {
         res.send(products);
       })
@@ -22,6 +21,7 @@ const productsCtrl = {
 
   getProduct(req, res) {
     Product.findById(req.params.id)
+      .populate('categories')
       .then((product) => {
         res.send(product);
       })

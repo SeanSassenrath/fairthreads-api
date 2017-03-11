@@ -1,12 +1,24 @@
-// Not currently doing anything - will need to set this up when we went to add categories and styles via the admin dashboard
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-var CategorySchema = new Schema({
-  gender: { type: String, required: true },
-  styles: { type: Array }
-})
+const Schema = mongoose.Schema;
 
-var Category = mongoose.model('Categories', CategorySchema);
-module.exports = Category
+const categorySchema = new Schema({
+  metadata: {
+    id: { type: Number },
+    softDelete: { type: Boolean, default: false },
+    active: { type: Boolean, default: false },
+  },
+  details: {
+    name: { type: String, required: true, default: '' },
+    description: { type: String },
+    // gender: { type: String } - do we want to have gender here?
+  },
+  products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+  // subcategories: Needs to be its own Collection - populate it
+}, {
+  timestamps: true,
+});
+
+
+module.exports = mongoose.model('category', categorySchema);
