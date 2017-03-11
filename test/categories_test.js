@@ -57,14 +57,14 @@ describe('Categories', () => {
   describe('POST categories', () => {
     it('it should not POST a category without name field', (done) => {
       chai.request(server)
-        .post('/api/v1/products')
+        .post('/api/v1/categories')
         .send(testCategory)
         .end((err, res) => {
           if (err) console.log('ERROR', err);
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.product.should.have.property('details').property('name');
-          res.body.should.have.property('message').eql('Product added');
+          res.body.category.should.have.property('details').property('name');
+          res.body.should.have.property('message').eql('Category added');
         done();
       });
     });

@@ -48,7 +48,7 @@ const subcategoriesCtrl = {
       .then((subcategory) => {
         Object.assign(subcategory, req.body).save((err, savedSubcategory) => {
           if (err) res.send(err);
-          res.json({ message: 'Category updated', subcategory });
+          res.json({ message: 'Subcategory updated', subcategory });
         });
       })
       .catch((err) => {
