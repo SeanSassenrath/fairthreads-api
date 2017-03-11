@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const categories = require('./category');
+mongoose.Promise = require('bluebird');
 
 const Schema = mongoose.Schema;
 

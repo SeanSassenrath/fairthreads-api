@@ -1,7 +1,6 @@
 const Category = require('../../../../models/category');
 const mongoose = require('mongoose');
 
-
 const categoriesCtrl = {
 
   getCategories(req, res) {
