@@ -6,6 +6,11 @@ const mongoose = require('mongoose');
 const productsCtrl = {
 
   getProducts(req, res) {
+    const {
+      cat,
+      subcat,
+    } = req.query;
+
     Product.find({})
       .then((products) => {
         res.send(products);

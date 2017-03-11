@@ -23,7 +23,7 @@ app.use(methodOverride((req, res) => {
   }
 }));
 
-pullProducts();
+// pullProducts();
 
 const options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
