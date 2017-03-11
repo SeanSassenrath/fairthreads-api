@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 const testSubcategory = new Subcategory({
   "details": {
-    "name": "Tops"
+    "name": "T-shirt"
   }
 });
 
@@ -74,7 +74,7 @@ describe('Subcategories', () => {
     it('it should UPDATE a subcategories name by id', (done) => {
       const testSubcategory = new Subcategory({
         "details": {
-          "name": "Tops"
+          "name": "T-shirt"
         } 
       })
       testSubcategory.save((err, subcategory) => {
@@ -82,7 +82,7 @@ describe('Subcategories', () => {
         .put('/api/v1/subcategories/' + subcategory.id)
         .send({
           "details": {
-            "name": "Bottoms"
+            "name": "Shorts"
           }
         })
         .end((err, res) => {
@@ -90,7 +90,7 @@ describe('Subcategories', () => {
           res.should.have.status(200);
           res.should.be.a('object');
           res.body.should.have.property('message').eql('Subcategory updated');
-          res.body.subcategory.should.have.property('details').property('name').eql("Bottoms");
+          res.body.subcategory.should.have.property('details').property('name').eql("Shorts");
         done();
         });
       });
