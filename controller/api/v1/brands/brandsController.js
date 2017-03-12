@@ -1,15 +1,19 @@
 const Brand = require('../../../../models/brand');
 const mongoose = require('mongoose');
 
+const filterBrandsByName = (req, res) => {
+  if (!(req.query).isEmpty) {
+    return {
+      'details.name': req.query.name,
+    };
+  }
+  return {};
+};
+
 const brandsCtrl = {
 
   getBrands(req, res) {
-    const {
-      cat,
-      subcat,
-    } = req.query;
-
-    Brand.find({})
+    Brand.find(filterBrandsByName(req, res))
       .populate('products')
       .then((brand) => {
         res.send(brand);

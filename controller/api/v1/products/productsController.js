@@ -2,7 +2,7 @@ const Product = require('../../../../models/product');
 const { isEmpty } = require('lodash');
 const mongoose = require('mongoose');
 
-const filterProducts = (products, req, res) => {
+const filterProductsByBrand = (products, req, res) => {
   if (!(req.query).isEmpty) {
     const filteredProducts = products.filter(product => (
       product.brand !== null
@@ -28,7 +28,7 @@ const productsCtrl = {
         match: { 'details.name': brand },
       })
       .then((products) => {
-        filterProducts(products, req, res);
+        filterProductsByBrand(products, req, res);
       })
       .catch((err) => {
         res.send(err);
