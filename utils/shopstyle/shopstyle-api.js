@@ -1,7 +1,7 @@
 const rp = require('request-promise');
 const brands = require('./brands');
 const prettyjson = require('prettyjson');
-const Product = require('../models/product');
+const Product = require('../../models/product');
 
 function buildRequestOptions(brand, searchType, gender) {
   const base = `http://api.shopstyle.com/api/v2/products?pid=${process.env.SHOPSTYLE_API_KEY}`;
@@ -45,7 +45,7 @@ function saveProduct(item, gender) {
   product.images.imageSmall = item.image.sizes.Small.url;
   product.images.imageOriginal = item.image.sizes.Original.url;
 
-  Product.findOneAndUpdate({ shopstyleId56: item.id }, product, { upsert: true, setDefaultsOnInsert: true }, (err, doc) => {
+  Product.findOneAndUpdate({ shopstyleId: item.id }, product, { upsert: true, setDefaultsOnInsert: true }, (err, doc) => {
     if (err) { console.log("--- Error, can't save product ---", err); }
     console.log(`>>> Saving or updating ${product.details.brand} | ${product.details.name} | ${product.prices.price} | ${product.details.gender}`);
   });

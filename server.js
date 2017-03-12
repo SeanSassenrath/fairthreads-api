@@ -7,7 +7,8 @@ const products = require('./models/product');
 const path = require('path');
 const methodOverride = require('method-override');
 const dotenv = require('dotenv');
-const { pullProducts } = require('./shopstyle/shopstyle-api');
+const { pullProducts } = require('./utils/shopstyle/shopstyle-api');
+const { cleanDb } = require('./utils/db-helpers/clean-db');
 
 const app = express();
 dotenv.load();
@@ -24,6 +25,7 @@ app.use(methodOverride((req, res) => {
 }));
 
 // pullProducts();
+// cleanDb();
 
 const options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
@@ -32,8 +34,9 @@ const options = {
 
 mongoose.Promise = require('bluebird');
 
-mongoose.connect(config.DBHost, options);
+// mongoose.connect(config.DBHost, options);
 // mongoose.connect(process.env.MONGO_LAB_TEST_URI, options);
+mongoose.connect('mongodb://localhost/ft-api-test', options);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
