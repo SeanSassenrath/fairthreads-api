@@ -1,5 +1,16 @@
 const Product = require('../../../../models/product');
+const { isEmpty } = require('lodash');
 const mongoose = require('mongoose');
+
+const filterProducts = (products, req, res) => {
+  if (!(req.query).isEmpty) {
+    const filteredProducts = products.filter(product => (
+      product.brand !== null
+    ));
+    res.send(filteredProducts);
+  }
+  res.send(products);
+};
 
 const productsCtrl = {
 
@@ -7,13 +18,17 @@ const productsCtrl = {
     const {
       cat,
       subcat,
+      brand,
     } = req.query;
 
     Product.find({})
       .populate('categories')
-      .populate('brand')
+      .populate({
+        path: 'brand',
+        match: { 'details.name': brand },
+      })
       .then((products) => {
-        res.send(products);
+        filterProducts(products, req, res);
       })
       .catch((err) => {
         res.send(err);
