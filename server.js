@@ -33,6 +33,7 @@ const options = {
 mongoose.Promise = require('bluebird');
 
 mongoose.connect(config.DBHost, options);
+// mongoose.connect(process.env.MONGO_LAB_TEST_URI, options);
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 

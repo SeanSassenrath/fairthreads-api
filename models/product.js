@@ -12,11 +12,11 @@ const productSchema = new Schema({
   },
   details: {
     name: { type: String, required: true, default: '' },
-    brand: { type: String }, // Needs to be its own Collection - populate it
     vendUrl: { type: String },
     description: { type: String },
     gender: { type: String },
   },
+  brand: { type: Schema.Types.Object, ref: 'Brand'},
   prices: {
     price: { type: Number, min: 0 },
     salePrice: { type: Number, default: 0 },
@@ -29,9 +29,8 @@ const productSchema = new Schema({
   css: {
     objectFit: { type: String, default: 'contain' },
   },
-  categories: {
-    mainCategories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
-  },
+  categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+  subcategories: [{ type: Schema.Types.ObjectId, ref: 'Subcategories' }],
   //attributes: Needs to be its own Collection - populate it
     // color goes under attributes
     // stylistPick goes under attributes?
