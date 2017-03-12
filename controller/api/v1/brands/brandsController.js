@@ -1,8 +1,9 @@
 const Brand = require('../../../../models/brand');
+const { isEmpty } = require('lodash');
 const mongoose = require('mongoose');
 
 const filterBrandsByName = (req, res) => {
-  if (!(req.query).isEmpty) {
+  if (!isEmpty(req.query)) {
     return {
       'details.name': req.query.name,
     };
