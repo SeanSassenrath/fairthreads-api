@@ -2,6 +2,7 @@ const rp = require('request-promise');
 const brands = require('./brands');
 const prettyjson = require('prettyjson');
 const Product = require('../../models/product');
+const Brand = require('../../models/brand');
 
 function buildRequestOptions(brand, searchType, gender) {
   const base = `http://api.shopstyle.com/api/v2/products?pid=${process.env.SHOPSTYLE_API_KEY}`;
@@ -21,7 +22,6 @@ function saveProduct(item, gender) {
     prices: {},
     images: {},
   };
-  const brand = item.brand ? item.brand.name : item.brandedName;
   const name = item.unbrandedName || item.brandedName;
   const now = new Date();
 
@@ -34,7 +34,7 @@ function saveProduct(item, gender) {
 
   product.details.gender = gender;
   product.details.name = name;
-  product.details.brand = brand;
+  // product.details.brand = brand;
   product.details.description = item.description;
   product.details.vendUrl = item.clickUrl;
 
@@ -45,10 +45,29 @@ function saveProduct(item, gender) {
   product.images.imageSmall = item.image.sizes.Small.url;
   product.images.imageOriginal = item.image.sizes.Original.url;
 
-  Product.findOneAndUpdate({ shopstyleId: item.id }, product, { upsert: true, setDefaultsOnInsert: true }, (err, doc) => {
-    if (err) { console.log("--- Error, can't save product ---", err); }
-    console.log(`>>> Saving or updating ${product.details.brand} | ${product.details.name} | ${product.prices.price} | ${product.details.gender}`);
-  });
+  const shopstyleBrandName = item.brand ? item.brand.name : item.brandedName;
+  const brand = { details: { name: shopstyleBrandName } };
+
+  Brand.findOneAndUpdate({ 'details.name': shopstyleBrandName }, brand, { upsert: true, setDefaultsOnInsert: true })
+    .then((savedBrand) => {
+      console.log(`Saved brand ${savedBrand}`);
+      product.brand = savedBrand.id;
+      Product.findOneAndUpdate({ shopstyleId: item.id }, product, { upsert: true, setDefaultsOnInsert: true, new: true })
+        .then((savedProduct) => {
+          console.log('savedProduct', savedProduct);
+          Brand.update({ 'details.name': shopstyleBrandName }, { $push: { products: savedProduct.id } })
+            .catch((err) => {
+              if (err) { console.log("--- Error, can't save product to brand", err); }
+            });
+          console.log(`>>> Saving or updating ${product.brand} | ${product.details.name} | ${product.prices.price} | ${product.details.gender}`);
+        })
+        .catch((err) => {
+          if (err) { console.log("--- Error, can't save product ---", err); }
+        });
+    })
+    .catch((err) => {
+      console.log(`--- Error, can't save brand ${err}`);
+    });
 }
 
 function saveProducts(resp) {

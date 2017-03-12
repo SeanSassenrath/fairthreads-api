@@ -11,6 +11,7 @@ const productsCtrl = {
 
     Product.find({})
       .populate('categories')
+      .populate('brand')
       .then((products) => {
         res.send(products);
       })

@@ -10,7 +10,7 @@ const brandSchema = new Schema({
     active: { type: Boolean, default: false },
   },
   details: {
-    name: { type: String, required: true, default: '' },
+    name: { type: String, required: true, unique: true },
     description: { type: String },
   },
   products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],

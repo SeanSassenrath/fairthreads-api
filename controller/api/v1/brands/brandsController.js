@@ -10,6 +10,7 @@ const brandsCtrl = {
     } = req.query;
 
     Brand.find({})
+      .populate('products')
       .then((brand) => {
         res.send(brand);
       })
