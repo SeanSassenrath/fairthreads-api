@@ -1,41 +1,18 @@
 const Product = require('../../../../models/product');
-const { isEmpty } = require('lodash');
 const mongoose = require('mongoose');
-
-const productsQueryFilter = (req, res) => {
-  if (!isEmpty(req.query) && req.query.gender !== undefined) {
-    return ({ 'details.gender': req.query.gender });
-  }
-  return {};
-};
-
-const filterProductsByBrand = (products, req, res) => {
-  if (!isEmpty(req.query.brand)) {
-    const filteredProducts = products.filter(product => (
-      product.brand !== null
-    ));
-    return filteredProducts;
-  }
-  return products;
-};
+const { productsQueryFilter, filterProductsByBrand, populateBrands } = require('./productsHelpers');
 
 const productsCtrl = {
 
   getProducts(req, res) {
-    const {
-      cat,
-      subcat,
-      brand,
-    } = req.query;
+    const productsFilter = productsQueryFilter(req, res);
 
-    const filter = productsQueryFilter(req, res);
+    const { brand } = req.query;
+    const brands = populateBrands(brand, req);
 
-    Product.find(filter)
+    Product.find(productsFilter)
       .populate('categories')
-      .populate({
-        path: 'brand',
-        match: { 'details.name': brand },
-      })
+      .populate(brands)
       .then((products) => {
         const filteredProducts = filterProductsByBrand(products, req, res);
         res.send(filteredProducts);
