@@ -25,3 +25,7 @@ To begin local development, run `npm start`. This will run the server locally on
 ## Deploy
 Log in to Heroku via CLI `heroku login`.
 Use `git push heroku master` to deploy to Heroku.
+
+## Shopstyle API
+### Example Query
+`http://api.shopstyle.com/api/v2/products?pid=uid100-33047490-67&limit=50&fl=b22931`
