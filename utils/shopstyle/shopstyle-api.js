@@ -53,9 +53,14 @@ function saveProduct(item, gender) {
 
   return Product.findOneAndUpdate({ shopstyleId: item.id }, product, { upsert: true, setDefaultsOnInsert: true, new: true })
     .then((savedProduct) => {
-      console.log(`>>> Saving or updating ${product.details.name} | ${product.prices.price} | ${product.details.gender}`);
+      // console.log(`>>> Saving or updating ${product.details.name} | ${product.prices.price} | ${product.details.gender}`);
 
-      Brand.update({ id: product.brand }, { $push: { products: savedProduct.id } })
+      console.log('product.brand', product.brand)
+      console.log('savedProduct.id', savedProduct.id)
+      Brand.update({ _id: product.brand }, { $push: { products: savedProduct.id } })
+        .then((brandWithProduct) => {
+          console.log("brandWithProduct", brandWithProduct);
+        })
         .catch((err) => {
           if (err) { console.log("--- Error, can't save product to brand", err); }
         });
@@ -63,7 +68,10 @@ function saveProduct(item, gender) {
       return savedProduct;
     })
     .then((savedProduct) => {
-      Category.update({ id: product.categories }, { $push: { products: savedProduct.id } })
+      Category.update({ _id: product.categories }, { $push: { products: savedProduct.id } })
+        .then((categoryWithProduct) => {
+          // console.log('categoryWithProduct', categoryWithProduct);
+        })
         .catch((err) => {
           if (err) { console.log("--- Error, can't save product to category", err); }
         });
@@ -89,10 +97,9 @@ const findBrand = (item) => {
 
   return Brand.find({ 'details.name': shopstyleBrandName })
     .then((foundBrand) => {
-      console.log('---- savedBrand here', foundBrand);
       const brandedItem = item;
-      brandedItem.brandId = foundBrand.id;
-      // console.log('Saved Brand')
+      console.log('foundBrand', foundBrand);
+      brandedItem.brandId = foundBrand[0]._id;
       return brandedItem;
     })
     .catch((err) => {
@@ -101,10 +108,8 @@ const findBrand = (item) => {
 };
 
 const saveCategory = (item) => {
-  console.log("*** here", item);
   const test = item.categories[0].id;
   const category = categoryAssignment[test];
-  // console.log("**** here", category)
 
   // if (!ssCategories[item.categories[0].id]) {
   //   ssCategories[item.categories[0].id] = 1;
@@ -119,10 +124,8 @@ const saveCategory = (item) => {
 };
 
 const findCategory = (item) => {
-  console.log("*** item category id", item.categories[0].id);
   const test = item.categories[0].id;
   const category = categoryAssignment[test];
-  console.log("**** category from assignment", category.metadata.catId);
 
   // if (!ssCategories[item.categories[0].id]) {
   //   ssCategories[item.categories[0].id] = 1;
@@ -132,10 +135,8 @@ const findCategory = (item) => {
 
   return Category.find({ 'metadata.catId': category.metadata.catId })
     .then((savedCategory) => {
-      console.log('saved category id', savedCategory[0]._id);
       const categorizedItem = item;
       categorizedItem.categoryId = savedCategory[0]._id;
-      console.log('categorizedItem', categorizedItem);
       return categorizedItem;
     })
     .catch((err) => {
