@@ -24,7 +24,7 @@ app.use(methodOverride((req, res) => {
   }
 }));
 
-pullProducts();
+// pullProducts();
 // cleanDb();
 
 const options = {
@@ -45,10 +45,11 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // CORS
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
