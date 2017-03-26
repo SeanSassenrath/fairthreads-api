@@ -1,6 +1,12 @@
 const Product = require('../../../../models/product');
 const mongoose = require('mongoose');
-const { productsQueryFilter, filterProductsByBrand, populateBrands } = require('./productsHelpers');
+const {
+  productsQueryFilter,
+  filterProductsByBrand,
+  populateBrands,
+  filterProductsByCategory,
+  populateCategories,
+} = require('./productsHelpers');
 
 const productsCtrl = {
 
@@ -10,12 +16,24 @@ const productsCtrl = {
     const { brand } = req.query;
     const brands = populateBrands(brand, req);
 
+    const { category } = req.query;
+    const categories = populateCategories(category, req);
+
     Product.find(productsFilter)
-      .populate('categories')
+      .populate(categories)
       .populate(brands)
       .then((products) => {
         const filteredProducts = filterProductsByBrand(products, req, res);
-        res.send(filteredProducts);
+        console.log('Filtered by brand', filteredProducts)
+        return filteredProducts;
+      })
+      .then((products) => {
+        const filteredProducts = filterProductsByCategory(products, req, res);
+        console.log('Filtered by category', filteredProducts);
+        return filteredProducts;
+      })
+      .then((products) => {
+        res.send(products);
       })
       .catch((err) => {
         res.send(err);

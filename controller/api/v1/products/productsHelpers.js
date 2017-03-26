@@ -32,6 +32,26 @@ const productsHelpers = {
     }
     return 'brand';
   },
+
+  filterProductsByCategory(products, req, res) {
+    if (!isEmpty(req.query.category)) {
+      const filteredCategory = products.filter(product => (
+        product.categories !== null
+      ));
+      return filteredCategory;
+    }
+    return products;
+  },
+
+  populateCategories(category, req) {
+    if (!isEmpty(req.query.category)) {
+      return {
+        path: 'categories',
+        match: { 'details.name': category },
+      };
+    }
+    return 'category';
+  },
 };
 
 module.exports = productsHelpers;
