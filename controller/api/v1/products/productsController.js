@@ -43,6 +43,7 @@ const productsCtrl = {
   getProduct(req, res) {
     Product.findById(req.params.id)
       .populate('categories')
+      .populate('brand')
       .then((product) => {
         res.send(product);
       })
