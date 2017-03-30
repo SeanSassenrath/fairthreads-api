@@ -70,11 +70,12 @@ const productsCtrl = {
     Product.findById({ _id: req.params.id })
       .then((product) => {
         Object.assign(product, req.body).save((err, savedProduct) => {
-          if (err) res.send(err);
-          res.json({ message: 'Product updated', product });
+          console.log('savedProduct', savedProduct);
+          res.json({ message: 'Product updated', savedProduct });
         });
       })
       .catch((err) => {
+        console.log('error', err);
         res.send(err);
       });
   },
