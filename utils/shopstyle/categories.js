@@ -5,6 +5,7 @@ const categories = {
     },
     details: {
       name: 'tops',
+      gender: 'both',
     },
   },
   bottoms: {
@@ -13,6 +14,7 @@ const categories = {
     },
     details: {
       name: 'bottoms',
+      gender: 'both',
     },
   },
   dresses: {
@@ -21,6 +23,7 @@ const categories = {
     },
     details: {
       name: 'dresses',
+      gender: 'womens',
     },
   },
   shoes: {
@@ -29,6 +32,7 @@ const categories = {
     },
     details: {
       name: 'shoes',
+      gender: 'both',
     },
   },
   underwear: {
@@ -37,6 +41,7 @@ const categories = {
     },
     details: {
       name: 'underwear',
+      gender: 'both',
     },
   },
   accessories: {
@@ -45,6 +50,7 @@ const categories = {
     },
     details: {
       name: 'accessories',
+      gender: 'both',
     },
   },
   athleisure: {
@@ -53,6 +59,7 @@ const categories = {
     },
     details: {
       name: 'athleisure',
+      gender: 'both',
     },
   },
   outerwear: {
@@ -61,6 +68,7 @@ const categories = {
     },
     details: {
       name: 'outerwear',
+      gender: 'both',
     },
   },
   swimsuit: {
@@ -69,6 +77,7 @@ const categories = {
     },
     details: {
       name: 'swimsuit',
+      gender: 'both',
     },
   },
 };

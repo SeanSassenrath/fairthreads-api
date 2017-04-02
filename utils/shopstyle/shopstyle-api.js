@@ -108,8 +108,9 @@ const findBrand = (item) => {
 };
 
 const saveCategory = (item) => {
-  const test = item.categories[0].id;
-  const category = categoryAssignment[test];
+  const shopstyleCategoryId = item.categories[0].id;
+  const category = categoryAssignment[shopstyleCategoryId];
+  console.log('--- category here', category);
 
   // if (!ssCategories[item.categories[0].id]) {
   //   ssCategories[item.categories[0].id] = 1;

@@ -67,6 +67,7 @@ const productsCtrl = {
   },
 
   updateProduct(req, res) {
+    console.log('req.body', req.body)
     Product.findById({ _id: req.params.id })
       .then((product) => {
         Object.assign(product, req.body).save((err, savedProduct) => {

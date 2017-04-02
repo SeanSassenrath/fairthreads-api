@@ -12,6 +12,7 @@ const categorySchema = new Schema({
   },
   details: {
     name: { type: String, required: true, default: '' },
+    gender: { type: String, required: true, default: '' },
     description: { type: String },
   },
   products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],

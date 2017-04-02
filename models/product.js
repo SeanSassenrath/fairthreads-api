@@ -29,7 +29,7 @@ const productSchema = new Schema({
     objectFit: { type: String, default: 'contain' },
   },
   brand: { type: Schema.Types.Object, ref: 'Brand' },
-  categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+  categories: { type: Schema.Types.ObjectId, ref: 'Category' },
   subcategories: [{ type: Schema.Types.ObjectId, ref: 'Subcategories' }],
   //attributes: Needs to be its own Collection - populate it
     // color goes under attributes
