@@ -7,9 +7,10 @@ const categoriesCtrl = {
     const {
       cat,
       subcat,
+      gender,
     } = req.query;
 
-    Category.find({})
+    Category.find({ $or: [{ 'details.gender': gender }, { 'details.gender': 'both' }] })
       .then((category) => {
         res.send(category);
       })
