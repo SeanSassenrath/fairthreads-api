@@ -11,6 +11,7 @@ const subcategoriesCtrl = {
     } = req.query;
 
     Subcategory.find({})
+      .populate('parentCategory')
       .then((subcategory) => {
         res.send(subcategory);
       })

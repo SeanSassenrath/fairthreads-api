@@ -14,7 +14,7 @@ const subcategorySchema = new Schema({
     // gender: { type: String } - do we want to have gender here?
   },
   products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-  parentCategories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+  parentCategory: { type: Schema.Types.ObjectId, ref: 'Category' },
 }, {
   timestamps: true,
 });
