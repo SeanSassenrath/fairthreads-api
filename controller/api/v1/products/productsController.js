@@ -67,17 +67,16 @@ const productsCtrl = {
   },
 
   updateProduct(req, res) {
-    console.log('req.body', req.body)
     Product.findById({ _id: req.params.id })
+      .populate('brand')
       .then((product) => {
         Object.assign(product, req.body).save((err, savedProduct) => {
-          console.log('savedProduct', savedProduct);
-          res.json({ message: 'Product updated', savedProduct });
+          res.json({ message: `Update of ${savedProduct.details.name} by ${savedProduct.brand.details.name} was successful!` });
         });
       })
       .catch((err) => {
         console.log('error', err);
-        res.send(err);
+        res.json({ message: 'Currently unable to update this product. Please try again later.' });
       });
   },
 };
