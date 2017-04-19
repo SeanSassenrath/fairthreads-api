@@ -11,20 +11,20 @@ const {
 const productsCtrl = {
 
   getProducts(req, res) {
+    const { brand, category, page } = req.query;
     const productsFilter = productsQueryFilter(req, res);
-
-    const { brand } = req.query;
     const brands = populateBrands(brand, req);
-
-    const { category } = req.query;
     const categories = populateCategories(category, req);
 
-    Product.find(productsFilter)
+    Product
+      .find(productsFilter)
+      .skip(page > 0 ? ((page - 1) * 30) : 0)
+      .limit(30)
       .populate(categories)
       .populate(brands)
       .then((products) => {
         const filteredProducts = filterProductsByBrand(products, req, res);
-        console.log('Filtered by brand', filteredProducts)
+        console.log('Filtered by brand', filteredProducts);
         return filteredProducts;
       })
       .then((products) => {
