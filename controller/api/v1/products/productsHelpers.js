@@ -3,8 +3,6 @@ const { isEmpty } = require('lodash');
 const productsHelpers = {
 
   productsQueryFilter(brand, category, req) {
-    // console.log('brand._id', brand[0]._id)
-    console.log('category._id', category[0]._id)
     const query = {};
     const { gender, gtPrice, ltPrice } = req.query;
     if (!isEmpty(req.query)) {
@@ -14,7 +12,6 @@ const productsHelpers = {
       if (brand[0]) { query.brand = brand[0]._id; }
       if (category[0]) { query.categories = category[0]._id; }
     }
-    console.log('query', query);
     return query;
   },
 
@@ -29,7 +26,6 @@ const productsHelpers = {
   },
 
   populateCategories(req) {
-    console.log('req.query.category', req.query.category)
     if (!isEmpty(req.query.category)) {
       return {
         path: 'categories',

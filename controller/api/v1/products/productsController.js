@@ -27,8 +27,8 @@ const productsCtrl = {
         // Use brand, category and other filters from req to find Products
         Product.find(productsQueryFilter(brand, category, req))
           .sort({ updatedAt: -1 })
-          .skip(page > 0 ? ((page - 1) * 30) : 0)
-          .limit(30)
+          .skip(page > 0 ? ((page - 1) * 36) : 0)
+          .limit(36)
           .populate(categories)
           .populate(brands)
           .then((products) => {
