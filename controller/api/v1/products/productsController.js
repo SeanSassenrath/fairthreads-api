@@ -18,6 +18,7 @@ const productsCtrl = {
 
     Product
       .find(productsFilter)
+      .sort({ updatedAt: -1 })
       .skip(page > 0 ? ((page - 1) * 30) : 0)
       .limit(30)
       .populate(categories)
