@@ -12,8 +12,8 @@ const productsCtrl = {
 
   getProducts(req, res) {
     const { page } = req.query;
-    const brands = populateBrands(req.query.brand, req);
-    const categories = populateCategories(req.query.category, req);
+    const brands = populateBrands(req);
+    const categories = populateCategories(req);
 
     // Use the brand name from req.query to find brand._id
     Brand.find({ 'details.name': req.query.brand })
