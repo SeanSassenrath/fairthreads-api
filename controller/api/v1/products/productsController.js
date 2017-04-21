@@ -1,43 +1,42 @@
 const Product = require('../../../../models/product');
+const Category = require('../../../../models/category');
+const Brand = require('../../../../models/brand');
 const mongoose = require('mongoose');
 const {
   productsQueryFilter,
-  filterProductsByBrand,
   populateBrands,
-  filterProductsByCategory,
   populateCategories,
 } = require('./productsHelpers');
 
 const productsCtrl = {
 
   getProducts(req, res) {
-    const { brand, category, page } = req.query;
-    const productsFilter = productsQueryFilter(req, res);
-    const brands = populateBrands(brand, req);
-    const categories = populateCategories(category, req);
+    const { page } = req.query;
+    const brands = populateBrands(req.query.brand, req);
+    const categories = populateCategories(req.query.category, req);
 
-    Product
-      .find(productsFilter)
-      .sort({ updatedAt: -1 })
-      .skip(page > 0 ? ((page - 1) * 30) : 0)
-      .limit(30)
-      .populate(categories)
-      .populate(brands)
-      .then((products) => {
-        const filteredProducts = filterProductsByBrand(products, req, res);
-        console.log('Filtered by brand', filteredProducts);
-        return filteredProducts;
+    // Use the brand name from req.query to find brand._id
+    Brand.find({ 'details.name': req.query.brand })
+      .then((brand) => {
+        // Use the category name from req.query to find category._id
+        return Category.find({ 'details.name': req.query.category })
+          .then(category => ({ brand, category }));
       })
-      .then((products) => {
-        const filteredProducts = filterProductsByCategory(products, req, res);
-        console.log('Filtered by category', filteredProducts);
-        return filteredProducts;
-      })
-      .then((products) => {
-        res.send(products);
-      })
-      .catch((err) => {
-        res.send(err);
+      .then((brandAndCategory) => {
+        const { brand, category } = brandAndCategory;
+        // Use brand, category and other filters from req to find Products
+        Product.find(productsQueryFilter(brand, category, req))
+          .sort({ updatedAt: -1 })
+          .skip(page > 0 ? ((page - 1) * 30) : 0)
+          .limit(30)
+          .populate(categories)
+          .populate(brands)
+          .then((products) => {
+            res.send(products);
+          })
+          .catch((err) => {
+            res.send(err);
+          });
       });
   },
 

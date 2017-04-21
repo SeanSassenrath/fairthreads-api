@@ -2,25 +2,17 @@ const { isEmpty } = require('lodash');
 
 const productsHelpers = {
 
-  productsQueryFilter(req, res) {
+  productsQueryFilter(brand, category, req) {
     const query = {};
     const { gender, gtPrice, ltPrice } = req.query;
     if (!isEmpty(req.query)) {
       if (gender) { query['details.gender'] = gender; }
       if (gtPrice) { query['prices.price'] = { $gt: gtPrice }; }
       if (ltPrice) { query['prices.price'] = { $lt: ltPrice }; }
+      if (brand) { query['brand._id'] = brand._id; }
+      if (category) { query['category._id'] = category._id; }
     }
     return query;
-  },
-
-  filterProductsByBrand(products, req, res) {
-    if (!isEmpty(req.query.brand)) {
-      const filteredProducts = products.filter(product => (
-        product.brand !== null
-      ));
-      return filteredProducts;
-    }
-    return products;
   },
 
   populateBrands(brand, req) {
@@ -31,16 +23,6 @@ const productsHelpers = {
       };
     }
     return 'brand';
-  },
-
-  filterProductsByCategory(products, req, res) {
-    if (!isEmpty(req.query.category)) {
-      const filteredCategory = products.filter(product => (
-        product.categories !== null
-      ));
-      return filteredCategory;
-    }
-    return products;
   },
 
   populateCategories(category, req) {
