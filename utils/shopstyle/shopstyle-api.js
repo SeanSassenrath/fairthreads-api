@@ -20,6 +20,7 @@ function buildRequestOptions(brand, searchType, gender) {
 }
 
 function saveProduct(item, gender) {
+  console.log('item', item);
   const product = {
     metadata: {},
     details: {},
@@ -44,6 +45,7 @@ function saveProduct(item, gender) {
   product.details.name = name;
   product.details.description = item.description;
   product.details.vendUrl = item.clickUrl;
+  product.details.attributes = `${item.brand.name} ${item.categories[0].name} ${name}`;
 
   product.prices.price = item.price;
 

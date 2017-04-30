@@ -15,6 +15,7 @@ const productSchema = new Schema({
     vendUrl: { type: String },
     description: { type: String },
     gender: { type: String },
+    attributes: { type: String },
   },
   prices: {
     price: { type: Number, min: 0 },
@@ -38,4 +39,5 @@ const productSchema = new Schema({
   timestamps: true,
 });
 
+productSchema.index({ 'details.name': 'text', 'details.attributes': 'text', 'details.description': 'text' });
 module.exports = mongoose.model('Product', productSchema);
