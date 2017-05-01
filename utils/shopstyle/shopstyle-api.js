@@ -20,7 +20,6 @@ function buildRequestOptions(brand, searchType, gender) {
 }
 
 function saveProduct(item, gender) {
-  console.log('item', item);
   const product = {
     metadata: {},
     details: {},
@@ -29,6 +28,8 @@ function saveProduct(item, gender) {
   };
 
   const name = item.unbrandedName || item.brandedName;
+  const brandName = item.brand ? item.brand.name : null;
+  const categoryName = item.categories[0] ? item.categories[0].name : null;
   const now = new Date();
 
   if (item.salePrice) {
@@ -45,7 +46,7 @@ function saveProduct(item, gender) {
   product.details.name = name;
   product.details.description = item.description;
   product.details.vendUrl = item.clickUrl;
-  product.details.attributes = `${item.brand.name} ${item.categories[0].name} ${name}`;
+  product.details.attributes = `${brandName} ${categoryName} ${name}`;
 
   product.prices.price = item.price;
 
@@ -106,10 +107,13 @@ const saveCategory = (item) => {
   const shopstyleCategoryId = item.categories[0].id;
   const category = categoryAssignment[shopstyleCategoryId];
 
-  return Category.findOneAndUpdate({ 'metadata.catId': category.id }, category, { upsert: true, new: true, setDefaultsOnInsert: true })
-    .catch((err) => {
-      console.log(`--- Error, can't save category ${err}`);
-    });
+  if (category) {
+    return Category.findOneAndUpdate({ 'metadata.catId': category.id }, category, { upsert: true, new: true, setDefaultsOnInsert: true })
+      .catch((err) => {
+        console.log(`--- Error, can't save category ${err}`);
+      });
+  }
+  return false;
 };
 
 const findCategory = (item) => {
@@ -134,7 +138,7 @@ const findCategory = (item) => {
   // If the Fairthreads category mapping doesn't find a match, return an empty category
   console.log('no category', item.categoryId);
   const uncategorizedItem = item;
-  uncategorizedItem.categoryId = '';
+  uncategorizedItem.categoryId = null;
   return uncategorizedItem;
 };
 
@@ -178,7 +182,7 @@ function addProducts(dataSource, searchType, gender) {
         ));
       })
       .catch((err) => {
-        // console.log('--- Error, caught in promise ---', err);
+        console.log('--- Error, caught in promise ---', err);
       });
   });
 }
