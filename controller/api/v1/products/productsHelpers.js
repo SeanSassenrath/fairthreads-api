@@ -3,14 +3,15 @@ const { isEmpty } = require('lodash');
 const productsHelpers = {
 
   productsQueryFilter(brand, category, req) {
-    const query = {};
-    const { gender, gtPrice, ltPrice } = req.query;
+    let query = {};
+    const { gender, gtPrice, ltPrice, search } = req.query;
     if (!isEmpty(req.query)) {
       if (gender) { query['details.gender'] = gender; }
       if (gtPrice) { query['prices.price'] = { $gt: gtPrice }; }
       if (ltPrice) { query['prices.price'] = { $lt: ltPrice }; }
       if (brand[0]) { query.brand = brand[0]._id; }
       if (category[0]) { query.categories = category[0]._id; }
+      if (search) { query = Object.assign(query, { $text: { $search: search } }); }
     }
     return query;
   },

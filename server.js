@@ -24,7 +24,7 @@ app.use(methodOverride((req, res) => {
   }
 }));
 
-pullProducts();
+// pullProducts();
 // cleanDb();
 
 const options = {
