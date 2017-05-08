@@ -50,10 +50,11 @@ const brandsCtrl = {
 
   updateBrand(req, res) {
     Brand.findById({ _id: req.params.id })
+
       .then((brand) => {
         Object.assign(brand, req.body).save((err, savedBrand) => {
           if (err) res.send(err);
-          res.json({ message: 'Brand updated', brand });
+          res.json({ message: `Update of ${savedBrand.details.name} was successful!` });
         });
       })
       .catch((err) => {
