@@ -11,6 +11,7 @@ const productsHelpers = {
       if (ltPrice) { query['prices.price'] = { $lt: ltPrice }; }
       if (brand[0]) { query.brand = brand[0]._id; }
       if (category[0]) { query.categories = category[0]._id; }
+      if (req.query.category === 'uncategorized') { query.categories = null; }
       if (search) { query = Object.assign(query, { $text: { $search: search } }); }
     }
     return query;
