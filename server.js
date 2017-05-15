@@ -7,7 +7,6 @@ const products = require('./models/product');
 const path = require('path');
 const methodOverride = require('method-override');
 const dotenv = require('dotenv');
-const { pullProducts } = require('./utils/shopstyle/shopstyle-api');
 const { cleanDb } = require('./utils/db-helpers/clean-db');
 
 const app = express();
@@ -24,7 +23,6 @@ app.use(methodOverride((req, res) => {
   }
 }));
 
-// pullProducts();
 // cleanDb();
 
 const options = {

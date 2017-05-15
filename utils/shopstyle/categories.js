@@ -64,7 +64,7 @@ const categories = {
   },
   outerwear: {
     metadata: {
-      catId: 7,
+      catId: 8,
     },
     details: {
       name: 'outerwear',
@@ -73,7 +73,7 @@ const categories = {
   },
   swimsuit: {
     metadata: {
-      catId: 8,
+      catId: 9,
     },
     details: {
       name: 'swimsuit',
