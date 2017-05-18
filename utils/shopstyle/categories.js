@@ -202,6 +202,7 @@ const categoryAssignment = {
   'mens-chinos-and-khakis': bottoms,
   'mens-hats': accessories,
   'mens-relaxed-jeans': bottoms,
+  'womens-sneakers': shoes,
 };
 
 module.exports = categoryAssignment;

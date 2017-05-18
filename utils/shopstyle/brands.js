@@ -25,8 +25,8 @@ module.exports = {
     'b3284', //Sorel
   ],
   brandsBySearch: [
-    'ecoalf',
-    'toad&co',
+    // 'ecoalf',
+    // 'toad&co',
   ],
 };
 

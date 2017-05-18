@@ -6,20 +6,19 @@ const Brand = require('../../models/brand');
 const Category = require('../../models/category');
 const categoryAssignment = require('./categories');
 
-const shopstyleSubCategories = {};
-
-function buildRequestOptions(brand, searchType, gender) {
+const buildRequestOptions = (brand, searchType, gender) => {
   const base = `http://api.shopstyle.com/api/v2/products?pid=${process.env.SHOPSTYLE_API_KEY}`;
   const limit = '&limit=50';
   const search = `&${searchType}=`;
   const category = `&cat=${gender}`;
+  console.log('Query', base + limit + search + brand + category);
   return {
     uri: base + limit + search + brand + category,
     json: true,
   };
-}
+};
 
-function saveProduct(item, gender) {
+const saveProduct = (item, gender) => {
   const product = {
     metadata: {},
     details: {},
@@ -136,13 +135,15 @@ const findCategory = (item) => {
       });
   }
   // If the Fairthreads category mapping doesn't find a match, return an empty category
-  console.log('no category', item.categoryId);
+  console.log('no category', item.categories[0].id);
+  console.log('item.unbrandedName || item.brandedName', item.unbrandedName || item.brandedName);
+  console.log('');
   const uncategorizedItem = item;
   uncategorizedItem.categoryId = null;
   return uncategorizedItem;
 };
 
-function addProducts(dataSource, searchType, gender) {
+const addProducts = (dataSource, searchType, gender) => {
   dataSource.forEach((brand) => {
     rp(buildRequestOptions(brand, searchType, gender))
       .then((resp) => {
@@ -185,7 +186,7 @@ function addProducts(dataSource, searchType, gender) {
         console.log('--- Error, caught in promise ---', err);
       });
   });
-}
+};
 
 const pullProducts = () => {
   addProducts(brands.brandsById, 'fl', 'womens-clothes');
