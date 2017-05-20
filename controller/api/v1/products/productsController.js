@@ -79,6 +79,31 @@ const productsCtrl = {
         res.json({ message: 'Currently unable to update this product. Please try again later.' });
       });
   },
+
+  getBrandsFromProducts(req, res) {
+    const brands = populateBrands(req);
+    // Use the category name from req.query to find category._id
+    return Category.find({ 'details.name': req.query.category })
+      .then((category) => {
+        // Use brand, category and other filters from req to find Products
+        Product.find(productsQueryFilter(null, category, req))
+          .populate(brands)
+          .then((products) => {
+            const brandsList = [];
+            const brandsCheck = {};
+            products.map((product) => {
+              if (!brandsCheck[product.brand.details.name]) {
+                brandsList.push(product.brand.details.name);
+                brandsCheck[product.brand.details.name] = product.brand.details.name;
+              }
+            });
+            res.send(brandsList);
+          })
+          .catch((err) => {
+            res.send(err);
+          });
+      });
+  },
 };
 
 module.exports = { productsCtrl };

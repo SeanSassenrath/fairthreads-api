@@ -1,15 +1,11 @@
 const { isEmpty } = require('lodash');
 
-const productsHelpers = {
+const brandsHelper = {
 
-  productsQueryFilter(brand, category, req) {
+  brandsQueryFilter(category, req) {
     let query = {};
-    const { gender, gtPrice, ltPrice, search } = req.query;
+    const { search } = req.query;
     if (!isEmpty(req.query)) {
-      if (gender) { query['details.gender'] = gender; }
-      if (gtPrice) { query['prices.price'] = { $gt: gtPrice }; }
-      if (ltPrice) { query['prices.price'] = { $lt: ltPrice }; }
-      if (brand !== null && brand[0]) { query.brand = brand[0]._id; }
       if (category[0]) { query.categories = category[0]._id; }
       if (req.query.category === 'uncategorized') { query.categories = null; }
       if (search) { query = Object.assign(query, { $text: { $search: search } }); }
@@ -38,4 +34,4 @@ const productsHelpers = {
   },
 };
 
-module.exports = productsHelpers;
+module.exports = brandsHelper;
