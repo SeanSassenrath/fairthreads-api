@@ -21,7 +21,7 @@ const productsHelpers = {
     if (!isEmpty(req.query.brand)) {
       return {
         path: 'brand',
-        match: { 'details.name': req.query.brand },
+        match: { 'metadata.id': req.query.brand },
       };
     }
     return 'brand';

@@ -15,8 +15,8 @@ const productsCtrl = {
     const brands = populateBrands(req);
     const categories = populateCategories(req);
 
-    // Use the brand name from req.query to find brand._id
-    Brand.find({ 'details.name': req.query.brand })
+    // Use the fairthreads brand id from req.query to find brand._id
+    Brand.find({ 'metadata.id': req.query.brand })
       .then((brand) => {
         // Use the category name from req.query to find category._id
         return Category.find({ 'details.name': req.query.category })
