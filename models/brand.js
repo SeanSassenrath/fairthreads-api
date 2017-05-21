@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 
 const brandSchema = new Schema({
   metadata: {
+    id: { type: String, unique: true, required: true },
     softDelete: { type: Boolean, default: false },
     active: { type: Boolean, default: false },
   },
@@ -15,6 +16,7 @@ const brandSchema = new Schema({
     image: { type: String },
   },
   products: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+  categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
 }, {
   timestamps: true,
 });

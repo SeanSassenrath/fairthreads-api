@@ -75,13 +75,47 @@ const saveProduct = (item, gender) => {
     .catch((err) => {
       if (err) { console.log("--- Error, can't save product ---", err); }
     });
-}
+};
 
-const saveBrand = (item) => {
+const saveBrand = (item, fairthreadsBrandId) => {
+  const shopstyleCategoryId = item.categories[0].id;
+  const category = categoryAssignment[shopstyleCategoryId];
   const shopstyleBrandName = item.brand ? item.brand.name : item.brandedName;
-  const brand = { details: { name: shopstyleBrandName } };
 
-  return Brand.findOneAndUpdate({ 'details.name': shopstyleBrandName }, brand, { upsert: true, new: true, setDefaultsOnInsert: true })
+  if (!!category) {
+    return Category.find({ 'metadata.catId': category.metadata.catId })
+      .then((foundCategory) => {
+
+        const brand = {
+          details: {
+            name: shopstyleBrandName,
+          },
+          metadata: {
+            id: fairthreadsBrandId,
+          },
+          $push: { categories: foundCategory.id } };
+        Brand.findOneAndUpdate({
+          'details.name': shopstyleBrandName },
+          brand,
+          { upsert: true, new: true, setDefaultsOnInsert: true })
+          .catch((err) => {
+            console.log(`--- Error, can't save brand ${err}`);
+          });
+      });
+  }
+
+  const brand = {
+    details: {
+      name: shopstyleBrandName,
+    },
+    metadata: {
+      id: fairthreadsBrandId,
+    },
+  };
+
+  return Brand.findOneAndUpdate({
+    'details.name': shopstyleBrandName }, brand,
+    { upsert: true, new: true, setDefaultsOnInsert: true })
     .catch((err) => {
       console.log(`--- Error, can't save brand ${err}`);
     });
@@ -94,7 +128,9 @@ const findBrand = (item) => {
   return Brand.find({ 'details.name': shopstyleBrandName })
     .then((foundBrand) => {
       const brandedItem = item;
+      // console.log('foundBrand', foundBrand);
       brandedItem.brandId = foundBrand[0]._id;
+      // console.log('brandedItem', brandedItem);
       return brandedItem;
     })
     .catch((err) => {
@@ -107,7 +143,7 @@ const saveCategory = (item) => {
   const category = categoryAssignment[shopstyleCategoryId];
 
   if (category) {
-    return Category.findOneAndUpdate({ 'metadata.catId': category.id }, category, { upsert: true, new: true, setDefaultsOnInsert: true })
+    return Category.findOneAndUpdate({ 'metadata.catId': category.metadata.catId }, category, { upsert: true, new: true, setDefaultsOnInsert: true })
       .catch((err) => {
         console.log(`--- Error, can't save category ${err}`);
       });
@@ -116,26 +152,30 @@ const saveCategory = (item) => {
 };
 
 const findCategory = (item) => {
-  // Category id from shopstyle
-  const categoryId = item.categories[0].id;
-  // Category map to Fairthreads categories
-  const category = categoryAssignment[categoryId];
 
-  if (category !== undefined) {
-    // Find Category from Fairthreads database that matches the result of the above mapping
-    return Category.find({ 'metadata.catId': category.metadata.catId })
-      .then((savedCategory) => {
-        const categorizedItem = item;
-        // Assign the items categoryId value with a Fairthreads categoryId
-        categorizedItem.categoryId = savedCategory[0]._id;
-        return categorizedItem;
-      })
-      .catch((err) => {
-        console.log(`--- Error, can't find category ${err}`);
-      });
+  if (!!item.categories) {
+    // Category id from shopstyle
+    const categoryId = item.categories[0].id;
+    // Category map to Fairthreads categories
+    const category = categoryAssignment[categoryId];
+
+    if (category !== undefined) {
+      // Find Category from Fairthreads database that matches the result of the above mapping
+      return Category.find({ 'metadata.catId': category.metadata.catId })
+        .then((savedCategory) => {
+          const categorizedItem = item;
+          // Assign the items categoryId value with a Fairthreads categoryId
+          categorizedItem.categoryId = savedCategory[0]._id;
+          return categorizedItem;
+        })
+        .catch((err) => {
+          console.log(`--- Error, can't find category ${err}`);
+        });
+    }
   }
+
   // If the Fairthreads category mapping doesn't find a match, return an empty category
-  console.log('no category', item.categories[0].id);
+  console.log('no category', item);
   console.log('item.unbrandedName || item.brandedName', item.unbrandedName || item.brandedName);
   console.log('');
   const uncategorizedItem = item;
@@ -145,10 +185,11 @@ const findCategory = (item) => {
 
 const addProducts = (dataSource, searchType, gender) => {
   dataSource.forEach((brand) => {
-    rp(buildRequestOptions(brand, searchType, gender))
+    const fairthreadsBrandId = brand.fairthreadsBrandId;
+    rp(buildRequestOptions(brand.shopStyleBrandId, searchType, gender))
       .then((resp) => {
         resp.products.map(product => (
-          saveBrand(product)
+          saveBrand(product, fairthreadsBrandId)
         ));
         return resp;
       })
@@ -173,6 +214,7 @@ const addProducts = (dataSource, searchType, gender) => {
         }));
       })
       .then((productsWithBrand) => {
+        console.log('productsWithBrand', productsWithBrand);
         return Promise.all(productsWithBrand.map(product => (
           findCategory(product)
         )));
