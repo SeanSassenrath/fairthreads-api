@@ -97,7 +97,7 @@ const productsCtrl = {
                 brandsCheck[product.brand.details.name] = product.brand.details.name;
               }
             });
-            res.send(brandsList);
+            res.send(JSON.stringify({ brands: brandsList }));
           })
           .catch((err) => {
             res.send(err);
