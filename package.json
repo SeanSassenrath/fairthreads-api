@@ -1,31 +1,34 @@
 {
   "name": "fairthreads-api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "fairthreads backend api",
+  "private": true,
   "main": "server.js",
   "scripts": {
-    "setup": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "linter-setup": "node airbnb-linter-setup.js",
+    "env-setup": "node setup.js",
+    "pull-products": "node shopstyle/shopstyle-api.js",
+    "dev": "set NODE_ENV=dev && node server.js",
+    "test": "mocha --timeout 10000"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SeanSassenrath/fairthreads-api.git"
+    "url": "https://gitlab.com/fairthreads/api"
   },
-  "author": "sean and alex",
+  "author": "Sean Sassenrath and Alexandra Estrada",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/SeanSassenrath/fairthreads-api/issues"
-  },
-  "homepage": "https://github.com/SeanSassenrath/fairthreads-api",
   "dependencies": {
+    "airbnb-style": "^2.0.0",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.15.2",
+    "config": "^1.25.1",
     "dotenv": "^2.0.0",
     "ejs": "^2.4.1",
     "express": "^4.14.0",
     "jquery": "^2.2.2",
     "lodash": "^4.5.0",
     "method-override": "^2.3.5",
-    "mongoose": "^4.7.0",
+    "mongoose": "^4.8.6",
     "morgan": "^1.7.0",
     "multer": "^1.1.0",
     "node-mailer": "^0.1.1",
@@ -33,5 +36,17 @@
     "prettyjson": "^1.2.0",
     "request": "^2.69.0",
     "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2 || ^4.0.0",
+    "eslint-plugin-react": "^6.9.0",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0"
   }
 }

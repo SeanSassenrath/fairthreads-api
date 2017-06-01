@@ -1,35 +1,45 @@
+const mongoose = require('mongoose');
+const categories = require('./category');
+mongoose.Promise = require('bluebird');
 
-var morgan = require('morgan');
-var mongoose = require('mongoose');
-var Schema =  mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var ProductSchema = new Schema({
-  shopstyleId: { type: Number, required: true, unique: true },
-  name: { type: String, required: true, default: "" },
-  brand: { type: String, required: true },
-  price: { type: Number, min: 0, required: true },
-  salePrice: { type: Number, default: 0 },
-  vendUrl: { type: String, required: true },
-  imageLarge: { type: String, required: true },
-  imageSmall: { type: String, required: true },
-  imageOriginal: { type: String, required: true },
-  category: { type: String, required: true },
-  categories: { type: Array },
-  fairThreadsCategory: { type: String, default: 'No category' },
-  description: { type: String },
-  color: { type: String },
-  gender: { type: String },
-  softDelete: { type: Boolean, required: true, default: false },
-  active: { type: Boolean, default: false },
-  activeTimeStamp: { type: Date },
-  new: { type: Boolean },
-  style: { type: String },
-  categoryRank: { type: Number },
-  objectFit: { type: String, default: "contain" },
-  stylistPick: { type: Boolean, default: false }
+const productSchema = new Schema({
+  shopstyleId: { type: Number, unique: true },
+  metadata: {
+    softDelete: { type: Boolean, default: false },
+    active: { type: Boolean, default: false },
+  },
+  details: {
+    name: { type: String, required: true, default: '' },
+    vendUrl: { type: String },
+    description: { type: String },
+    gender: { type: String },
+    attributes: { type: String },
+  },
+  prices: {
+    price: { type: Number, min: 0 },
+    salePrice: { type: Number, default: 0 },
+  },
+  sizes: [String],
+  colors: [String],
+  images: {
+    imageLarge: { type: String },
+    imageSmall: { type: String },
+    imageOriginal: { type: String },
+  },
+  css: {
+    objectFit: { type: String, default: 'contain' },
+  },
+  brand: { type: Schema.Types.Object, ref: 'Brand' },
+  categories: { type: Schema.Types.ObjectId, ref: 'Category' },
+  subcategories: [{ type: Schema.Types.ObjectId, ref: 'Subcategories' }],
+  //attributes: Needs to be its own Collection - populate it
+    // color goes under attributes
+    // stylistPick goes under attributes?
 }, {
-  timestamps: true
-})
+  timestamps: true,
+});
 
-var Product = mongoose.model('Products', ProductSchema);
-module.exports = Product
+productSchema.index({ 'details.name': 'text', 'details.attributes': 'text', 'details.description': 'text' });
+module.exports = mongoose.model('Product', productSchema);
