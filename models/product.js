@@ -21,6 +21,8 @@ const productSchema = new Schema({
     price: { type: Number, min: 0 },
     salePrice: { type: Number, default: 0 },
   },
+  sizes: [String],
+  colors: [String],
   images: {
     imageLarge: { type: String },
     imageSmall: { type: String },

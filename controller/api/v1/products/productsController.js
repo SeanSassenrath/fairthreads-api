@@ -91,10 +91,14 @@ const productsCtrl = {
           .then((products) => {
             const brandsList = [];
             const brandsCheck = {};
+            let brandWithId = {};
             products.map((product) => {
               if (!brandsCheck[product.brand.details.name]) {
-                brandsList.push(product.brand.details.name);
+                brandWithId.name = product.brand.details.name;
+                brandWithId.id = product.brand.metadata.id;
+                if (brandWithId.id !== null) { brandsList.push(brandWithId); }
                 brandsCheck[product.brand.details.name] = product.brand.details.name;
+                brandWithId = {};
               }
             });
             res.send(JSON.stringify({ brands: brandsList }));

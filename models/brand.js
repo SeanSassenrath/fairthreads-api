@@ -12,6 +12,7 @@ const brandSchema = new Schema({
   },
   details: {
     name: { type: String, required: true, unique: true },
+    gender: { type: String, default: 'both' },
     description: { type: String },
     image: { type: String },
   },
